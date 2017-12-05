@@ -8,7 +8,7 @@ def index(request):
     # return HttpResponse('Hello from Python!')
     r = requests.get('http://httpbin.org/status/418')
     print(r.text)
-    return HttpResponse('<prep>This could be the start of something wonderful.</prep>')
+    return HttpResponse('<prep>HAAAAPPPPPYYYY BBBIIIIRRRRTTTHHHHDDDAAAYYY KAT!!!!!!!</prep>')
 
 
 def db(request):
