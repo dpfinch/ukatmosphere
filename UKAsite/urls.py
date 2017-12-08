@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# Added a bit of my own to see if it make things work...
+import polls.views
 
 urlpatterns = [
+    # trying to sort out the friggin home page
+    path(r'^$', polls.views.index, name = 'index'),
     path('polls/', include('polls.urls')),
     path('admin/', admin.site.urls),
 ]
