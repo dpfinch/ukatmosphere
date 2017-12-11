@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ WSGI_APPLICATION = 'UKAsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'uka_database',
         'USER': 'dfinch',
         'PASSWORD':'ukatmosdatabase',
@@ -122,3 +123,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 STATICFILES_DIR = (os.path.join(PROJECT_ROOT, 'static'))
+
+# Database URL commands (taken from Heroku docs):
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
