@@ -128,5 +128,5 @@ STATICFILES_DIRS = (
 
 # Database URL commands (taken from Heroku docs):
 import dj_database_url
-db_from_env =  dj_database_url.config()
+db_from_env =  dj_database_url.config(default = 'postgres://xpkexvfzlmezoi:fe7f3285c91a25690c45684573c6602fe2dddbb8d2b9b2eb056864cd8441f4d1@ec2-46-137-94-97.eu-west-1.compute.amazonaws.com:5432/d4k0p8vf123cm8')
 DATABASES['default'].update(db_from_env)
