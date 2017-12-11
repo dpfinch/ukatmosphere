@@ -1,4 +1,4 @@
-#!/home/dfinch/ukatmosphere/bin/python3
+#!/home/dfinch/ukatmosphere/bin/python3.6
 
 # -*- coding: utf-8 -*-
 import re
