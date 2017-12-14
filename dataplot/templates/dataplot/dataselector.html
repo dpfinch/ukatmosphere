@@ -1,0 +1,11 @@
+{% extends 'dataplot/base.html' %}
+
+{% block testname %}
+  <h1> Select a site: </h1>
+  <form method = "POST" class = "data_form">{% csrf_token %}
+  {{ form }}
+  <button type="submit" id = "submit_button" class="save btn btn-default">Submit</button>
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,94 @@
+h1 a {
+    color: #1D5F75;
+    font-family: 'Barlow';
+}
+
+body {
+    padding-left: 0px;
+    background-color: white;
+}
+
+h1, h2, h3, h4, p {
+    font-family: 'Barlow';
+}
+
+ul{
+  list-style-type: none;
+}
+
+.page-header{
+  display: block;
+  background-color: #001f4d;
+  margin:0;
+  height: 105px;
+  padding: 1px 1px 1px 60px;
+  /*border: 2px solid red;*/
+
+}
+
+.page-text h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
+    color: #FCFCFC;
+    font-size: 38pt;
+    text-decoration: none;
+    /*border: 1px solid black;*/
+}
+
+.main_page{
+  display: flex;
+  width:100%;
+  /*border: 2px solid green;*/
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  padding-left: 8px
+}
+
+.data_selector{
+  float: left;
+  /*display: inline-block;*/
+  /*position: absolute;*/
+  /*border: 2px solid black;*/
+  width: 15%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border-right: 8px double #4d4d4d;
+  padding-right: 10px;
+  /*background-color: #4d4d4d;*/
+  /*border-radius: 20px;*/
+  /*background-color: black;*/
+}
+
+#submit_button{
+  float: right;
+}
+
+.plot_page{
+  display: flex;
+  /*display: inline-block;*/
+  border: 2px solid blue;
+  /*width: 100%;*/
+  /*position: absolute;*/
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  float: left;
+  justify-content: center;
+  flex-grow: 100;
+}
+
+#timeseries_plot{
+  border: 2px solid red;
+  width: 700px;
+}
+
+#windrose_plot{
+  border: 2px solid red;
+  width: 700px;
+}
+
+iframe{
+  width: 700;
+  height: 600;
+}
