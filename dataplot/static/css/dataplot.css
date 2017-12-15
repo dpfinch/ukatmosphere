@@ -6,6 +6,7 @@ h1 a {
 body {
     padding-left: 0px;
     background-color: white;
+    height: 100%;
 }
 
 h1, h2, h3, h4, p {
@@ -16,9 +17,13 @@ ul{
   list-style-type: none;
 }
 
+a:hover{
+  text-decoration: none;
+}
+
 .page-header{
   display: block;
-  background-color: #001f4d;
+  background-color: #000a1a;
   margin:0;
   height: 105px;
   padding: 1px 1px 1px 60px;
@@ -44,6 +49,43 @@ ul{
   padding-left: 8px
 }
 
+.home_page{
+  align-items: center;
+  background-image: url(../industrial_photo.jpg);
+  background-size: cover;
+  background-blend-mode: lighten;
+  height: 100%;
+  padding: 60px;
+}
+
+.button_table{
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.home_buttons{
+  display: block;
+  background-color: #333333;
+  text-align: center;
+  width: 350px;
+  height: 250px;
+  border-radius: 8px;
+  margin: 10px;
+}
+
+.home_button_text{
+  font-size: 30pt;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.home_button_text p{
+  font-size: 15pt;
+  /*font-family: 'Tinos';*/
+}
+
 .data_selector{
   float: left;
   /*display: inline-block;*/
@@ -67,7 +109,7 @@ ul{
 .plot_page{
   display: flex;
   /*display: inline-block;*/
-  border: 2px solid blue;
+  /*border: 2px solid blue;*/
   /*width: 100%;*/
   /*position: absolute;*/
   overflow: hidden;
@@ -79,12 +121,12 @@ ul{
 }
 
 #timeseries_plot{
-  border: 2px solid red;
+  /*border: 2px solid red;*/
   width: 700px;
 }
 
 #windrose_plot{
-  border: 2px solid red;
+  /*border: 2px solid red;*/
   width: 700px;
 }
 
