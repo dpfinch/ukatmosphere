@@ -22,13 +22,33 @@ a:hover{
 }
 
 .page-header{
-  display: block;
+  display: inline-flex;
+  position: relative;
   background-color: #000a1a;
   margin:0;
-  height: 105px;
-  padding: 1px 1px 1px 60px;
+  height: 115px;
+  width: 100%;
+  padding: 1px 1px 1px 45px;
+  vertical-align: middle;
   /*border: 2px solid red;*/
 
+}
+
+.logo-header{
+  display: inline-block;
+  position: absolute;
+  top: 10%;
+  height: 90px;
+  width: 90px;
+  /*border: 2px solid white;*/
+}
+
+.inner-header{
+  display: inline-block;
+  position: absolute;
+  left:145px;
+  padding-left: 10px;
+  /*border: 2px solid red;*/
 }
 
 .page-text h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {

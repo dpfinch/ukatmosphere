@@ -3,7 +3,12 @@ from .forms import SiteSelector, SITE_CHOICES
 from .models import SelectedSite
 # Create your views here.
 
-def dataselector(request):
+
+# Create a simple view for the homepage
+def homepage(request):
+    return render(request, 'dataplot/homepage.html')
+
+def analysis(request):
     if request.method == 'POST':
         sites = SiteSelector(request.POST)
         # site = SelectedSite(sitechoice = request.POST['chosen_sites'])

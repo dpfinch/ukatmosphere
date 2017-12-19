@@ -1,6 +1,6 @@
 {% extends 'dataplot/base.html' %}
 
-{% block testname %}
+{% block content %}
   <h1> Select a site: </h1>
   <form method = "POST" class = "data_form">{% csrf_token %}
   {{ form }}
