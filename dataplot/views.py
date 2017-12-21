@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .forms import SiteSelector, SITE_CHOICES
+from .forms import SiteSelector, SITE_CHOICES, SiteCombine
 from .models import SelectedSite
+from UKAsite.format_tools import PrettyWordList
 # Create your views here.
 
 
@@ -10,18 +11,30 @@ def homepage(request):
 
 def analysis(request):
     if request.method == 'POST':
-        sites = SiteSelector(request.POST)
+        # sites = SiteSelector(request.POST)
         # site = SelectedSite(sitechoice = request.POST['chosen_sites'])
-        site = request.POST.getlist('chosen_sites')
-        # site.save()
-        request.session['Site'] = site
+        sites = request.POST.getlist('Site_Choice')
+        combined = request.POST.getlist('Site_Combine')
 
+        # site.save()
+        request.session['Site'] = sites
+        siteform = SiteSelector(request.POST)
+        combineform = SiteCombine(request.POST)
+        plots = ["//plot.ly/~dfinch/158.embed","//plot.ly/~dfinch/160.embed",
+            "//plot.ly/~dfinch/150.embed","//plot.ly/~dfinch/146.embed"]
+
+        if len(sites) == 0:
+            return render(request, 'dataplot/dataselector.html', {'siteform': siteform, 'graph_preset': False, 'combineform':combineform})
+
+        if len(sites) > 1 :
+            sites = PrettyWordList(sites)
 
         # return redirect('site_choice')
-        return render(request, 'dataplot/dataselector.html', {'form':site})
+        return render(request, 'dataplot/dataselector.html', {'siteform':siteform, 'plots':plots, 'graph_preset':True, 'sites':sites, 'combineform':combineform})
     else:
-        form = SiteSelector()
-        return render(request, 'dataplot/dataselector.html', {'form': form})
+        siteform = SiteSelector()
+        combineform = SiteCombine()
+        return render(request, 'dataplot/dataselector.html', {'siteform': siteform, 'graph_preset': False, 'combineform':combineform})
 
 def site_choice(request):
     site = request.session['Site']

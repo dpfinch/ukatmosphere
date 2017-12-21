@@ -7,8 +7,22 @@ SITE_CHOICES = (
     )
 
 class SiteSelector(forms.Form):
-    Site_Choice = forms.ChoiceField(
+    Site_Choice = forms.MultipleChoiceField(
+    required = True,
+    widget = forms.CheckboxSelectMultiple,
+    choices = SITE_CHOICES,
+    label = ' Choose sites:'
+    )
+
+COMBINED_CHOICES = (
+    ('combined', 'Combined'),
+    ('seperate', 'Seperate'),
+)
+
+class SiteCombine(forms.Form):
+    Site_Combine = forms.ChoiceField(
     required = True,
     widget = forms.RadioSelect,
-    choices = SITE_CHOICES,
+    choices = COMBINED_CHOICES,
+    label = 'Combine site choices?'
     )

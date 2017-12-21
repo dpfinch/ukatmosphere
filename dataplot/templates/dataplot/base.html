@@ -2,7 +2,7 @@
 <html>
   <head>
       <title>UK Atmosphere</title>
-      <link rel="shortcut icon" type = "image/png" href = "static/cloud_analysis_logo.png"/>
+      <link rel="shortcut icon" type = "image/png" href = "/static/cloud_analysis_logo.png"/>
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
       <link href="https://fonts.googleapis.com/css?family=Barlow|Tinos" rel="stylesheet">
@@ -20,12 +20,16 @@
       </div>
     </div>
 
-    {% block content %}
-    {% endblock %}
-
+    <div class = "main_page">
+     {% block content %}
+     {% endblock %}
+   </div>
   </body>
 
-  <footer>
-  </footer>
+  <!-- <footer>
+    <div class ="footer-container">
+      <p> Some footer stuff <p>
+    </div>
+  </footer> -->
 
 </html>
