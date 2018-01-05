@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
+from django.http.response import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from .forms import SiteSelector, SITE_CHOICES, SiteCombine
 from .models import SelectedSite
 from UKAsite.format_tools import PrettyWordList
-# Create your views here.
 
+from dataplot.dash_driver import dispatcher
+
+# Create your views here.
 
 # Create a simple view for the homepage
 def homepage(request):
@@ -40,3 +44,11 @@ def site_choice(request):
     site = request.session['Site']
 
     return render(request,'dataplot/chosen_site.html',{'chosen_site': site})
+
+def dash(request, **kwargs):
+    return HttpResponse(dispatcher(request))
+
+@csrf_exempt
+def dash_ajax(request):
+    ''' '''
+    return HttpResponse(dispatcher(request), content_type='application/json')
