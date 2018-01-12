@@ -62,29 +62,6 @@ def GetData(parameters = []):
 
     return df
 
-def PerformAnalysis(df):
-    """
-        This function will send off for types of analysis to be performed
-        from a chosen list.
-        It will perform preprocessing analysis first (eg. resampling, date ranges)
-        and then call on functions to process the data into something the plot
-        functions can understand.
-        Function IN:
-            df (REQUIRED, PD.DATAFRAME):
-                A pandas dataframe containing the data to be processed
-    """
-
-    tool_dictionary = AnalysisMods()
-
-    chosen_analyses = ['TimeSeries', 'Histogram']
-
-    for analysis_type in chosen_analyses:
-        if analysis_type == 'TimeSeries':
-            tool_dictionary[analysis_type].TimeSeries(df, errors = False)
-
-    pass
-
-
 def MainDriver(tool_type = 'TimeSeries'):
     """
         This function will send off for types of analysis to be performed
