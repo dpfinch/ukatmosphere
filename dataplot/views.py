@@ -24,8 +24,11 @@ def analysis(request):
         request.session['Site'] = sites
         siteform = SiteSelector(request.POST)
         combineform = SiteCombine(request.POST)
-        plots = ["//plot.ly/~dfinch/158.embed","//plot.ly/~dfinch/160.embed",
-            "//plot.ly/~dfinch/150.embed","//plot.ly/~dfinch/146.embed"]
+        # plots = ["//plot.ly/~dfinch/158.embed","//plot.ly/~dfinch/160.embed",
+            # "//plot.ly/~dfinch/150.embed","//plot.ly/~dfinch/146.embed"]
+
+        # Have a list of the plots to be sent to the webpage
+        plots = ['/dash-TimeSeries']
 
         if len(sites) == 0:
             return render(request, 'dataplot/dataselector.html', {'siteform': siteform, 'graph_preset': False, 'combineform':combineform})
