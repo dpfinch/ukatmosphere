@@ -15,8 +15,13 @@
     <h1> Select a site: </h1>
       <form method = "POST" class = "data_form">{% csrf_token %}
       {{ siteform }}
+
+      <button type="submit" id = "site_button" class="save btn btn-default">Go</button>
+      {% if site_chosen == True %}
+      {{ variableform }}
       {{ combineform }}
       <button type="submit" id = "submit_button" class="save btn btn-default">Submit</button>
+      {% endif %}
     </form>
   </div>
 

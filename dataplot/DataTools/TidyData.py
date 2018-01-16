@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 #==============================================================================
 
-def DateClean(df):
+def DateClean_Heathfeild(df):
     """
         Transform a list of dates or times into a standard python datetime object
         Function IN:
@@ -55,6 +55,21 @@ def SecondsSince2013(indate):
     orig_date = datetime(2013,1,1,0,0)
 
     return outdate
+
+
+def add_day(timestamp):
+    """
+        This functions fixes the errror in the timeseries where converting the
+        the hour '24:00:00' to '00:00:00' put the time at the beginning of the
+        day instead of the end. It basically just adds a day where the hour == 0
+        Function IN:
+            timestap(REQUIRED, DATETIME)
+        Function OUT:
+            timestap(DATETIME)
+    """
+    if timestamp.hour == 0:
+        timestamp = timestamp + timedelta(days = 1 )
+    return timestamp
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the

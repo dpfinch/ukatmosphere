@@ -36,7 +36,7 @@ def AnalysisMods():
 
     return tool_dictionary
 
-def GetData(parameters = []):
+def GetData(sites):
     """
         This function loops gathers all the analysis modules needed and imports
         them.
@@ -55,14 +55,21 @@ def GetData(parameters = []):
 
     # Get dataframe from LoadData.FromCSV. Leaving the input blank will get
     # the Heathfield data.
-    df = LoadData.FromCSV()
+    if 'Heathfield' in sites:
+        df = LoadData.FromCSV()
+        df = TidyData.DateClean_Heathfeild(df)
+
+    elif 'Edinburgh' in sites:
+        df = LoadData.Edinburgh_Data()
+        df.set_index('Date and Time', inplace = True)
 
     # Use the DateClean function to make the date into a datetime format
-    df = TidyData.DateClean(df)
+
 
     return df
 
-def MainDriver(tool_type = 'TimeSeries'):
+def MainDriver(tool_type = 'TimeSeries', sites = ['Edinburgh'],
+    variables_chosen = [], vars_combined = False, resampling = None):
     """
         This function will send off for types of analysis to be performed
         from a chosen list.
@@ -75,19 +82,56 @@ def MainDriver(tool_type = 'TimeSeries'):
     """
 
     tool_dictionary = AnalysisMods()
-    df = GetData()
+    df = GetData(sites)
 
-    if tool_type == 'TimeSeries':
-        figure = tool_dictionary[tool_type].TimeSeries(df)
-    elif tool_type == 'Histogram':
-        figure = tool_dictionary[tool_type].Histogram(df)
 
-        # If the type of analysis isn't availble then return an 'unknown'
+    if resampling:
+        # Resample by the capital letter of the option given
+        # ie 'D' from 'Daily'
+        df = df.resample(resampling[0]).apply('mean')
+
+    if vars_combined:
+        ##  Plot the variables together
+        if tool_type == 'TimeSeries':
+            figure = tool_dictionary[tool_type].TimeSeries(df, variables_chosen, combined = True)
+
+        if tool_type == 'Correlation':
+            figure = tool_dictionary[tool_type].Correlation(df, variables_chosen)
+
+        if tool_type == 'Histogram':
+            figure = tool_dictionary[tool_type].Histogram(df,variables_chosen,combined = True)
+
     else:
-        figure = "Figure type '%s' unknown." % str(tool_type)
+        variables_chosen = variables_chosen[0]
+
+        if tool_type == 'TimeSeries':
+            figure = tool_dictionary[tool_type].TimeSeries(df, variables_chosen)
+        elif tool_type == 'Histogram':
+            figure = tool_dictionary[tool_type].Histogram(df)
+
+            # If the type of analysis isn't availble then return an 'unknown'
+        else:
+            figure = "Figure type '%s' unknown." % str(tool_type)
 
     return figure
 
+def GetSiteVariables(sitename):
+    """
+        Get the variables availble for a given site.
+        The sitename should be a list (eg. ['Edinburgh'])
+    """
+    ignore_list = ['Date', 'Time', 'Date and Time', 'Status']
+
+    df = GetData(sitename)
+    variable_list = []
+    for names in df.columns:
+        if names.split('.')[0] in ignore_list:
+            continue
+        else:
+            variable_list.append(names)
+
+
+    return variable_list
 
 
 if __name__ == '__main__':

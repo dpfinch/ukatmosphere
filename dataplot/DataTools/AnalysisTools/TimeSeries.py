@@ -7,9 +7,10 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import plotly.graph_objs as go
 #==============================================================================
 
-def TimeSeries(df, errors = False):
+def TimeSeries(df, variables, combined = False):
     """
         Create x and y axes for a simple time series plot. With possble errors
         Function IN:
@@ -22,41 +23,39 @@ def TimeSeries(df, errors = False):
                 Description of what the fuction returns if any
     """
 
-    variable_chosen = 'ch4 (1e-9)'
-    
-    # Do the preprocessing here. Any resampling etc.
-    chosen_preprocess = ['dailymean']
+    vars_dictionary = {}
+    if combined:
+        for n, var in enumerate(variables):
+            vars_dictionary['var_'+str(n+1)] = var
 
-    # If there are any chosen process to maniuplate data
-    if chosen_preprocess:
-        # Loop through the processes
-        for process in chosen_preprocess:
-            # IF statements determaning what to do
-            if process == 'dailymean':
-                # Create a daily mean for the plot
-                daily_mean = df[variable_chosen].resample('D')
+        plot_list = []
 
+        for k in vars_dictionary.keys():
+            plot_list.append(go.Scatter(
+                x = df[vars_dictionary[k]].index,
+                y = df[vars_dictionary[k]],
+                mode = 'markers')
+                )
 
-    final_plot_option = daily_mean.mean()
+    else:
 
+        plot_list = [go.Scatter(
+            x = df[variables].index,
+            y = df[variables],
+            mode = 'markers'
+            )]
 
-    xdata = final_plot_option.index
-    ydata = final_plot_option
-
-    figure = dcc.Graph(
+    figure = [
+        # html.Div([dcc.RadioItems(
+        # id='resampling',
+        # options=[{'label': i, 'value': i} for i in ['Daily', 'Weekly','Monthly']],
+        # value='Daily',
+        # labelStyle={'display': 'inline-block'}
+        # )]),
+        dcc.Graph(
         id='main-graph',
         figure={
-            'data': [{
-                'name': 'Some name',
-                'mode': 'line',
-                'line': {
-                    'color': 'rgb(0, 0, 0)',
-                    'opacity': 1
-                },
-                'type': 'scatter',
-                'x': xdata,
-                'y': ydata
-            }],
+            'data': plot_list,
             'layout': {
                 'autosize': True,
                 'scene': {
@@ -74,7 +73,9 @@ def TimeSeries(df, errors = False):
                 }
             }
         }
-    )
+    )]
+
+
 
     return figure
 
