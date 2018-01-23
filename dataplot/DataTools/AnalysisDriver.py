@@ -68,8 +68,8 @@ def GetData(sites):
 
     return df
 
-def MainDriver(tool_type = 'TimeSeries', sites = ['Edinburgh'],
-    variables_chosen = [], vars_combined = False, resampling = None):
+def MainDriver(app,tool_type = 'TimeSeries', sites = ['Edinburgh'],
+    variables_chosen = [], vars_combined = False):
     """
         This function will send off for types of analysis to be performed
         from a chosen list.
@@ -85,21 +85,21 @@ def MainDriver(tool_type = 'TimeSeries', sites = ['Edinburgh'],
     df = GetData(sites)
 
 
-    if resampling:
-        # Resample by the capital letter of the option given
-        # ie 'D' from 'Daily'
-        df = df.resample(resampling[0]).apply('mean')
+    # if resampling:
+    #     # Resample by the capital letter of the option given
+    #     # ie 'D' from 'Daily'
+    #     df = df.resample(resampling[0]).apply('mean')
 
     if vars_combined:
         ##  Plot the variables together
         if tool_type == 'TimeSeries':
-            figure = tool_dictionary[tool_type].TimeSeries(df, variables_chosen, combined = True)
+            return tool_dictionary[tool_type].TimeSeries(app,df, variables_chosen, combined = True)
 
-        if tool_type == 'Correlation':
-            figure = tool_dictionary[tool_type].Correlation(df, variables_chosen)
-
-        if tool_type == 'Histogram':
-            figure = tool_dictionary[tool_type].Histogram(df,variables_chosen,combined = True)
+        # if tool_type == 'Correlation':
+        #     figure = tool_dictionary[tool_type].Correlation(df, variables_chosen)
+        #
+        # if tool_type == 'Histogram':
+        #     figure = tool_dictionary[tool_type].Histogram(df,variables_chosen,combined = True)
 
     else:
         variables_chosen = variables_chosen[0]

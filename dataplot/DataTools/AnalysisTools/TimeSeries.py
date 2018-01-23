@@ -10,19 +10,44 @@ import dash_html_components as html
 import plotly.graph_objs as go
 #==============================================================================
 
-def TimeSeries(df, variables, combined = False):
-    """
-        Create x and y axes for a simple time series plot. With possble errors
-        Function IN:
-            df (REQUIRED, PD.DATAFRAME):
-                A pandas dataframe containing the data to be processed
-            errors (OPTIONAL, BOOLEAN):
-                Whether there are errors to be processed and included in the plots
-        Fucntion OUT:
-            argout:
-                Description of what the fuction returns if any
-    """
+# def TimeSeries(df=None, variables=None, combined = False):
+# """
+#     Create x and y axes for a simple time series plot. With possble errors
+#     Function IN:
+#         df (REQUIRED, PD.DATAFRAME):
+#             A pandas dataframe containing the data to be processed
+#         errors (OPTIONAL, BOOLEAN):
+#             Whether there are errors to be processed and included in the plots
+#     Fucntion OUT:
+#         argout:
+#             Description of what the fuction returns if any
+# """
+# def app_time():
+#     app = dash.Dash()
+#
+#     app.config.suppress_callback_exceptions = True
 
+page_layout = html.Div([
+    html.Div([dcc.RadioItems(
+            id='resampling',
+            options=[{'label': i, 'value': i} for i in ['Daily', 'Weekly','Monthly']],
+            value='Daily',
+            labelStyle={'display': 'inline-block'}
+        )]),
+    html.Div(id = 'graph')
+    ])
+
+@app.callback(
+    dash.dependencies.Output('graph', 'children'),
+    [dash.dependencies.Input('resampling','value'),
+    ])
+def display_plot(value):
+    from dataplot.DataTools.AnalysisDriver import GetData
+    df = GetData(['Edinburgh'])
+    variables = ['Ozone', 'Nitric oxide']
+    combined = True
+
+    df = df.resample(value[0]).apply('mean')
     vars_dictionary = {}
     if combined:
         for n, var in enumerate(variables):
@@ -45,46 +70,33 @@ def TimeSeries(df, variables, combined = False):
             mode = 'markers'
             )]
 
-    figure = [
-        # html.Div([dcc.RadioItems(
-        # id='resampling',
-        # options=[{'label': i, 'value': i} for i in ['Daily', 'Weekly','Monthly']],
-        # value='Daily',
-        # labelStyle={'display': 'inline-block'}
-        # )]),
-        dcc.Graph(
-        id='main-graph',
-        figure={
-            'data': plot_list,
-            'layout': {
-                'autosize': True,
-                'scene': {
-                    'bgcolor': 'rgb(255, 255, 255)',
-                    'xaxis': {
-                        'titlefont': {'color': 'rgb(0, 0, 0)'},
-                        'title': 'X-AXIS',
-                        'color': 'rgb(0, 0, 0)'
-                    },
-                    'yaxis': {
-                        'titlefont': {'color': 'rgb(0, 0, 0)'},
-                        'title': 'Y-AXIS',
-                        'color': 'rgb(0, 0, 0)'
-                    }
+    plot_holder = dcc.Graph(
+    id='main-graph',
+    figure={
+        'data': plot_list,
+        'layout': {
+            'autosize': True,
+            'scene': {
+                'bgcolor': 'rgb(255, 255, 255)',
+                'xaxis': {
+                    'titlefont': {'color': 'rgb(0, 0, 0)'},
+                    'title': 'X-AXIS',
+                    'color': 'rgb(0, 0, 0)'
+                },
+                'yaxis': {
+                    'titlefont': {'color': 'rgb(0, 0, 0)'},
+                    'title': 'Y-AXIS',
+                    'color': 'rgb(0, 0, 0)'
                 }
             }
         }
-    )]
+    })
 
+    return plot_holder
 
+    # return app
+    # return page_layout
 
-    return figure
-
-if __name__ == '__main__':
-    # If the module needs testing as a stand alone, use this to set the
-    # parameters
-    filename  = 'RawData/Heathfield' \
-                    + 'GAUGE-CRDS_HFD_20130101_ch4-100m.nc'
-    TimeSeries(filename)
 ## ============================================================================
 ## END OF PROGAM
 ## ============================================================================

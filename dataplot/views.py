@@ -4,10 +4,31 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import SiteSelector, VariableChoices, VarCombine
 from .models import SelectedSite
 from UKAsite.format_tools import PrettyWordList
-from dataplot.dash_driver import dispatcher
+# from dataplot.dash_driver import dispatcher
 import random,string
 
 # Create your views here.
+
+from .server import server
+
+def dispatcher(request):
+    '''
+    Main function
+    @param request: Request object
+    '''
+
+    params = {
+        'data': request.body,
+        'method': request.method,
+        'content_type': request.content_type
+    }
+    with server.test_request_context(request.path, **params):
+        server.preprocess_request()
+        try:
+            response = server.full_dispatch_request()
+        except Exception as e:
+            response = server.make_response(server.handle_exception(e))
+        return response.get_data()
 
 # Create a simple view for the homepage
 def homepage(request):
@@ -32,18 +53,22 @@ def analysis(request):
             request.session['combine'] = request.POST.getlist('Var_Combine')
             request.session['sites'] = sites
 
+            # print(request.session['active_pages'])
+            # if request.get_full_path()[:5] == '/dash':
+            #     if request.get_full_path() not in request.session['active_pages']:
+            #         print("waaaa")
+            # print(request.session['active_pages'])
+
             ### Create a dictionary of pathnames and tool types.
             # Need to sort out inputs and adding the list of tools.
             # Need to sort out multiple iterations of the same plot
-            stnd_tools = ['TimeSeries', 'Correlation', 'Histogram']
+            stnd_tools = ['TimeSeries', 'Histogram'] #, 'Correlation']
             plot_paths = {}
             for tool in stnd_tools:
                 random_path = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
                 plot_paths['/dash-'+random_path] = tool
 
             request.session['plot_paths'] = plot_paths
-
-            dispatcher(request)
 
             # Have a list of the plots to be sent to the webpage
             plots = plot_paths.keys()
@@ -80,5 +105,4 @@ def dash(request, **kwargs):
 
 @csrf_exempt
 def dash_ajax(request):
-    ''' '''
     return HttpResponse(dispatcher(request), content_type='application/json')
