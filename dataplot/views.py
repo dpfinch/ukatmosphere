@@ -35,7 +35,6 @@ def dispatcher(request):
 def homepage(request):
     return render(request, 'dataplot/homepage.html')
 
-
 def analysis(request):
     if request.method == 'POST':
         # sites = SiteSelector(request.POST)
