@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from dash import Dash
 
 # should start and end with a '/'
@@ -13,3 +13,5 @@ app = Dash(
 )
 
 app.config['suppress_callback_exceptions'] = True
+
+# app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})

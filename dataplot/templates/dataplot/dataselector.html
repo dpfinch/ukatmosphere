@@ -10,20 +10,21 @@
 </table> -->
 
 
-  <div class = "data_selector">
+  <!-- <div class = "data_selector"> -->
 
     <h1> Select a site: </h1>
-      <form method = "POST" class = "data_form">{% csrf_token %}
-      {{ siteform }}
-
-      <button type="submit" id = "site_button" class="save btn btn-default">Go</button>
+      <!-- <form method = "POST" class = "data_form">{% csrf_token %}
+      {{ siteform }} -->
+      <!-- <iframe width="900" height="800" frameborder="0" scrolling="no" src={{ siteform }}></iframe> -->
+      <iframe width="100%" height="100%" frameborder="0" src={{ siteform }}></iframe>
+      <!-- <button type="submit" id = "site_button" class="save btn btn-default">Go</button>
       {% if site_chosen == True %}
       {{ variableform }}
       {{ combineform }}
       <button type="submit" id = "submit_button" class="save btn btn-default">Submit</button>
       {% endif %}
-    </form>
-  </div>
+    </form> -->
+  <!-- </div>
 
   <div class = "plot_page">
     {% if graph_preset == False %}
@@ -39,6 +40,6 @@
     <iframe width="900" height="800" frameborder="0" scrolling="no" src={{ plot }}></iframe>
     {% endfor %}
      {% endif %}
-  </div>
+  </div> -->
 
 {% endblock %}

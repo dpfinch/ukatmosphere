@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+
 from .forms import SiteSelector, VariableChoices, VarCombine
 from .models import SelectedSite
 from UKAsite.format_tools import PrettyWordList
@@ -33,6 +34,7 @@ def dispatcher(request):
 # Create a simple view for the homepage
 def homepage(request):
     return render(request, 'dataplot/homepage.html')
+
 
 def analysis(request):
     if request.method == 'POST':
@@ -68,10 +70,12 @@ def analysis(request):
                 random_path = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
                 plot_paths['/dash-'+random_path] = tool
 
+
+            plots = ['/dataplot/fig1', '/dataplot/fig2']
             request.session['plot_paths'] = plot_paths
 
             # Have a list of the plots to be sent to the webpage
-            plots = plot_paths.keys()
+            # plots = plot_paths.keys()
 
             return render(request, 'dataplot/dataselector.html', {'siteform':siteform, 'plots':plots, 'graph_preset':True, 'sites':sites,
                 'variableform':variableform, 'combineform':combineform, 'site_chosen': True,
@@ -91,9 +95,10 @@ def analysis(request):
 
     else:
         siteform = SiteSelector()
-
-        return render(request, 'dataplot/dataselector.html', {'siteform': siteform,
-         'graph_preset': False, 'site_chosen': False})
+        siteform = '/dataplot/main_page'
+        plots = ['/dataplot/TimeSeries', '/dataplot/fig2']
+        return render(request, 'dataplot/dataselector.html', {'siteform': siteform,})
+        # 'plots':plots,'graph_preset': True, 'site_chosen': False, 'sites':['Edinburgh']})
 
 def site_choice(request):
     site = request.session['Site']

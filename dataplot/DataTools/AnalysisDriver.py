@@ -55,6 +55,7 @@ def GetData(sites):
 
     # Get dataframe from LoadData.FromCSV. Leaving the input blank will get
     # the Heathfield data.
+
     if 'Heathfield' in sites:
         df = LoadData.FromCSV()
         df = TidyData.DateClean_Heathfeild(df)
@@ -65,8 +66,8 @@ def GetData(sites):
 
     # Use the DateClean function to make the date into a datetime format
 
-
-    return df
+    # Drop last line as this is usually bogus data
+    return df[:-1]
 
 def MainDriver(app,tool_type = 'TimeSeries', sites = ['Edinburgh'],
     variables_chosen = [], vars_combined = False):
