@@ -9,32 +9,38 @@ from dash.dependencies import Output, Input
 def main_page():
     page_layout = html.Div(children =
     ### The first items are for the common attributes (ie site)
-    [dcc.RadioItems(
+    [html.H3('Pick a Location: '),
+    dcc.RadioItems(
         id = 'site_choice',
         options = [{'label': i, 'value': i} for i in ['Edinburgh', 'Heathfield']],
         value = 'Edinburgh'
     ),
     html.Br(),
 
+    html.H3('Choose a variable: '),
     dcc.Dropdown(id = 'variable_options',
     # multi = True,
     placeholder = 'Select variables'),
     html.Br(),
 
+    html.H3('(Ignore this bit...)'),
     dcc.RadioItems(id = 'combine_choice',
     options = [{'label': i, 'value': i} for i in ['Combine', 'Seperate']],
     value = 'Combine'),
     html.Br(),
 
+    html.H3('Choose how to resample the data: '),
     # Resample the data
     dcc.RadioItems(id = 'DataResample',
         options = [{'label': i, 'value': i} for i in ['Raw','Daily', 'Weekly','Monthly']],
         value = 'Daily'),
     html.Br(),
 
+    html.H3('Select a date range: '),
     dcc.RangeSlider( id = 'date-slider', min = 0),# updatemode = 'drag' ),
     html.Br(),
 
+    html.H3('Current date seletion: '),
     html.Div( id = 'date-choice'),
     html.Hr(),
     ### Each placeholder for plots and their individual controls go below
