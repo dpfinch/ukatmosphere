@@ -100,10 +100,10 @@ def print_date_choices(site_value, resample_value, date_values):
     if resample_rate != 'R':
         site_df = site_df.resample(resample_rate).apply('mean')
 
-    begin_date = str(site_df.index[date_values[0] -1])
-    end_date = str(site_df.index[date_values[1] - 1])
+    begin_date = str(site_df.index[date_values[0] -1].date())
+    end_date = str(site_df.index[date_values[1] - 1].date())
 
-    out_string = "Date range: %s -> %s " % (begin_date, end_date)
+    out_string = "Date range: %s to %s " % (begin_date, end_date)
 
     return out_string
 ## ===================================================================
@@ -128,6 +128,8 @@ def rolling_mean_options(value):
         rmean_options = [{'label': i, 'value': i} for i in ['Monthly Rolling Mean']]
 
     return rmean_options
+
+
 ### Callback for the TimeSeries plot
 @app.callback(Output('TimeSeries', 'children'),
     [Input('variable_options','value'),
@@ -135,16 +137,21 @@ def rolling_mean_options(value):
     Input('combine_choice','value'),
     Input('DataResample', 'value'),
     Input('date-slider', 'value'),
+    Input('TimeSeriesTitle','value'),
+    Input('TimeSeriesXTitle', 'value'),
+    Input('TimeSeriesYTitle', 'value'),
     Input('TimeSeriesRollingMean', 'values')
     ])
 def change_timeseries(variable_options,site_choice, combine_choice, DataResample,
-    date_range, rollingMean):
-
+    date_range, title, xtitle, ytitle, rollingMean):
+    
     df = all_df[site_choice]
 
     from dataplot.DataTools.AnalysisTools import TimeSeries
-    return TimeSeries.TimeSeries(df,variable_options,site_choice,
-        combine_choice, DataResample, date_range, rollingMean)
+    return TimeSeries.TimeSeries(df,variable_options = variable_options,
+        site_choice = site_choice, combine_choice = combine_choice,
+        DataResample = DataResample, date_range = date_range, title = title,
+        rollingMean = rollingMean, xtitle = xtitle, ytitle = ytitle )
 
 # ### *********** HISTOGRAM PLOT *******************
 # ### Callback for the Histogram interaction
@@ -156,14 +163,20 @@ def change_timeseries(variable_options,site_choice, combine_choice, DataResample
     Input('combine_choice','value'),
     Input('DataResample', 'value'),
     Input('date-slider', 'value'),
+    Input('HistogramTitle', 'value'),
+    Input('HistogramXTitle', 'value'),
+    Input('HistogramBins','value'),
     ])
 def change_histogram(variable_options,site_choice, combine_choice, DataResample,
-    date_range):
+    date_range, title, xtitle, histbins):
     df = all_df[site_choice]
 
+
     from dataplot.DataTools.AnalysisTools import Histogram
-    return Histogram.Histogram(df,variable_options,site_choice,
-        combine_choice, DataResample, date_range)
+    return Histogram.Histogram(df,variable_options = variable_options,
+    site_choice = site_choice, combine_choice = combine_choice,
+    DataResample = DataResample, date_range = date_range, histbins = histbins,
+    title = title, xtitle = xtitle)
 
 ### *********** HOURLY BOXPLOT *******************
 ### Callback for the Hourly boxplot interaction

@@ -9,6 +9,5 @@ from . import callbacks
 
 app.layout = html.Div(children=[
     dcc.Location(id='url', refresh=False),
-    html.Br(),
     html.Div(id='content')
 ])

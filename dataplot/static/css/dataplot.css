@@ -1,3 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Barlow|Tinos|Roboto');
+/*
+**************************************************************************
+                       UKAtmosphere CSS style sheet
+This holds the styling for the ukatmosphere.org website. Including the Dash
+component.
+*************************************************************************
+*/
+
+/* Table of contents
+––––––––––––––––––––––––––––––––––––––––––––––––––
+- Grid
+- Base Styles
+- Typography
+- Links
+- Buttons
+- Forms
+- Lists
+- Code
+- Tables
+- Spacing
+- Utilities
+- Clearing
+- Media Queries
+*/
+
+/*
+  All page styles
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
+
+
+
 h1 a {
     color: #1D5F75;
     font-family: 'Barlow';
@@ -7,9 +40,11 @@ body {
     padding-left: 0px;
     background-color: white;
     height: 100%;
+    margin: 0px;
+    font-family: 'Barlow';
 }
 
-h1, h2, h3, h4, p {
+h1, h2, h3, h4 {
     font-family: 'Barlow';
 }
 
@@ -21,50 +56,70 @@ a:hover{
   text-decoration: none;
 }
 
+/*
+  Header styles
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
 .page-header{
-  display: inline-flex;
-  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
   background-color: #000a1a;
-  margin:0;
-  height: 115px;
+  margin: 0px;
+  height: 110px;
   width: 100%;
-  padding: 1px 1px 1px 45px;
-  vertical-align: middle;
+  /*padding: 1px 1px 1px 45px;*/
+  /*vertical-align: middle;*/
   /*border: 2px solid red;*/
 
 }
 
-.logo-header{
-  display: inline-block;
+#home-logo{
+  display: block;
   position: absolute;
-  top: 10%;
+  /*margin-top: 8px;*/
   height: 90px;
   width: 90px;
+  content: url('/static/cloud_analysis_logo.png');
   /*border: 2px solid white;*/
 }
 
-.inner-header{
+#home-logo-holder{
+  display: inline-block;
+  height: 90px;
+  width: 90px;
+  margin-left: 20px;
+  /*border: 2px solid white;*/
+}
+
+#page-header-holder{
   display: inline-block;
   position: absolute;
-  left:145px;
-  padding-left: 10px;
-  /*border: 2px solid red;*/
+  margin-left: 140px;
+  /*border: 2px solid white;*/
+
 }
 
-.page-text h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
-    color: #FCFCFC;
-    font-size: 38pt;
-    text-decoration: none;
-    /*border: 1px solid black;*/
+#page-header-text{
+  color: #FCFCFC;
+  text-decoration: none;
+  font-family: 'Barlow';
+  font-size: 38pt;
 }
 
+
+/*
+  Home page styles
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
 .main_page{
   width:100%;
   /*border: 2px solid green;*/
   margin: 0;
   padding: 0;
   /*overflow: hidden;*/
-  padding-top: 115px;
+  /*padding-top: 115px;*/
 }
 
 .home_page{
@@ -105,6 +160,72 @@ a:hover{
   /*font-family: 'Tinos';*/
 }
 
+/*
+  Main data page styles
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
+
+.page-body{
+  padding: 20px;
+}
+
+/*
+  Data selection styles
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
+
+.DataSelectionArea{
+  padding: 50px;
+}
+
+#date-slider{
+  font-size: 10pt;
+}
+
+#date-choice{
+  margin-top: 30px;
+  font-size: 15pt;
+}
+
+/*
+  Plot styles
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
+
+.plot_holder{
+  display: flex;
+}
+
+.main_plot{
+  display: inline-block;
+  width: 70%;
+}
+
+.plot_tools{
+  display: inline-block;
+  flex: 1;
+  width: 25%;
+}
+/*TimeSeries*/
+/*#TimeSeriesHolder{
+  display: flex;
+}
+
+#TimeSeries{
+  display: inline-block;
+  width: 70%;
+}
+
+#TimeSeriesTools{
+  display: inline-block;
+  flex: 1;
+  width: 25%;
+}*/
+
+/*
+  Outdated styles for pages no longer in use
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
 .data_selector{
   float: left;
   /*display: inline-block;*/
@@ -155,11 +276,6 @@ a:hover{
 #windrose_plot{
   /*border: 2px solid red;*/
   width: 700px;
-}
-
-iframe{
-  width: 700;
-  height: 600;
 }
 
 .footer-container{

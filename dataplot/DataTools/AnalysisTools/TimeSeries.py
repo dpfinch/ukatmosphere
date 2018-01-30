@@ -15,66 +15,83 @@ import plotly.graph_objs as go
     Info about TimeSeries will go here
 '''
 
-def TimeSeries(df,variable_options,site_choice,
-        combine_choice, DataResample, date_range, rollingMean):
+# def TimeSeries(df,variable_options,site_choice,
+#         combine_choice, DataResample, date_range, title, rollingMean):
+
+def TimeSeries(df, **kwargs):
+    # Keywords are:
+        # variable_options
+        # site_choice
+        # combine_choice
+        # DataResample
+        # date_range
+        # title
+        # rollingMean
+
+    variable_dictionary = {}
+    variable_options = kwargs['variable_options']
 
     if type(variable_options) == str:
-        df_col = df[variable_options]
+        variable_dictionary[variable_options] = df[variable_options]
     else:
-        df_col = df[variable_options[0]]
-    resample_rate = DataResample[0]
+        for var in variable_options:
+            variable_dictionary[var] = df[var]
 
-    if resample_rate == 'R':
-        resampled_df = df_col
-    else:
-        resampled_df = df_col.resample(resample_rate).apply('mean')
+    all_plots = []
 
-    # Apply time range
-    resampled_df = resampled_df[date_range[0]:date_range[1]]
+    for var in variable_dictionary.keys():
+        df_col = variable_dictionary[var]
 
-    x = resampled_df.index
-    y = resampled_df
-    all_plots = [go.Scatter(
-        x = x,
-        y = y,
-        mode = 'markers'
-    )]
-
-    if rollingMean:
-        if rollingMean == '8-Hourly Rolling Mean':
-            roll_num = 8
+        resample_rate = kwargs['DataResample'][0]
+        if resample_rate == 'R':
+            resampled_df = df_col
         else:
-            # This works out because every other option the data is resampled to
-            # the value anyway (ie daily sampled)
-            roll_num = 1
-        rolling = resampled_df.rolling(roll_num, min_periods = int(roll_num*0.75))
+            resampled_df = df_col.resample(resample_rate).apply('mean')
 
-        rollingMean = None
+        # Apply time range
+        date_range = kwargs['date_range']
+        resampled_df = resampled_df[date_range[0]:date_range[1]]
 
+        x = resampled_df.index
+        y = resampled_df
         all_plots.append(go.Scatter(
-            y = rolling.mean(),
-            x = rolling.mean().index
-            ))
+            x = x,
+            y = y,
+            mode = 'markers',
+            name = var
+        ))
+
+        rollingMean = kwargs['rollingMean']
+        if rollingMean:
+            if rollingMean == '8-Hourly Rolling Mean':
+                roll_num = 8
+            else:
+                # This works out because every other option the data is resampled to
+                # the value anyway (ie daily sampled)
+                roll_num = 1
+            rolling = resampled_df.rolling(roll_num, min_periods = int(roll_num*0.75))
+
+            rollingMean = None
+
+            all_plots.append(go.Scatter(
+                y = rolling.mean(),
+                x = rolling.mean().index
+                ))
+
+    xtitle = kwargs['xtitle']
+    ytitle = kwargs['ytitle']
+    plot_title = kwargs['title']
+
+    plot_layout = {'title':plot_title,
+        'xaxis' : {'title':xtitle},
+        'yaxis' : {'title':ytitle},
+        }
+
     plot = dcc.Graph(
         id='TimeSeriesPlot',
         figure={
             'data': all_plots,
-            'layout': {
-                'autosize': True,
-                'scene': {
-                    'bgcolor': 'rgb(255, 255, 255)',
-                    'xaxis': {
-                        'titlefont': {'color': 'rgb(0, 0, 0)'},
-                        'title': 'X-AXIS',
-                        'color': 'rgb(0, 0, 0)'
-                    },
-                    'yaxis': {
-                        'titlefont': {'color': 'rgb(0, 0, 0)'},
-                        'title': 'Y-AXIS',
-                        'color': 'rgb(0, 0, 0)'
-                    }
-                }
-            }
+            'layout': plot_layout
         }
     )
     return plot
