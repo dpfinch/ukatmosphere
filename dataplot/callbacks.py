@@ -1,6 +1,5 @@
 from .server import app
 from random import randint
-from .test_random_gen import random_numbers
 from dash.dependencies import Output, Input
 import dash_core_components as dcc
 import dash_html_components as html
@@ -144,7 +143,7 @@ def rolling_mean_options(value):
     ])
 def change_timeseries(variable_options,site_choice, combine_choice, DataResample,
     date_range, title, xtitle, ytitle, rollingMean):
-    
+
     df = all_df[site_choice]
 
     from dataplot.DataTools.AnalysisTools import TimeSeries
@@ -178,6 +177,43 @@ def change_histogram(variable_options,site_choice, combine_choice, DataResample,
     DataResample = DataResample, date_range = date_range, histbins = histbins,
     title = title, xtitle = xtitle)
 
+# ### *********** CORRELATION PLOT *******************
+# ### Callback for the Correlation interaction
+#
+@app.callback(Output('correlation_colourby', 'options'),
+    [Input('site_choice','value')])
+def get_colourbychoices(value):
+    variable_list = AnalysisDriver.GetSiteVariables([value])
+    var_options = [{'label': i, 'value': i} for i in variable_list]
+    return var_options
+
+
+# ### Callback for the Correlation plot
+@app.callback(Output('Correlation', 'children'),
+    [Input('variable_options','value'),
+    Input('site_choice', 'value'),
+    Input('combine_choice','value'),
+    Input('DataResample', 'value'),
+    Input('date-slider', 'value'),
+    Input('CorrelationTitle', 'value'),
+    Input('CorrelationXTitle', 'value'),
+    Input('CorrelationYTitle','value'),
+    Input('CorrelationSwapButton', 'n_clicks'),
+    Input('correlation_colourby','value'),
+    ])
+def change_correlation(variable_options,site_choice, combine_choice, DataResample,
+    date_range, title, xtitle, ytitle, swap_button, colourby):
+    df = all_df[site_choice]
+
+
+    from dataplot.DataTools.AnalysisTools import Correlation
+    return Correlation.Correlation(df,variable_options = variable_options,
+    site_choice = site_choice, combine_choice = combine_choice,
+    DataResample = DataResample, date_range = date_range, title = title,
+    xtitle = xtitle, ytitle = ytitle, swap_button = swap_button,
+    colourby = colourby)
+
+
 ### *********** HOURLY BOXPLOT *******************
 ### Callback for the Hourly boxplot interaction
 
@@ -188,14 +224,19 @@ def change_histogram(variable_options,site_choice, combine_choice, DataResample,
     Input('combine_choice','value'),
     Input('DataResample', 'value'),
     Input('date-slider', 'value'),
+    Input('HourlyBoxTitle', 'value'),
+    Input('HourlyBoxYTitle', 'value'),
+    Input('HourlyBoxMean', 'values')
     ])
 def change_hourlybox(variable_options,site_choice, combine_choice, DataResample,
-    date_range):
+    date_range, title, ytitle, showmean):
     df = all_df[site_choice]
 
     from dataplot.DataTools.AnalysisTools import HourlyBoxplots
-    return HourlyBoxplots.HourlyBoxplots(df,variable_options,site_choice,
-        combine_choice, DataResample, date_range)
+    return HourlyBoxplots.HourlyBoxplots(df,variable_options = variable_options,
+    site_choice = site_choice, combine_choice = combine_choice,
+    DataResample = DataResample, date_range = date_range, title = title,
+    ytitle = ytitle, showmean = showmean)
 
 ### *********** WEEKLY BOXPLOT *******************
 ### Callback for the Weekly boxplot interaction
@@ -207,14 +248,19 @@ def change_hourlybox(variable_options,site_choice, combine_choice, DataResample,
     Input('combine_choice','value'),
     Input('DataResample', 'value'),
     Input('date-slider', 'value'),
+    Input('WeeklyBoxTitle', 'value'),
+    Input('WeeklyBoxYTitle', 'value'),
+    Input('WeeklyBoxMean', 'values')
     ])
 def change_weeklybox(variable_options,site_choice, combine_choice, DataResample,
-    date_range):
+    date_range, title, ytitle, showmean):
     df = all_df[site_choice]
 
     from dataplot.DataTools.AnalysisTools import WeeklyBoxplots
-    return WeeklyBoxplots.WeeklyBoxplots(df,variable_options,site_choice,
-        combine_choice, DataResample, date_range)
+    return WeeklyBoxplots.WeeklyBoxplots(df,variable_options = variable_options,
+    site_choice = site_choice, combine_choice = combine_choice,
+    DataResample = DataResample, date_range = date_range, title = title,
+    ytitle = ytitle, showmean = showmean)
 
 ### *********** MONTHLY BOXPLOT *******************
 ### Callback for the Monthyl boxplot interaction

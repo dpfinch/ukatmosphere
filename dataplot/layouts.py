@@ -53,7 +53,7 @@ def main_page():
     html.Hr(),
 
     ### Each placeholder for plots and their individual controls go below
-    ### TimeSeries
+    ### **************************  TimeSeries  ***************************
     html.Div(id = 'TimeSeriesHolder', className = 'plot_holder', children = [
         html.Div(id = 'TimeSeries', className = 'main_plot'),
         html.Div(id = 'TimeSeriesTools', className = 'plot_tools', children = [
@@ -81,7 +81,7 @@ def main_page():
         ]
     ),
     html.Hr(),
-    ### Histogram
+    ### *********************  Histogram  *********************************
     html.Div(id = 'HistogramHolder', className = 'plot_holder', children = [
         html.Div(id = 'Histogram', className = 'main_plot'),
         html.Div(id = 'HistogramTools', className = 'plot_tools', children = [
@@ -105,13 +105,94 @@ def main_page():
     ]),
     html.Hr(),
 
-    ### Hourly boxplots
-    html.Div(id = 'HourlyBoxplots'),
+    ### *********************  Correlation  *********************************
+    html.Div(id = 'CorrelationHolder', className = 'plot_holder', children = [
+        html.Div(id = 'Correlation', className = 'main_plot'),
+        html.Div(id = 'CorrelationTools', className = 'plot_tools', children = [
+            html.H3('Correlation Tools:'),
+            html.Br(),
+            html.Label('Plot Title'),
+            dcc.Input( id = 'CorrelationTitle',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+
+            html.Label('X Axis Label'),
+            dcc.Input( id = 'CorrelationXTitle',
+                placeholder = 'Enter X axis label',
+                value = ''),
+            html.Br(),
+
+            html.Label('Y Axis Label'),
+            dcc.Input( id = 'CorrelationYTitle',
+                placeholder = 'Enter Y axis label',
+                value = ''),
+            html.Br(),
+
+            html.Label('Swap Axes'),
+            html.Button('Swap X & Y', id = 'CorrelationSwapButton', n_clicks = 0),
+            html.Br(),
+
+            html.Label('Colour scatter by:'),
+            dcc.Dropdown(id = 'correlation_colourby',
+            placeholder = 'Select variable'),
+            #TODO Need to make a 'clear' option if user wants to get rid of colourbar
+            html.Br(),
+
+        ]),
+    ]),
+    html.Hr(),
+
+
+    ### *******************  Hourly boxplots  ***************************
+    html.Div(id = 'HourlyBoxHolder', className = 'plot_holder', children = [
+        html.Div(id = 'HourlyBoxplots', className = 'main_plot'),
+        html.Div(id = 'HourlyBoxTools', className = 'plot_tools', children = [
+            html.H3('Hourly Box Plot Tools:'),
+            html.Br(),
+            html.Label('Plot Title'),
+            dcc.Input( id = 'HourlyBoxTitle',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+
+            html.Label('Y Axis Label'),
+            dcc.Input( id = 'HourlyBoxYTitle',
+                placeholder = 'Enter Y axis label',
+                value = ''),
+            html.Br(),
+
+            dcc.Checklist(id = 'HourlyBoxMean',
+                options = [{'label': 'Show Mean', 'value': True}],
+                    values = [])
+        ]),
+    ]),
     html.Br(),
     html.Hr(),
 
-    ### Weekly boxplots
-    html.Div(id = 'WeeklyBoxplots'),
+    ### *******************  Weekly boxplots  ***************************
+    html.Div(id = 'WeeklyBoxHolder', className = 'plot_holder', children = [
+        html.Div(id = 'WeeklyBoxplots', className = 'main_plot'),
+        html.Div(id = 'WeeklyBoxTools', className = 'plot_tools', children = [
+            html.H3('Weekly Box Plot Tools:'),
+            html.Br(),
+            html.Label('Plot Title'),
+            dcc.Input( id = 'WeeklyBoxTitle',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+
+            html.Label('Y Axis Label'),
+            dcc.Input( id = 'WeeklyBoxYTitle',
+                placeholder = 'Enter Y axis label',
+                value = ''),
+            html.Br(),
+
+            dcc.Checklist(id = 'WeeklyBoxMean',
+                options = [{'label': 'Show Mean', 'value': True}],
+                    values = [])
+        ]),
+    ]),
     html.Br(),
     html.Hr(),
 
@@ -121,22 +202,6 @@ def main_page():
     # html.Hr(),
 
     ])])
-    return page_layout
-
-def TimeSeries():
-
-    page_layout = html.Div(children = [
-    html.Div(children = 'Time Series Plot'),
-    # dcc.Dropdown(
-    #     id='app-1-dropdown',
-    #     options=[
-    #         {'label': 'App 1 - {}'.format(i), 'value': i} for i in [
-    #             'NYC', 'MTL', 'LA'
-    #         ]
-    #     ]
-    # ),
-    html.Div(id = 'main-graph')])
-
     return page_layout
 
 

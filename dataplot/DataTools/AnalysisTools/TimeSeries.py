@@ -8,6 +8,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
+from dataplot.DataTools import ColourPicker
 #==============================================================================
 
 
@@ -28,6 +29,8 @@ def TimeSeries(df, **kwargs):
         # title
         # rollingMean
 
+    colours = ColourPicker.GetQualitative()
+
     variable_dictionary = {}
     variable_options = kwargs['variable_options']
 
@@ -39,7 +42,7 @@ def TimeSeries(df, **kwargs):
 
     all_plots = []
 
-    for var in variable_dictionary.keys():
+    for n,var in enumerate(variable_dictionary.keys()):
         df_col = variable_dictionary[var]
 
         resample_rate = kwargs['DataResample'][0]
@@ -52,12 +55,17 @@ def TimeSeries(df, **kwargs):
         date_range = kwargs['date_range']
         resampled_df = resampled_df[date_range[0]:date_range[1]]
 
+        # Colour choice
+        colour_choice = colours[n]
+
         x = resampled_df.index
         y = resampled_df
         all_plots.append(go.Scatter(
             x = x,
             y = y,
             mode = 'markers',
+            # marker = {'size': 5,
+            #     'color':colour_choice},
             name = var
         ))
 

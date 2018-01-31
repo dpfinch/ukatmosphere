@@ -13,6 +13,12 @@ gunicorn = "*"
 whitenoise = "*"
 requests = "*"
 dj_static = "*"
+pandas = "*"
+dash = "*"
+dash-renderer = "*"
+dash-core-components = "*"
+dash-html-components = "*"
+brewer2mpl = "*"
 
 [requires]
 

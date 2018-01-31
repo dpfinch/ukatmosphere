@@ -7,9 +7,8 @@ from . import layouts
 
 pages = (
     ('main_page', layouts.main_page),
-    ('TimeSeries', layouts.TimeSeries),
     # ('fig2', layouts.fig2),
-)
+    )
 
 routes = {f"{app.url_base_pathname}{path}": layout for path, layout in pages}
 
