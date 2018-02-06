@@ -62,6 +62,9 @@ def main_page():
     html.Button('Submit', id = 'site_choice_button'),
     html.Br(),
     html.Br(),
+
+    html.Div(id = 'user_criteria'),
+
     html.Hr(),
     ###  Create a div to place the dataframe while its being used but not
     ### viewable by the user. Make data Json - very slow when being read
@@ -248,6 +251,28 @@ def main_page():
     # html.Div(id = 'MonthlyBoxplots'),
     # html.Br(),
     # html.Hr(),
+
+    ### Date and Day heatmaps
+    html.Div( id = 'DateDayHeatmapHolder', className = 'plot_holder', children =[
+        html.Div(id = 'DateDayHeatmap', className = 'main_plot'),
+        html.Div(id = 'DateDayHeatmapTools', className = 'plot_tools', children = [
+        html.H3('Date & Day Heatmap Tools:'),
+            html.Br(),
+            html.Label('Plot Title'),
+            dcc.Input( id = 'DateDayHeatmapTitle',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+            # html.Label('Sample Type'),
+            # dcc.RadioItems( id = 'DateDayHeatmapSampleType',
+            #     options = [{'label': i, 'value': i} for i in ['Mean', 'Median', 'Maximum', 'Minimum']],
+            #     value = ''),
+            # html.Br(),
+        ])
+    ]),
+
+    html.Br(),
+    html.Hr(),
 
     ])])
     return page_layout

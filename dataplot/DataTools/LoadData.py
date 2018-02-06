@@ -86,7 +86,17 @@ def Get_AURN_data(site_names, years):
             else:
                 unit_name = 'unit.' + str(n)
 
-            column_name_change[v] = "%s   (%s)" % (v, df[unit_name][0])
+            # Need to find the unit of the variable -> make sure its not a 'nan'
+            var_unit_col = df[unit_name]
+            units_in_col = list(var_unit_col.unique())
+
+            for us in units_in_col:
+                if type(us) == str:
+                    var_unit = "(%s)" % us
+            if not var_unit in locals():
+                var_unit = ''
+
+            column_name_change[v] = "%s %s" % (v, var_unit)
 
         df.rename(columns = column_name_change, inplace = True)
 
@@ -161,6 +171,17 @@ def AURN_site_list(region, environment):
 
     final_site_list = env_sites['Site Name']
     return final_site_list
+
+def get_site_info(site_name):
+    filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
+    all_sites = pd.read_csv(filename)
+    site = all_sites.loc[all_sites['Site Name'] == site_name]
+
+    site_dict = {}
+    for c in all_sites.columns:
+        site_dict[c] = site[c].values[0]
+
+    return site_dict
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the
