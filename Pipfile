@@ -16,9 +16,13 @@ dj_static = "*"
 pandas = "*"
 dash = "*"
 dash-renderer = "*"
-dash-html-components = "*"
-dash-core-components = "*"
 plotly = "*"
+dash-core-components = "*"
+dash-html-components = "*"
+brewer2mpl = "*"
+redis = "*"
+django-redis-cache = "*"
+flask-caching = "*"
 
 [requires]
 

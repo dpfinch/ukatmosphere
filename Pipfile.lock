@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e4413f468346f355fd3f26f46147dd17fefc6f25cba98647e75cc1b5b746113b"
+            "sha256": "37b91f8586363e8da122c70a93b525a5eb49fec7e6544a25a5f58c2e85082357"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -9,9 +9,9 @@
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
-            "platform_release": "4.4.0-104-generic",
+            "platform_release": "4.4.0-112-generic",
             "platform_system": "Linux",
-            "platform_version": "#127-Ubuntu SMP Mon Dec 11 12:16:42 UTC 2017",
+            "platform_version": "#135-Ubuntu SMP Fri Jan 19 11:48:36 UTC 2018",
             "python_full_version": "3.6.3",
             "python_version": "3.6",
             "sys_platform": "linux"
@@ -28,6 +28,14 @@
         ]
     },
     "default": {
+        "brewer2mpl": {
+            "hashes": [
+                "sha256:f89a795efc810fdbec359902d388980711604cc32907445ba1bc45f699d3fe81",
+                "sha256:2e094d1bea766885aa77e4ed40cc718af6458a1d5e08cc87a5f453c6095b1b1c",
+                "sha256:7f013109a2351b91d507c1e79c4fcfb001bdd754f70767baa635f1e80ac16d6d"
+            ],
+            "version": "==1.4.1"
+        },
         "certifi": {
             "hashes": [
                 "sha256:14131608ad2fd56836d33a71ee60fa1c82bc9d2c8d98b7bdbc631fe1b3cd1296",
@@ -69,9 +77,9 @@
         },
         "dash-renderer": {
             "hashes": [
-                "sha256:26e62fb0b89f217271b95b1c5a4a35f47f1197879e846382b12a7d049820b390"
+                "sha256:55d2867e0ddf0912dcfca5613236f5e99ab8a1484511ec67f1ff93cc736601a4"
             ],
-            "version": "==0.11.2"
+            "version": "==0.11.3"
         },
         "decorator": {
             "hashes": [
@@ -95,10 +103,16 @@
         },
         "django": {
             "hashes": [
-                "sha256:52475f607c92035d4ac8fee284f56213065a4a6b25ed43f7e39df0e576e69e9f",
-                "sha256:d96b804be412a5125a594023ec524a2010a6ffa4d408e5482ab6ff3cb97ec12f"
+                "sha256:7c8ff92285406fb349e765e9ade685eec7271d6f5c3f918e495a74768b765c99",
+                "sha256:dc3b61d054f1bced64628c62025d480f655303aea9f408e5996c339a543b45f0"
             ],
-            "version": "==2.0.1"
+            "version": "==2.0.2"
+        },
+        "django-redis-cache": {
+            "hashes": [
+                "sha256:2b4e3510bbcaf3d331975717afd6f15a36fbaf7622504599d2727dc99f90c64d"
+            ],
+            "version": "==1.7.1"
         },
         "flask": {
             "hashes": [
@@ -106,6 +120,12 @@
                 "sha256:49f44461237b69ecd901cc7ce66feea0319b9158743dd27a2899962ab214dac1"
             ],
             "version": "==0.12.2"
+        },
+        "flask-caching": {
+            "hashes": [
+                "sha256:21236d2b4567deb9fc95e474a604602097189e834629c24f4d62937abc963636"
+            ],
+            "version": "==1.3.3"
         },
         "flask-compress": {
             "hashes": [
@@ -224,9 +244,9 @@
         },
         "plotly": {
             "hashes": [
-                "sha256:dadd2263f1c0449b248fd3742a077d9594935921a9597529be76d6a841237ab0"
+                "sha256:95e72273699108f215886ab961dbf0890904d39583be39eabcd0788bc7ccf695"
             ],
-            "version": "==2.2.3"
+            "version": "==2.3.0"
         },
         "psycopg2": {
             "hashes": [
@@ -284,6 +304,13 @@
                 "sha256:fae4cffc040921b8a2d60c6cf0b5d662c1190fe54d718271db4eb17d44a185b7"
             ],
             "version": "==2017.3"
+        },
+        "redis": {
+            "hashes": [
+                "sha256:8a1900a9f2a0a44ecf6e8b5eb3e967a9909dfed219ad66df094f27f7d6f330fb",
+                "sha256:a22ca993cea2962dbb588f9f30d0015ac4afcc45bee27d3978c0dbe9e97c6c0f"
+            ],
+            "version": "==2.10.6"
         },
         "requests": {
             "hashes": [

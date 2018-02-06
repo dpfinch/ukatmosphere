@@ -4,10 +4,9 @@
 #==============================================================================
 # Uses modules:
 # modulename
-import modulename
 #==============================================================================
 
-def FuncName(arg):
+def returnXY(df_column, **kwargs):
     """
         Description of function here
         Function IN:
@@ -18,15 +17,22 @@ def FuncName(arg):
             argout:
                 Description of what the fuction returns if any
     """
+    kwargs = kwargs['kwargs']
+    resample_rate = kwargs['DataResample'][0]
+    if resample_rate == 'R':
+        resampled_df = df_column
+    else:
+        resampled_df = df_column.resample(resample_rate).apply('mean')
 
-    pass
+    # Apply time range
+    date_range = kwargs['date_range']
+    resampled_df = resampled_df[date_range[0]:date_range[1]]
 
-if __name__ == '__main__':
-    # If the module needs testing as a stand alone, use this to set the
-    # parameters
-    filename  = 'RawData/Heathfield' \
-                    + 'GAUGE-CRDS_HFD_20130101_ch4-100m.nc'
-    FuncName(filename)
+    x = resampled_df.index
+    y = resampled_df
+
+    return x, y
+
 ## ============================================================================
-## END OF PROGRAM
+## END OF PROGAM
 ## ============================================================================

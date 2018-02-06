@@ -68,7 +68,6 @@ def main_page():
     html.Div(id = 'dataframe-holder', style = {'display': 'none'}),
 
     html.Label('Select a variable:'),
-
     dcc.Dropdown(id = 'variable_options',
     multi = True,
     placeholder = 'Select variables'),
@@ -80,7 +79,6 @@ def main_page():
     value = 'Combine'),
     html.Br(),
 
-    html.H3('Choose how to resample the data: '),
     # Resample the data
     html.Label('How do you want the data resampled?'),
     dcc.RadioItems(id = 'DataResample',
@@ -90,10 +88,8 @@ def main_page():
 
     html.Label('Select a date range of the data:'),
     dcc.RangeSlider( id = 'date-slider', min = 0, allowCross = False),# updatemode = 'drag' ),
-
     html.Br(),
 
-    html.H3('Current date seletion: '),
     html.Div( id = 'date-choice'),
     ]),
     html.Hr(),

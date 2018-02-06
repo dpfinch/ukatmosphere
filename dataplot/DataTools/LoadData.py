@@ -50,49 +50,117 @@ def FromCSV(filename = None, parameters = []):
     # Return the dataframe
     return df
 
+def Get_AURN_data(site_names, years):
 
-def Edinburgh_Data():
-    """
-        This will open the sample Edinburgh data we've currently got.
-        This is only a temporay measure before we know more about
-        data input.
-    """
+    filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
+    sites = pd.read_csv(filename)
+    site_code = sites['Site Code'].loc[sites['Site Name'] == site_names]
+    site_code = site_code.values[0]
 
-    filename = 'RawData/Edinburgh/edinburgh_st_leonards_2015_2017.csv'
+    all_dataframes = []
 
-    # Read straight into pandas data frame
-    # Skipping first four lines
-    # Needs datatype (dtype) as string since columns mix datatypes
-    skip_num_rows = 4
-    df =  pd.read_csv(filename, skiprows = int(skip_num_rows), dtype = str)
-    # Get all the column names
-    column_names = df.columns
-    # Loop through each column and repace 'No data' with NaNs
-    # - easier to process into numbers not strings
-    for column in column_names:
-        df[column].replace('No data', np.nan, inplace = True)
-        # In the time column replace the hour 24 with zero
-        # This is needed for pandas to convert to a datetime type
-        # This creates an error in the data as the value for 00:00:00 in then
-        # placed at the beginning of the day instead of the end. ie. It should
-        # changed to 00:00:00 and the date moved forward one day. This is
-        # recitifed later.
-        if column == 'Time':
-            df[column].replace('24:00:00', '00:00:00', inplace = True)
-        # Find if the column is a status column or date/time column, if it
-        # is then go to next iteration, if its not then turn that value
-        # from a string into a float
-        if column.split('.')[0] == 'Status':
-            continue
-        elif column in ['Date', 'Time']:
-            continue
-        else:
-            df[column] = df[column].astype(float)
+    if years[0] == years[1]:
+        year_range = range(int(years[0]), int(years[1]) +1)
+    else:
+        year_range = range(int(years[0]), int(years[1]) )
 
-    # Add a new column using both date and time into a datetime format
-    df['Date and Time'] = pd.to_datetime(df['Date'] + ' ' + df['Time'])
-    df['Date and Time'] = df['Date and Time'].apply(TidyData.add_day)
-    return df
+    for year in year_range:
+
+        url = "http://www.airquality.co.uk/archive/data_files/site_data/%s_%s.csv" % (site_code, year)
+
+        df = pd.read_csv(url, skiprows = 4, dtype = str)
+
+        # Get all the column names
+        column_names = df.columns
+
+        # Rename the columns with the units added in to the names
+        col_vars = []
+        for x in column_names:
+            if x.split('.')[0] not in ['Date', 'time', 'status','unit']:
+                col_vars.append(x)
+
+        column_name_change = {}
+        for n,v in enumerate(col_vars):
+            if n == 0 :
+                unit_name = 'unit'
+            else:
+                unit_name = 'unit.' + str(n)
+
+            column_name_change[v] = "%s   (%s)" % (v, df[unit_name][0])
+
+        df.rename(columns = column_name_change, inplace = True)
+
+        # Get all the new column names
+        column_names = df.columns
+
+        # Loop through each column and repace 'No data' with NaNs
+        # - easier to process into numbers not strings
+        for column in column_names:
+
+            df[column].replace('No data', np.nan, inplace = True)
+
+            # In the time column replace the hour 24 with zero
+            # This is needed for pandas to convert to a datetime type
+            # This creates an error in the data as the value for 00:00:00 in then
+            # placed at the beginning of the day instead of the end. ie. It should
+            # changed to 00:00:00 and the date moved forward one day. This is
+            # recitifed later.
+            if column == 'time':
+                df[column].replace('24:00', '00:00', inplace = True)
+            # Find if the column is a status column or date/time column, if it
+            # is then go to next iteration, if its not then turn that value
+            # from a string into a float
+            if column.split('.')[0] in ['status', 'unit']:
+                df.drop([column], axis = 1, inplace = True)
+                continue
+            elif column in ['Date', 'time']:
+                continue
+            else:
+                df[column] = df[column].astype(float)
+
+        # Add a new column using both date and time into a datetime format
+        df['Date and Time'] = pd.to_datetime(df['Date'] + ' ' + df['time'], dayfirst = True)
+        df['Date and Time'] = df['Date and Time'].apply(TidyData.add_day)
+        df.set_index('Date and Time', inplace = True)
+
+        all_dataframes.append(df)
+    final_df = pd.concat(all_dataframes)
+    return final_df
+
+def AURN_environment_types():
+    filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
+    sites = pd.read_csv(filename)
+    env_types = list(sites['Environment Type'].unique())
+    return env_types
+
+def AURN_regions():
+    filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
+    sites = pd.read_csv(filename)
+    region_types = list(sites['Government Region'].unique())
+    return region_types
+
+def AURN_site_list(region, environment):
+    filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
+    sites = pd.read_csv(filename)
+
+    # If one value is submitted it will be a string not a list. Make it a Lists
+    if type(region) == str:
+        region = [region]
+    if type(environment) == str:
+        environment = [environment]
+
+    if 'All' in region:
+        regioned_sites = sites
+    else:
+        regioned_sites = sites.loc[sites['Government Region'].isin(region)]
+
+    if 'All' in environment:
+        env_sites = regioned_sites
+    else:
+        env_sites = regioned_sites.loc[sites['Environment Type'].isin(environment)]
+
+    final_site_list = env_sites['Site Name']
+    return final_site_list
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the

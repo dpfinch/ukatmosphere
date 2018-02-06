@@ -33,7 +33,8 @@ def dispatcher(request):
 
 # Create a simple view for the homepage
 def homepage(request):
-    return render(request, 'dataplot/homepage.html')
+    return render(request, 'dataplot/under_construction.html')
+    # return render(request, 'dataplot/homepage.html')
 
 def analysis(request):
     if request.method == 'POST':

@@ -116,14 +116,13 @@ def MainDriver(app,tool_type = 'TimeSeries', sites = ['Edinburgh'],
 
     return figure
 
-def GetSiteVariables(sitename):
+def GetSiteVariables(df):
     """
         Get the variables availble for a given site.
         The sitename should be a list (eg. ['Edinburgh'])
     """
-    ignore_list = ['Date', 'Time', 'Date and Time', 'Status']
+    ignore_list = ['Date', 'Time', 'time', 'Date and Time', 'Status']
 
-    df = GetData(sitename)
     variable_list = []
     for names in df.columns:
         if names.split('.')[0] in ignore_list:

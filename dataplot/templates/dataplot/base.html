@@ -5,19 +5,22 @@
       <link rel="shortcut icon" type = "image/png" href = "/static/cloud_analysis_logo.png"/>
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-      <link href="https://fonts.googleapis.com/css?family=Barlow|Tinos" rel="stylesheet">
+      <!-- <link href="https://fonts.googleapis.com/css?family=Barlow|Tinos" rel="stylesheet"> -->
       <link rel="stylesheet" href="{% static 'css/dataplot.css' %}">
   </head>
 
   <body>
 
     <div class="page-header">
-      <div class="logo-header">
-        <a href="/"><img src = "/static/cloud_analysis_logo.png" height="100%"></a>
+
+      <div id="home-logo-holder">
+        <a id ="home-logo" href="/"></a>
       </div>
-      <div class = "inner-header">
-        <h1><a href="/">  UK Atmosphere</a></h1>
+
+      <div id = "page-header-holder">
+        <a id = "page-header-text" href="/"> UK Atmosphere </a>
       </div>
+
     </div>
 
     <div class = "main_page">
@@ -26,10 +29,10 @@
    </div>
   </body>
 
-  <!-- <footer>
+  <footer>
     <div class ="footer-container">
       <p> Some footer stuff <p>
     </div>
-  </footer> -->
+  </footer>
 
 </html>

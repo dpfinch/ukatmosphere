@@ -9,6 +9,10 @@ from dash.dependencies import Output, Input
 def main_page():
     page_layout = html.Div(id = 'full_page_container', children =
     ### The first items are for the common attributes (ie site)
+<<<<<<< HEAD
+    [html.H3('Pick a Location: '),
+    dcc.RadioItems(
+=======
     [
     html.Div(className = 'page-header', children = [
         html.Div(id = 'home-logo-holder', children = [html.A(id = 'home-logo', href="/")]),
@@ -39,6 +43,7 @@ def main_page():
 
     html.Label('Select a site:'),
     dcc.Dropdown(
+>>>>>>> development
         id = 'site_choice',
         placeholder = 'Select sites...'
     ),
@@ -59,6 +64,9 @@ def main_page():
     ### Have a submit button to load in the choices and then load the relevant
     ### data
 
+<<<<<<< HEAD
+    html.H3('Choose a variable: '),
+=======
     html.Button('Submit', id = 'site_choice_button'),
     html.Br(),
     html.Br(),
@@ -68,13 +76,17 @@ def main_page():
     html.Div(id = 'dataframe-holder', style = {'display': 'none'}),
 
     html.Label('Select a variable:'),
-
+>>>>>>> development
     dcc.Dropdown(id = 'variable_options',
     multi = True,
     placeholder = 'Select variables'),
     html.Br(),
 
+<<<<<<< HEAD
+    html.H3('(Ignore this bit...)'),
+=======
     html.Label('Combine or seperate the variables?'),
+>>>>>>> development
     dcc.RadioItems(id = 'combine_choice',
     options = [{'label': i, 'value': i} for i in ['Combine', 'Seperate']],
     value = 'Combine'),
@@ -88,9 +100,13 @@ def main_page():
         value = 'Daily'),
     html.Br(),
 
+<<<<<<< HEAD
+    html.H3('Select a date range: '),
+    dcc.RangeSlider( id = 'date-slider', min = 0),# updatemode = 'drag' ),
+=======
     html.Label('Select a date range of the data:'),
     dcc.RangeSlider( id = 'date-slider', min = 0, allowCross = False),# updatemode = 'drag' ),
-
+>>>>>>> development
     html.Br(),
 
     html.H3('Current date seletion: '),

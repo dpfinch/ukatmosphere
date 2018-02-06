@@ -12,44 +12,65 @@ import plotly.graph_objs as go
 """
     Histogram info here
 """
-def Histogram(df, variable_options,site_choice, combine_choice,
-    DataResample, date_range):
+def Histogram(df, **kwargs):
 
+    variable_dictionary = {}
+    variable_options = kwargs['variable_options']
     if type(variable_options) == str:
-        df_col = df[variable_options]
+        variable_dictionary[variable_options] = df[variable_options]
     else:
-        df_col = df[variable_options[0]]
-    resample_rate = DataResample[0]
+        for var in variable_options:
+            variable_dictionary[var] = df[var]
 
-    if resample_rate == 'R':
-        resampled_df = df_col
-    else:
-        resampled_df = df_col.resample(resample_rate).apply('mean')
 
-    resampled_df = resampled_df[date_range[0]:date_range[1]]
-    y = resampled_df
+    all_plots = []
+
+    for var in variable_dictionary.keys():
+        df_column = variable_dictionary[var]
+
+        resample_rate = kwargs['DataResample'][0]
+        if resample_rate == 'R':
+            resampled_df = df_column
+        else:
+            resampled_df = df_column.resample(resample_rate).apply('mean')
+
+        # Apply time range
+        date_range = kwargs['date_range']
+        resampled_df = resampled_df[date_range[0]:date_range[1]]
+
+        try:
+            num_bins = int(kwargs['histbins'])
+        except ValueError:
+            num_bins = 20 ## Maybe need to set this to None or something?
+
+        bin_start = resampled_df.min()
+        bin_end = resampled_df.max()
+        bin_size = (resampled_df.max() -resampled_df.min()) / num_bins
+        bin_size = 5
+        x = resampled_df
+
+        all_plots.append(go.Histogram(
+            x = x,
+            # xbins = {'start': bin_start,
+            #         'end': bin_end,
+            #         'size': bin_size},
+            nbinsx = num_bins,
+            name = var
+            ))
+
+    plot_layout = {
+        'bargap': 0.2,
+        'bargroupgap': 0.1,
+        'yaxis': {'title': 'Frequency'},
+        'xaxis': {'title': kwargs['xtitle']},
+        'title': kwargs['title'],
+        }
+
     figure = dcc.Graph(
         id='HistogramPlot',
         figure={
-            'data': [go.Histogram(
-                x = y
-            )],
-            'layout': {
-                'autosize': True,
-                'scene': {
-                    'bgcolor': 'rgb(255, 255, 255)',
-                    'xaxis': {
-                        'titlefont': {'color': 'rgb(0, 0, 0)'},
-                        'title': 'X-AXIS',
-                        'color': 'rgb(0, 0, 0)'
-                    },
-                    'yaxis': {
-                        'titlefont': {'color': 'rgb(0, 0, 0)'},
-                        'title': 'Y-AXIS',
-                        'color': 'rgb(0, 0, 0)'
-                    }
-                }
-            }
+            'data': all_plots,
+            'layout': plot_layout
         }
     )
 
@@ -57,5 +78,5 @@ def Histogram(df, variable_options,site_choice, combine_choice,
     return figure
 
 ## ============================================================================
-## END OF PROGAM
+## END OF PROGRAM
 ## ============================================================================
