@@ -58,12 +58,19 @@ def TimeSeries(df, **kwargs):
         # Colour choice
         colour_choice = colours[n]
 
+        if kwargs['lineorscatter'] == 'Line':
+            line_mode = 'lines'
+        elif kwargs['lineorscatter'] == 'Line & Scatter':
+            line_mode = 'lines+markers'
+        else:
+            line_mode = 'markers'
+
         x = resampled_df.index
         y = resampled_df
         all_plots.append(go.Scatter(
             x = x,
             y = y,
-            mode = 'markers',
+            mode = line_mode,
             # marker = {'size': 5,
             #     'color':colour_choice},
             name = var

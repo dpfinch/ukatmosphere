@@ -16,13 +16,56 @@ def main_page():
     ]),
     html.Div(className = 'page-body',children = [
     html.Div(className = 'DataSelectionArea', children = [
-    html.Label('Select a site:'),
+    #### **** THIS IS WHERE THE DATA SELECTION STARTS *****
+
+    html.H3('Select a type of site:'),
     dcc.RadioItems(
-        id = 'site_choice',
-        options = [{'label': i, 'value': i} for i in ['Edinburgh', 'Heathfield']],
-        value = 'Edinburgh'
+        id = 'site_type_choice',
+        options = [{'label': i, 'value': i} for i in ['DEFRA AURN', 'GAUGE']],
+        value = 'DEFRA AURN'
     ),
     html.Br(),
+
+    html.Label('Select a region:'),
+    dcc.Dropdown(id = 'site_region_choice',
+        multi = True,
+        value = 'All'),
+    html.Br(),
+
+    html.Label('Select an environment type:'),
+    dcc.Checklist(id = 'site_env_choice',
+        values = ['All']),
+    html.Br(),
+
+    html.Label('Select a site:'),
+    dcc.Dropdown(
+        id = 'site_choice',
+        placeholder = 'Select sites...'
+    ),
+    html.Br(),
+
+    html.Label('Select a range of years:'),
+    dcc.Dropdown(
+        id = 'minimum_year',
+        placeholder = 'Select start year...',
+        options = [{'label': i, 'value': i} for i in range(2010,2019)]
+    ),
+    html.P('To'),
+    dcc.Dropdown(
+        id = 'maximum_year',
+        placeholder = 'Select end year...',
+    ),
+    html.Br(),
+    ### Have a submit button to load in the choices and then load the relevant
+    ### data
+
+    html.Button('Submit', id = 'site_choice_button'),
+    html.Br(),
+    html.Br(),
+    html.Hr(),
+    ###  Create a div to place the dataframe while its being used but not
+    ### viewable by the user. Make data Json - very slow when being read
+    html.Div(id = 'dataframe-holder', style = {'display': 'none'}),
 
     html.Label('Select a variable:'),
     dcc.Dropdown(id = 'variable_options',
@@ -77,9 +120,14 @@ def main_page():
             html.Label('Add a rolling mean'),
             dcc.Checklist(id = 'TimeSeriesRollingMean',
                 values = [],
-            )]),
-        ]
-    ),
+            ),
+            html.Br(),
+            dcc.RadioItems(id = 'TimeSeriesLineOrScatter',
+            options = [{'label': i, 'value': i} for i in ['Scatter', 'Line', 'Line & Scatter']],
+            value = 'Scatter',
+            ),
+        ])
+    ]),
     html.Hr(),
     ### *********************  Histogram  *********************************
     html.Div(id = 'HistogramHolder', className = 'plot_holder', children = [
@@ -97,10 +145,10 @@ def main_page():
                 placeholder = 'Enter X axis label',
                 value = ''),
             html.Br(),
-            html.Label('Choose the number of histogram bins'),
+            html.Label('Choose the maximum number of histogram bins'),
             dcc.Input( id = 'HistogramBins',
                 placeholder = 'Number of bins...',
-                value = '20'), #TODO this needs to change depending on input
+                value = '25'), #TODO this needs to change depending on input
         ]),
     ]),
     html.Hr(),

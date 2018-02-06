@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "346e161014c13d44b03cdfb0bc1ebe3473cfaadc97900b9c025ba935f15c3fe3"
+            "sha256": "38f603f61829321bf53cbaeef20df24e7d2061200da84713220aba2948b79bd0"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -77,9 +77,9 @@
         },
         "dash-renderer": {
             "hashes": [
-                "sha256:26e62fb0b89f217271b95b1c5a4a35f47f1197879e846382b12a7d049820b390"
+                "sha256:55d2867e0ddf0912dcfca5613236f5e99ab8a1484511ec67f1ff93cc736601a4"
             ],
-            "version": "==0.11.2"
+            "version": "==0.11.3"
         },
         "decorator": {
             "hashes": [
@@ -103,10 +103,16 @@
         },
         "django": {
             "hashes": [
-                "sha256:52475f607c92035d4ac8fee284f56213065a4a6b25ed43f7e39df0e576e69e9f",
-                "sha256:d96b804be412a5125a594023ec524a2010a6ffa4d408e5482ab6ff3cb97ec12f"
+                "sha256:7c8ff92285406fb349e765e9ade685eec7271d6f5c3f918e495a74768b765c99",
+                "sha256:dc3b61d054f1bced64628c62025d480f655303aea9f408e5996c339a543b45f0"
             ],
-            "version": "==2.0.1"
+            "version": "==2.0.2"
+        },
+        "django-redis-cache": {
+            "hashes": [
+                "sha256:2b4e3510bbcaf3d331975717afd6f15a36fbaf7622504599d2727dc99f90c64d"
+            ],
+            "version": "==1.7.1"
         },
         "flask": {
             "hashes": [
@@ -114,6 +120,12 @@
                 "sha256:49f44461237b69ecd901cc7ce66feea0319b9158743dd27a2899962ab214dac1"
             ],
             "version": "==0.12.2"
+        },
+        "flask-caching": {
+            "hashes": [
+                "sha256:21236d2b4567deb9fc95e474a604602097189e834629c24f4d62937abc963636"
+            ],
+            "version": "==1.3.3"
         },
         "flask-compress": {
             "hashes": [
@@ -292,6 +304,13 @@
                 "sha256:fae4cffc040921b8a2d60c6cf0b5d662c1190fe54d718271db4eb17d44a185b7"
             ],
             "version": "==2017.3"
+        },
+        "redis": {
+            "hashes": [
+                "sha256:8a1900a9f2a0a44ecf6e8b5eb3e967a9909dfed219ad66df094f27f7d6f330fb",
+                "sha256:a22ca993cea2962dbb588f9f30d0015ac4afcc45bee27d3978c0dbe9e97c6c0f"
+            ],
+            "version": "==2.10.6"
         },
         "requests": {
             "hashes": [

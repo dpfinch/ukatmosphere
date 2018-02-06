@@ -19,6 +19,9 @@ dash-renderer = "*"
 dash-core-components = "*"
 dash-html-components = "*"
 brewer2mpl = "*"
+redis = "*"
+django-redis-cache = "*"
+flask-caching = "*"
 
 [requires]
 
