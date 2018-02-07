@@ -31,12 +31,15 @@ def WeeklyBoxplots(df,**kwargs):
 
     all_plots = []
 
-    for var in variable_dictionary.keys():
+    colours = ['rgb(93, 164, 214)', 'rgb(255, 144, 14)', 'rgb(44, 160, 101)',
+        'rgb(255, 65, 54)', 'rgb(207, 114, 255)', 'rgb(127, 96, 0)']
+
+    for var_num, var in enumerate(variable_dictionary.keys()):
 
         # Create dictionary with each month as a key containing all monthly data
-        dayly_dict = {}
+        daily_dict = {}
         for n,day in enumerate(day_names):
-            dayly_dict[day] = variable_dictionary[var].loc[variable_dictionary[var].index.dayofweek == (n)]
+            daily_dict[day] = variable_dictionary[var].loc[variable_dictionary[var].index.dayofweek == (n)]
 
         # Create list to put in the plot.ly traces and combine them
         # to send to plot.ly
@@ -48,11 +51,13 @@ def WeeklyBoxplots(df,**kwargs):
         else:
             showmean = False
 
+
         for x, day in enumerate(day_names):
             all_plots.append( go.Box(
-                y = dayly_dict[day].values,
+                y = daily_dict[day].values,
                 name = days_of_week[x],
-                marker = {'color':'rgb(8, 81, 156)'},
+                marker = {'color':colours[var_num],
+                    'size':5},
                 boxmean = showmean
             ))
 
@@ -64,7 +69,9 @@ def WeeklyBoxplots(df,**kwargs):
         xaxis = dict( title = 'Day of the Week'),
         showlegend = False,
         title = plot_title,
-        boxmode = 'group'
+        boxmode = 'group',
+        boxgap = 0.1,
+        boxgroupgap = 0,
         )
 
     plot = dcc.Graph(

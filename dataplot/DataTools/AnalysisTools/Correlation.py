@@ -91,7 +91,7 @@ def Correlation(df,**kwargs):
 
 
         figure = dcc.Graph(
-            id='main-graph',
+            id='CorrelationMainPlot',
             figure={
                 'data': plot_list,
                 'layout': plot_layout

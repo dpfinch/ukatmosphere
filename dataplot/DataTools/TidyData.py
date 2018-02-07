@@ -6,6 +6,7 @@
 # datetime.datetime, datetime.timedelta, pandas
 from datetime import datetime, timedelta
 import pandas as pd
+from dataplot.DataTools import LoadData
 #==============================================================================
 
 def DateClean_Heathfeild(df):
@@ -70,6 +71,21 @@ def add_day(timestamp):
     if timestamp.hour == 0:
         timestamp = timestamp + timedelta(days = 1 )
     return timestamp
+
+
+def site_info_message(site_info_string):
+    ## Currently only works with one site chosen
+    info = site_info_string.split(',')
+    site_type, sites, min_year, max_year = info[0],info[1],str(info[2]), str(info[3])
+
+    site_dict = LoadData.get_site_info(sites)
+
+    env_type = site_dict['Environment Type']
+    gov_region = site_dict['Government Region']
+
+    message = "Plotting data for the %s site %s between %s and %s, which is a %s site in %s.\n" % (site_type, sites, min_year, max_year, env_type, gov_region)
+
+    return message
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the

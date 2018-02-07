@@ -92,6 +92,22 @@ def load_data(button_clicked,site_type,sites, min_year, max_year):
     info_string = site_type + ',' + sites + ',' + str(min_year) + ',' + str(max_year)
     return info_string
 
+@app.callback(Output('user_criteria', 'children'),
+    [Input('dataframe-holder','children')
+    ])
+def return_user_choice_info(data_info):
+    if not data_info:
+        return ''
+    else:
+        return html.P(TidyData.site_info_message(data_info))
+
+
+
+
+### ===========================================================
+### AFTER SUBMIT BUTTON
+### ===========================================================
+
 ### Callback to list the variable options
 @app.callback(Output('variable_options', 'options'),
     [Input('dataframe-holder', 'children')],
@@ -363,6 +379,49 @@ def change_correlation(data, variable_options,site_choice, combine_choice, DataR
     colourby = colourby)
 
 
+### *********** Diurnal Cycle *******************
+### Callback for the diurnal cycle interaction
+
+
+### Callback for the diurnal cycle plot
+@app.callback(Output('DiurnalCycle', 'children'),
+    [Input('dataframe-holder', 'children'),
+    Input('variable_options','value'),
+    Input('site_choice', 'value'),
+    Input('combine_choice','value'),
+    Input('DataResample', 'value'),
+    Input('date-slider', 'value'),
+    Input('DiurnalCycleTitle', 'value'),
+    Input('DiurnalCycleYTitle', 'value'),
+    Input('DiurnalCycleXTitle', 'value'),
+    Input('DiurnalCycleWeekdaySplit', 'value'),
+    Input('DiurnalCycleSampleType', 'value'),
+    Input('DiurnalCycleErrors', 'value'),
+    ])
+def change_dirunalplot(data, variable_options,site_choice, combine_choice, DataResample,
+    date_range, title, ytitle, xtitle, weekdaysplit, sample_type, errors):
+    if not data:
+        return ''
+    data = data.split(',')
+    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    if not isinstance(df, pd.DataFrame):
+        return ''
+
+    from dataplot.DataTools.AnalysisTools import DiurnalCycle
+
+    if weekdaysplit == 'Yes':
+        return DiurnalCycle.DiurnalCycleSplit(df,variable_options = variable_options,
+        site_choice = site_choice, combine_choice = combine_choice,
+        DataResample = DataResample, date_range = date_range, title = title,
+        ytitle = ytitle, xtitle = xtitle, weekdaysplit = weekdaysplit, sample_type = sample_type,
+        errors = errors)
+    else:
+        return DiurnalCycle.DiurnalCycle(df,variable_options = variable_options,
+        site_choice = site_choice, combine_choice = combine_choice,
+        DataResample = DataResample, date_range = date_range, title = title,
+        ytitle = ytitle, xtitle = xtitle, weekdaysplit = weekdaysplit, sample_type = sample_type,
+        errors = errors)
+
 ### *********** HOURLY BOXPLOT *******************
 ### Callback for the Hourly boxplot interaction
 
@@ -392,6 +451,41 @@ def change_hourlybox(data, variable_options,site_choice, combine_choice, DataRes
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, title = title,
     ytitle = ytitle, showmean = showmean)
+
+### *********** Weekly Cycle *******************
+### Callback for the Weekly cycle interaction
+
+
+### Callback for the Weekly cycle plot
+@app.callback(Output('WeeklyCycle', 'children'),
+    [Input('dataframe-holder', 'children'),
+    Input('variable_options','value'),
+    Input('site_choice', 'value'),
+    Input('combine_choice','value'),
+    Input('DataResample', 'value'),
+    Input('date-slider', 'value'),
+    Input('WeeklyCycleTitle', 'value'),
+    Input('WeeklyCycleYTitle', 'value'),
+    Input('WeeklyCycleXTitle', 'value'),
+    Input('WeeklyCycleSampleType', 'value'),
+    Input('WeeklyCycleErrors', 'value'),
+    ])
+def change_Weeklyplot(data, variable_options,site_choice, combine_choice, DataResample,
+    date_range, title, ytitle, xtitle, sample_type, errors):
+    if not data:
+        return ''
+    data = data.split(',')
+    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    if not isinstance(df, pd.DataFrame):
+        return ''
+
+    from dataplot.DataTools.AnalysisTools import WeeklyCycle
+    return WeeklyCycle.WeeklyCycle(df,variable_options = variable_options,
+    site_choice = site_choice, combine_choice = combine_choice,
+    DataResample = DataResample, date_range = date_range, title = title,
+    ytitle = ytitle, xtitle = xtitle, sample_type = sample_type,
+    errors = errors)
+
 
 ### *********** WEEKLY BOXPLOT *******************
 ### Callback for the Weekly boxplot interaction
@@ -423,6 +517,41 @@ def change_weeklybox(data, variable_options,site_choice, combine_choice, DataRes
     DataResample = DataResample, date_range = date_range, title = title,
     ytitle = ytitle, showmean = showmean)
 
+### *********** Annual Cycle *******************
+### Callback for the annual cycle interaction
+
+
+### Callback for the Annual cycle plot
+@app.callback(Output('AnnualCycle', 'children'),
+    [Input('dataframe-holder', 'children'),
+    Input('variable_options','value'),
+    Input('site_choice', 'value'),
+    Input('combine_choice','value'),
+    Input('DataResample', 'value'),
+    Input('date-slider', 'value'),
+    Input('AnnualCycleTitle', 'value'),
+    Input('AnnualCycleYTitle', 'value'),
+    Input('AnnualCycleXTitle', 'value'),
+    Input('AnnualCycleSampleType', 'value'),
+    Input('AnnualCycleErrors', 'value'),
+    ])
+def change_Annualplot(data, variable_options,site_choice, combine_choice, DataResample,
+    date_range, title, ytitle, xtitle, sample_type, errors):
+    if not data:
+        return ''
+    data = data.split(',')
+    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    if not isinstance(df, pd.DataFrame):
+        return ''
+
+    from dataplot.DataTools.AnalysisTools import AnnualCycle
+    return AnnualCycle.AnnualCycle(df,variable_options = variable_options,
+    site_choice = site_choice, combine_choice = combine_choice,
+    DataResample = DataResample, date_range = date_range, title = title,
+    ytitle = ytitle, xtitle = xtitle, sample_type = sample_type,
+    errors = errors)
+
+
 ### *********** MONTHLY BOXPLOT *******************
 ### Callback for the Monthyl boxplot interaction
 
@@ -441,6 +570,35 @@ def change_weeklybox(data, variable_options,site_choice, combine_choice, DataRes
 #     from dataplot.DataTools.AnalysisTools import MonthlyBoxplots
 #     return MonthlyBoxplots.MonthlyBoxplots(df,variable_options,site_choice,
 #         combine_choice, DataResample, date_range)
+
+### *********** DATE AND DAY HEATMAP *******************
+### Callback for the Date and Day Heatmap interaction
+
+@app.callback(Output('DateDayHeatmap', 'children'),
+    [Input('dataframe-holder', 'children'),
+    Input('variable_options','value'),
+    Input('site_choice', 'value'),
+    Input('combine_choice','value'),
+    Input('DataResample', 'value'),
+    Input('date-slider', 'value'),
+    Input('DateDayHeatmapTitle', 'value'),
+    ])
+def change_datedayheatmap(data, variable_options,site_choice, combine_choice, DataResample,
+    date_range, title):
+    if not data:
+        return ''
+    data = data.split(',')
+    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    if not isinstance(df, pd.DataFrame):
+        return ''
+
+    from dataplot.DataTools.AnalysisTools import DateDayHeatmap
+    return DateDayHeatmap.DateDayHeatmap(df,variable_options = variable_options,
+    site_choice = site_choice, combine_choice = combine_choice,
+    DataResample = DataResample, date_range = date_range, title = title,
+    )
+
+
 
 ### ===================================================================
 ### END OF PROGRAM

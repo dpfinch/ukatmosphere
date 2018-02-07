@@ -98,7 +98,10 @@ def TimeSeries(df, **kwargs):
     plot_title = kwargs['title']
 
     plot_layout = {'title':plot_title,
-        'xaxis' : {'title':xtitle},
+        'xaxis' : {'title':xtitle,
+            # 'rangeslider':{},
+            # 'type':'date'
+            },
         'yaxis' : {'title':ytitle},
         }
 

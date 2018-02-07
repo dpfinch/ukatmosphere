@@ -32,7 +32,10 @@ def HourlyBoxplots(df,**kwargs):
 
     all_plots = []
 
-    for var in variable_dictionary.keys():
+    colours = ['rgb(93, 164, 214)', 'rgb(255, 144, 14)', 'rgb(44, 160, 101)',
+        'rgb(255, 65, 54)', 'rgb(207, 114, 255)', 'rgb(127, 96, 0)']
+
+    for var_num, var in enumerate(variable_dictionary.keys()):
 
     # Create dictionary with each month as a key containing all monthly data
         hourly_dict = {}
@@ -51,7 +54,7 @@ def HourlyBoxplots(df,**kwargs):
             all_plots.append( go.Box(
                 y = hourly_dict[hour].values,
                 name = str(hour).zfill(2)+':00',
-                marker = {'color':'rgb(8, 81, 156)'},
+                marker = {'color':colours[var_num]},
                 boxmean = showmean))
 
     ytitle = kwargs['ytitle']
