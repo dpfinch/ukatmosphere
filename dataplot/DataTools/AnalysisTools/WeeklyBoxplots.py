@@ -37,9 +37,9 @@ def WeeklyBoxplots(df,**kwargs):
     for var_num, var in enumerate(variable_dictionary.keys()):
 
         # Create dictionary with each month as a key containing all monthly data
-        dayly_dict = {}
+        daily_dict = {}
         for n,day in enumerate(day_names):
-            dayly_dict[day] = variable_dictionary[var].loc[variable_dictionary[var].index.dayofweek == (n)]
+            daily_dict[day] = variable_dictionary[var].loc[variable_dictionary[var].index.dayofweek == (n)]
 
         # Create list to put in the plot.ly traces and combine them
         # to send to plot.ly
@@ -54,7 +54,7 @@ def WeeklyBoxplots(df,**kwargs):
 
         for x, day in enumerate(day_names):
             all_plots.append( go.Box(
-                y = dayly_dict[day].values,
+                y = daily_dict[day].values,
                 name = days_of_week[x],
                 marker = {'color':colours[var_num],
                     'size':5},

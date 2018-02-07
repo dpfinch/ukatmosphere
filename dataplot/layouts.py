@@ -151,7 +151,13 @@ def main_page():
             html.Label('Choose the maximum number of histogram bins'),
             dcc.Input( id = 'HistogramBins',
                 placeholder = 'Number of bins...',
-                value = '25'), #TODO this needs to change depending on input
+                value = '25'),
+            html.Br(),
+            html.Br(),
+            dcc.Checklist( id = 'HistogramPercentage',
+                options = [{'label':'Percentage contribution', 'value': 'percentcontrib'}],
+                values = []),
+
         ]),
     ]),
     html.Hr(),
@@ -187,8 +193,54 @@ def main_page():
             html.Label('Colour scatter by:'),
             dcc.Dropdown(id = 'correlation_colourby',
             placeholder = 'Select variable'),
-            #TODO Need to make a 'clear' option if user wants to get rid of colourbar
+
             html.Br(),
+
+        ]),
+    ]),
+    html.Hr(),
+
+### *********************  Dirunal Cycle  *********************************
+html.Div(id = 'DiurnalCycleHolder', className = 'plot_holder', children = [
+    html.Div(id = 'DiurnalCycle', className = 'main_plot'),
+    html.Div(id = 'DiurnalCycleTools', className = 'plot_tools', children = [
+        html.H3('Diurnal Cycle Tools:'),
+        html.Br(),
+        html.Label('Plot Title'),
+        dcc.Input( id = 'DiurnalCycleTitle',
+            placeholder = 'Enter Title',
+            value = ''),
+        html.Br(),
+
+        html.Label('X Axis Label'),
+        dcc.Input( id = 'DiurnalCycleXTitle',
+            placeholder = 'Enter X axis label',
+            value = 'Hour of the Day'),
+        html.Br(),
+
+        html.Label('Y Axis Label'),
+        dcc.Input( id = 'DiurnalCycleYTitle',
+            placeholder = 'Enter Y axis label',
+            value = ''),
+        html.Br(),
+
+        html.Label('Split into Weekdays'),
+        dcc.RadioItems( id = 'DiurnalCycleWeekdaySplit',
+            options = [{'label': i, 'value': i} for i in ['Yes', 'No']],
+            value = 'No'),
+        html.Br(),
+
+        html.Label('Sample Type'),
+        dcc.RadioItems( id = 'DiurnalCycleSampleType',
+            options = [{'label': i, 'value': i} for i in ['Mean', 'Median', 'Both']],
+            value = 'Mean'),
+        html.Br(),
+
+        html.Label('Error Shading'),
+        dcc.RadioItems( id = 'DiurnalCycleErrors',
+            options = [{'label': i, 'value': i} for i in ['Std', '95% Confidence', 'None']],
+            value = '95% Confidence'),
+        html.Br(),
 
         ]),
     ]),
@@ -221,6 +273,47 @@ def main_page():
     html.Br(),
     html.Hr(),
 
+### *********************  Weekly Cycle  *********************************
+html.Div(id = 'WeeklyCycleHolder', className = 'plot_holder', children = [
+    html.Div(id = 'WeeklyCycle', className = 'main_plot'),
+    html.Div(id = 'WeeklyCycleTools', className = 'plot_tools', children = [
+        html.H3('Weekly Cycle Tools:'),
+        html.Br(),
+        html.Label('Plot Title'),
+        dcc.Input( id = 'WeeklyCycleTitle',
+            placeholder = 'Enter Title',
+            value = ''),
+        html.Br(),
+
+        html.Label('X Axis Label'),
+        dcc.Input( id = 'WeeklyCycleXTitle',
+            placeholder = 'Enter X axis label',
+            value = 'Hour of the Day'),
+        html.Br(),
+
+        html.Label('Y Axis Label'),
+        dcc.Input( id = 'WeeklyCycleYTitle',
+            placeholder = 'Enter Y axis label',
+            value = ''),
+        html.Br(),
+
+        html.Label('Sample Type'),
+        dcc.RadioItems( id = 'WeeklyCycleSampleType',
+            options = [{'label': i, 'value': i} for i in ['Mean', 'Median', 'Both']],
+            value = 'Mean'),
+        html.Br(),
+
+        html.Label('Error Shading'),
+        dcc.RadioItems( id = 'WeeklyCycleErrors',
+            options = [{'label': i, 'value': i} for i in ['Std', '95% Confidence', 'None']],
+            value = '95% Confidence'),
+        html.Br(),
+
+        ]),
+    ]),
+    html.Hr(),
+
+
     ### *******************  Weekly boxplots  ***************************
     html.Div(id = 'WeeklyBoxHolder', className = 'plot_holder', children = [
         html.Div(id = 'WeeklyBoxplots', className = 'main_plot'),
@@ -246,6 +339,48 @@ def main_page():
     ]),
     html.Br(),
     html.Hr(),
+
+
+### *********************  Annual Cycle  *********************************
+html.Div(id = 'AnnualCycleHolder', className = 'plot_holder', children = [
+    html.Div(id = 'AnnualCycle', className = 'main_plot'),
+    html.Div(id = 'AnnualCycleTools', className = 'plot_tools', children = [
+        html.H3('Annual Cycle Tools:'),
+        html.Br(),
+        html.Label('Plot Title'),
+        dcc.Input( id = 'AnnualCycleTitle',
+            placeholder = 'Enter Title',
+            value = ''),
+        html.Br(),
+
+        html.Label('X Axis Label'),
+        dcc.Input( id = 'AnnualCycleXTitle',
+            placeholder = 'Enter X axis label',
+            value = 'Hour of the Day'),
+        html.Br(),
+
+        html.Label('Y Axis Label'),
+        dcc.Input( id = 'AnnualCycleYTitle',
+            placeholder = 'Enter Y axis label',
+            value = ''),
+        html.Br(),
+
+        html.Label('Sample Type'),
+        dcc.RadioItems( id = 'AnnualCycleSampleType',
+            options = [{'label': i, 'value': i} for i in ['Mean', 'Median', 'Both']],
+            value = 'Mean'),
+        html.Br(),
+
+        html.Label('Error Shading'),
+        dcc.RadioItems( id = 'AnnualCycleErrors',
+            options = [{'label': i, 'value': i} for i in ['Std', '95% Confidence', 'None']],
+            value = '95% Confidence'),
+        html.Br(),
+
+        ]),
+    ]),
+    html.Hr(),
+
 
     ### Monthly boxplots
     # html.Div(id = 'MonthlyBoxplots'),

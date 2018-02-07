@@ -24,7 +24,7 @@ def DateDayHeatmap(df, **kwargs):
     if type(variable_options) == str:
         var = df[variable_options]
     else:
-        if len(variable_options == 0):
+        if len(variable_options) == 0:
             return ''
         var = df[variable_options[0]]
 
