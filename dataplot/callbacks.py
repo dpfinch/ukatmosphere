@@ -301,9 +301,11 @@ def change_timeseries(data, variable_options,site_choice, combine_choice, DataRe
     Input('HistogramTitle', 'value'),
     Input('HistogramXTitle', 'value'),
     Input('HistogramBins','value'),
+    Input('HistogramProbability','values')
     ])
 def change_histogram(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, xtitle, histbins):
+    date_range, title, xtitle, histbins, probability):
+
     if not data:
         return ''
     data = data.split(',')
@@ -315,7 +317,7 @@ def change_histogram(data, variable_options,site_choice, combine_choice, DataRes
     return Histogram.Histogram(df,variable_options = variable_options,
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, histbins = histbins,
-    title = title, xtitle = xtitle)
+    title = title, xtitle = xtitle, probability = probability)
 
 ### *********** CORRELATION PLOT *******************
 ### Callback for the Correlation interaction
@@ -361,9 +363,10 @@ def get_colourbychoices(data,value):
     Input('CorrelationYTitle','value'),
     Input('CorrelationSwapButton', 'n_clicks'),
     Input('correlation_colourby','value'),
+    Input('CorrelationCLabel', 'value')
     ])
 def change_correlation(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, xtitle, ytitle, swap_button, colourby):
+    date_range, title, xtitle, ytitle, swap_button, colourby, clabel):
     if not data:
         return ''
     data = data.split(',')
@@ -376,7 +379,7 @@ def change_correlation(data, variable_options,site_choice, combine_choice, DataR
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, title = title,
     xtitle = xtitle, ytitle = ytitle, swap_button = swap_button,
-    colourby = colourby)
+    colourby = colourby, clabel = clabel)
 
 
 ### *********** Diurnal Cycle *******************

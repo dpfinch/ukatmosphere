@@ -48,15 +48,24 @@ def Histogram(df, **kwargs):
         bin_size = (resampled_df.max() -resampled_df.min()) / num_bins
         bin_size = 5
         x = resampled_df
+        
+        if kwargs['probability'] == ['Probability']:
 
-        all_plots.append(go.Histogram(
+            all_plots.append(go.Histogram(
             x = x,
-            # xbins = {'start': bin_start,
-            #         'end': bin_end,
-            #         'size': bin_size},
+            histnorm = 'probability',
             nbinsx = num_bins,
             name = var
             ))
+        else:
+            all_plots.append(go.Histogram(
+                x = x,
+                # xbins = {'start': bin_start,
+                #         'end': bin_end,
+                #         'size': bin_size},
+                nbinsx = num_bins,
+                name = var
+                ))
 
     plot_layout = {
         'bargap': 0.2,
