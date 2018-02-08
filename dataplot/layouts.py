@@ -21,7 +21,7 @@ def main_page():
     html.H3('Select a type of site:'),
     dcc.RadioItems(
         id = 'site_type_choice',
-        options = [{'label': i, 'value': i} for i in ['DEFRA AURN', 'GAUGE']],
+        options = [{'label': i, 'value': i} for i in ['DEFRA AURN', 'GAUGE (Currenlty Unavailable)']],
         value = 'DEFRA AURN'
     ),
     html.Br(),
@@ -40,7 +40,8 @@ def main_page():
     html.Label('Select a site:'),
     dcc.Dropdown(
         id = 'site_choice',
-        placeholder = 'Select sites...'
+        placeholder = 'Select sites...',
+        value = 'Aberdeen'
     ),
     html.Br(),
 
@@ -48,12 +49,14 @@ def main_page():
     dcc.Dropdown(
         id = 'minimum_year',
         placeholder = 'Select start year...',
-        options = [{'label': i, 'value': i} for i in range(2010,2019)]
+        options = [{'label': i, 'value': i} for i in range(2010,2019)],
+        value = 2017
     ),
     html.P('To'),
     dcc.Dropdown(
         id = 'maximum_year',
         placeholder = 'Select end year...',
+        value = 2018
     ),
     html.Br(),
     ### Have a submit button to load in the choices and then load the relevant
@@ -154,8 +157,8 @@ def main_page():
                 value = '25'),
             html.Br(),
             html.Br(),
-            dcc.Checklist( id = 'HistogramPercentage',
-                options = [{'label':'Percentage contribution', 'value': 'percentcontrib'}],
+            dcc.Checklist( id = 'HistogramProbability',
+                options = [{'label':'Probability', 'value': 'Probability'}],
                 values = []),
 
         ]),
@@ -193,8 +196,13 @@ def main_page():
             html.Label('Colour scatter by:'),
             dcc.Dropdown(id = 'correlation_colourby',
             placeholder = 'Select variable'),
-
             html.Br(),
+
+            html.Label('Colour Bar Label:'),
+            dcc.Input(id = 'CorrelationCLabel',
+            placeholder = 'Enter Colourbar label'),
+            html.Br(),
+
 
         ]),
     ]),
@@ -288,7 +296,7 @@ html.Div(id = 'WeeklyCycleHolder', className = 'plot_holder', children = [
         html.Label('X Axis Label'),
         dcc.Input( id = 'WeeklyCycleXTitle',
             placeholder = 'Enter X axis label',
-            value = 'Hour of the Day'),
+            value = 'Day of the Week'),
         html.Br(),
 
         html.Label('Y Axis Label'),
@@ -356,7 +364,7 @@ html.Div(id = 'AnnualCycleHolder', className = 'plot_holder', children = [
         html.Label('X Axis Label'),
         dcc.Input( id = 'AnnualCycleXTitle',
             placeholder = 'Enter X axis label',
-            value = 'Hour of the Day'),
+            value = 'Month'),
         html.Br(),
 
         html.Label('Y Axis Label'),

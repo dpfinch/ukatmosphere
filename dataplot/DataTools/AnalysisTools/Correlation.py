@@ -69,7 +69,9 @@ def Correlation(df,**kwargs):
             resampled_c = resampled_c[date_range[0]:date_range[1]]
             markers = {'color': resampled_c,
                 'colorscale':'Viridis',
-                'showscale':True}
+                'showscale':True,
+                'colorbar': {'title': kwargs['clabel'],
+                            'titleside': 'right'}}
         else:
             markers = {}
 
