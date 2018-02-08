@@ -79,9 +79,9 @@ def main_page():
     placeholder = 'Select variables'),
     html.Br(),
 
-    html.Label('Combine or seperate the variables?'),
+    html.Label('Combine or separate the variables?'),
     dcc.RadioItems(id = 'combine_choice',
-    options = [{'label': i, 'value': i} for i in ['Combine', 'Seperate']],
+    options = [{'label': i, 'value': i} for i in ['Combine', 'Separate']],
     value = 'Combine'),
     html.Br(),
 
