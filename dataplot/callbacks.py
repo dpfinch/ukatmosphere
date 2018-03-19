@@ -21,42 +21,23 @@ import pandas as pd
 ### These outputs are to be included in every other callback.
 ### ===================================================================
 
-### Callback for getting the country of the UK
-@app.callback(Output('site_region_choice', 'options'),
-    [Input('site_type_choice', 'value')])
-def get_region_choice(region):
-    if region == 'DEFRA AURN':
-        site_regions = LoadData.AURN_regions()
-        region_choices = ['All'] + site_regions
-    if region == 'GAUGE':
-        region_choices = ['All']
-    options = [{'label': i, 'value': i} for i in region_choices]
-    return options
-
-### Callback for getting the list of environment types at the site
-@app.callback(Output('site_env_choice', 'options'),
-    [Input('site_type_choice', 'value')])
-def get_site_env_types(site_type):
-    if site_type == 'DEFRA AURN':
-        site_envs = LoadData.AURN_environment_types()
-        env_choices = ['All'] + site_envs
-    if site_type == 'GAUGE':
-        env_choices = ['All']
-    options = [{'label': i, 'value': i} for i in env_choices]
-    return options
-
 ### Callback to list the available sites with above selection
 @app.callback(Output('site_choice', 'options'),
-    [Input('site_type_choice', 'value'),
-    Input('site_region_choice', 'value'),
+    [Input('site_region_choice', 'value'),
     Input('site_env_choice', 'values'),])
-def list_available_sites(site_type, site_region, env_choice):
-
-    if site_type == 'DEFRA AURN':
-        sites = LoadData.AURN_site_list(site_region, env_choice)
-    if site_type == 'GAUGE':
-        sites = ['Heathfield']
+def list_available_sites(site_region, env_choice):
+    sites = LoadData.AURN_site_list(site_region, env_choice)
     options = [{'label': i, 'value': i} for i in sites]
+    return options
+
+### Callback to set the limit on the range of years. So can choose a site
+### and not go beyond when it was active
+@app.callback(Output('minimum_year', 'options'),
+    [Input('site_choice','value')])
+def get_site_minimum_year(site):
+    start_year, end_year = LoadData.get_site_year_range(site)
+
+    options = [{'label': i, 'value': i} for i in range(start_year,end_year + 1)]
     return options
 
 ### Callback to prevent the end year being before the start year
@@ -81,15 +62,14 @@ def load_station_data(site_type, sites, years):
 ### Callback to load the data into the page
 @app.callback(Output('dataframe-holder', 'children'),
     [Input('site_choice_button', 'n_clicks')],
-    [State('site_type_choice', 'value'),
-    State('site_choice', 'value'),
+    [State('site_choice', 'value'),
     State('minimum_year', 'value'),
     State('maximum_year', 'value'),
     ])
-def load_data(button_clicked,site_type,sites, min_year, max_year):
+def load_data(button_clicked,sites, min_year, max_year):
     years = [str(min_year), str(max_year)]
-    load_station_data(site_type, sites, years)
-    info_string = site_type + ',' + sites + ',' + str(min_year) + ',' + str(max_year)
+    load_station_data('DEFRA AURN', sites, years)
+    info_string = 'DEFRA AURN' + ',' + sites + ',' + str(min_year) + ',' + str(max_year)
     return info_string
 
 @app.callback(Output('user_criteria', 'children'),

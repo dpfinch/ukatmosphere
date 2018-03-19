@@ -138,6 +138,7 @@ DATABASES['default'].update(db_from_env)
 
 # Import REDIS requirement things
 redis_url = urlparse.urlparse(os.environ.get('REDIS_URL'))
+
 CACHES = {
     "default": {
          "BACKEND": "redis_cache.RedisCache",

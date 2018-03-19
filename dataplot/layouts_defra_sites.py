@@ -3,10 +3,21 @@ import dash_core_components as dcc
 import dash_html_components as html
 from .server import app
 from dash.dependencies import Output, Input
+from dataplot.DataTools import LoadData
+from dataplot.DataTools import TidyData
 
 
+def DEFRA_individual_sites():
+    ## Get the sites availble from the DEFRA AURN network
+    site_regions = LoadData.AURN_regions()
+    region_choices = ['All'] + site_regions
+    region_options = [{'label': i, 'value': i} for i in region_choices]
 
-def main_page():
+    site_envs = LoadData.AURN_environment_types()
+    env_choices = ['All'] + site_envs
+    env_options = [{'label': i, 'value': i} for i in env_choices]
+
+    #### Start the page layout
     page_layout = html.Div(id = 'full_page_container', children =
     ### The first items are for the common attributes (ie site)
     [
@@ -18,22 +29,24 @@ def main_page():
     html.Div(className = 'DataSelectionArea', children = [
     #### **** THIS IS WHERE THE DATA SELECTION STARTS *****
 
-    html.H3('Select a type of site:'),
-    dcc.RadioItems(
-        id = 'site_type_choice',
-        options = [{'label': i, 'value': i} for i in ['DEFRA AURN', 'GAUGE (Currenlty Unavailable)']],
-        value = 'DEFRA AURN'
-    ),
+    html.H3('Analysis for individual DEFRA sites.'),
+    # dcc.RadioItems(
+    #     id = 'site_type_choice',
+    #     options = [{'label': i, 'value': i} for i in ['DEFRA AURN', 'GAUGE (Currenlty Unavailable)']],
+    #     value = 'DEFRA AURN'
+    # ),
     html.Br(),
 
     html.Label('Select a region:'),
     dcc.Dropdown(id = 'site_region_choice',
         multi = True,
+        options = region_options,
         value = 'All'),
     html.Br(),
 
     html.Label('Select an environment type:'),
     dcc.Checklist(id = 'site_env_choice',
+        options = env_options,
         values = ['All']),
     html.Br(),
 
@@ -49,7 +62,6 @@ def main_page():
     dcc.Dropdown(
         id = 'minimum_year',
         placeholder = 'Select start year...',
-        options = [{'label': i, 'value': i} for i in range(2010,2019)],
         value = 2017
     ),
     html.P('To'),

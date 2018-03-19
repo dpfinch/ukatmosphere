@@ -8,6 +8,7 @@ import pandas as pd
 import os.path
 from dataplot.DataTools import TidyData
 import numpy as np
+import pickle
 #==============================================================================
 
 def FromCSV(filename = None, parameters = []):
@@ -182,6 +183,15 @@ def get_site_info(site_name):
         site_dict[c] = site[c].values[0]
 
     return site_dict
+
+def get_site_year_range(site_name):
+    sites = pickle.load(open('dataplot/InfoFiles/All_AURN_site_variables.p', 'rb'))
+    site_info = sites[site_name]
+
+    start_year = int(site_info['Start_Year'])
+    end_year = int(site_info['End_Year'])
+
+    return start_year, end_year
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the
