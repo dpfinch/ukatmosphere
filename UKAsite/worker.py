@@ -1,6 +1,6 @@
 import os
 
-
+print("*"*80)
 # import redis
 # from rq import Worker, Queue, Connection
 
