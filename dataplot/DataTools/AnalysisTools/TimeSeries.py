@@ -46,6 +46,7 @@ def TimeSeries(df, **kwargs):
         df_col = variable_dictionary[var]
 
         resample_rate = kwargs['DataResample'][0]
+
         if resample_rate == 'R':
             resampled_df = df_col
         else:

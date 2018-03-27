@@ -3,3 +3,4 @@ include/
 lib/
 *.pyc
 *__pycache__*
+dataplot/migrations/

@@ -1,18 +1,6 @@
 import os
+from datetime import datetime as dt
+import pandas
+from dataplot.models import DEFRAAURNData
 
 print("*"*80)
-# import redis
-# from rq import Worker, Queue, Connection
-
-# listen = ['high','default','low']
-#
-# redis_url = os.environ.get('REDISTOGO_URL', 'localhost:6379')
-#
-# conn = redis.from_url(redis_url)
-#
-#
-#
-# if __name__ == '__main__':
-#     with Connection(conn):
-#         worker = Worker(map(Queue, listen))
-#         worker.work()

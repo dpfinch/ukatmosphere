@@ -73,6 +73,13 @@ def add_day(timestamp):
     return timestamp
 
 
+def subtract_hour(timestamp):
+    """
+    Function to subtract an hour of the timestamp given
+    """
+
+    return timestamp - timedelta(hours = 1)
+
 def site_info_message(site_info_string):
     ## Currently only works with one site chosen
     info = site_info_string.split(',')

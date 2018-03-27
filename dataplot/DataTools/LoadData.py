@@ -132,6 +132,12 @@ def Get_AURN_data(site_names, years):
         # Add a new column using both date and time into a datetime format
         df['Date and Time'] = pd.to_datetime(df['Date'] + ' ' + df['time'], dayfirst = True)
         df['Date and Time'] = df['Date and Time'].apply(TidyData.add_day)
+        ## Remove an hour from each time stamp to take measurement from the
+        ## end of the hour to the beginning of the hour. I.E. if a measurement
+        ## is labeled 01:00 that will be changed to 00:00 to indicate it is for
+        ## the hour 00:00 - 01:00 as DEFRA provide the time stamp indicating
+        ## the end of the hour the measurement was taken.
+        df['Date and Time'] = df['Date and Time'].apply(TidyData.subtract_hour)
         df.set_index('Date and Time', inplace = True)
 
         all_dataframes.append(df)

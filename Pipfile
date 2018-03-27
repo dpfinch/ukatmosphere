@@ -12,16 +12,18 @@ gunicorn = "*"
 "psycopg2" = "*"
 whitenoise = "*"
 requests = "*"
-dj_static = "*"
+dj-static = "*"
 pandas = "*"
 dash = "*"
 dash-renderer = "*"
 dash-core-components = "*"
 dash-html-components = "*"
-brewer2mpl = "*"
+"brewer2mpl" = "*"
 redis = "*"
 django-redis-cache = "*"
 flask-caching = "*"
+sqlalchemy = "*"
+
 
 [requires]
 
