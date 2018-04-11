@@ -26,7 +26,7 @@ SECRET_KEY = 'ei=upevndr+yn0h=)z*phnwv@!h4d9d29ei+(i_2mu=-ib5&bq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.ukatmosphere.org', '127.0.0.1']
+ALLOWED_HOSTS = ['www.ukatmosphere.org', '127.0.0.1','ukatmosphere.herokuapp.com']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dataplot',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +117,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

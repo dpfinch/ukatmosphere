@@ -69,7 +69,7 @@ def Get_AURN_data(site_names, years):
 
         url = "http://www.airquality.co.uk/archive/data_files/site_data/%s_%s.csv" % (site_code, year)
 
-        df = pd.read_csv(url, skiprows = 4, dtype = str)
+        df = pd.read_csv(url, skiprows = 4, dtype = str).rename(columns=lambda x: x.strip())
 
         # Get all the column names
         column_names = df.columns
@@ -194,8 +194,12 @@ def get_site_year_range(site_name):
     sites = pickle.load(open('dataplot/InfoFiles/All_AURN_site_variables.p', 'rb'))
     site_info = sites[site_name]
 
-    start_year = int(site_info['Start_Year'])
-    end_year = int(site_info['End_Year'])
+    try:
+        start_year = int(site_info['Start_Year'])
+        end_year = int(site_info['End_Year'])
+    except ValueError:
+        start_year = None
+        end_year = None
 
     return start_year, end_year
 

@@ -1,0 +1,29 @@
+Variable Name, Variable Formula, Alternate Name1
+Nitrogen oxides as nitrogen dioxide, NOx,
+Nitric oxide, NO,
+Nitrogen dioxide, NO2,
+PM10 particulate matter (Hourly measured), PM10,PM<sub>10</sub> particulate matter (Hourly measured)
+Carbon monoxide, CO,
+Modelled Temperature, MOD_T,
+Modelled Wind Speed, MOD_WS,
+Modelled Wind Direction, MOD_WD,
+Ozone, O3,
+PM10 particulate matter (Daily measured), PM10_DAILY, PM<sub>10</sub> particulate matter (Daily measured)
+Daily measured PM2.5 (uncorrected), PM2.5_UNCORRECTED, Daily measured PM<sub>2.5</sub> (uncorrected)
+Daily measured PM10 (uncorrected), PM10_UNCORRECTED, Daily measured PM<sub>10</sub> (uncorrected)
+PM2.5 particulate matter (Daily measured), PM2.5_DAILY,PM<sub>2.5</sub> particulate matter (Daily measured)
+Sulphur dioxide, SO2,
+Volatile PM2.5 (Hourly measured), PM2.5_HOURLY_VOL,Volatile PM<sub>2.5</sub> (Hourly measured)
+PM2.5 particulate matter (Hourly measured), PM2.5_HOURLY,PM<sub>2.5</sub> particulate matter (Hourly measured)
+PM10 Ambient pressure measured, PM10_AMBIENT_P,PM<sub>10</sub> Ambient pressure measured
+Non-volatile PM10 (Hourly measured), PM10_HOURLY_NON_VOL,Non-volatile PM<sub>10</sub> (Hourly measured)
+PM2.5 Ambient Preasure, PM2.5_AMBIENT_P,PM<sub>2.5</sub> Ambient Preasure
+Volatile PM10 (Hourly measured), PM10_HOURLY_VOL,Volatile PM<sub>10</sub> (Hourly measured
+PM10 Ambient Temperature, PM10_AMBIENT_T,PM<sub>10</sub> Ambient Temperature
+Non-volatile PM2.5 (Hourly measured),PM2.5_HOURLY_NON_VOL,Non-volatile PM<sub>2.5</sub> (Hourly measured)
+PM2.5 Ambient Temperature, PM2.5_AMBIENT_T,PM<sub>2.5</sub> Ambient Temperature
+Wind Direction, WD,
+Wind Speed,WS,
+Carbon Dioxide, CO2,
+Methane, CH4,
+
