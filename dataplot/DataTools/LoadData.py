@@ -51,7 +51,7 @@ def FromCSV(filename = None, parameters = []):
     # Return the dataframe
     return df
 
-def Get_AURN_data(site_names, years):
+def Get_AURN_data(site_names, years, drop_status_and_units = True):
 
     filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
     sites = pd.read_csv(filename)
@@ -122,7 +122,8 @@ def Get_AURN_data(site_names, years):
             # is then go to next iteration, if its not then turn that value
             # from a string into a float
             if column.split('.')[0] in ['status', 'unit']:
-                df.drop([column], axis = 1, inplace = True)
+                if drop_status_and_units:
+                    df.drop([column], axis = 1, inplace = True)
                 continue
             elif column in ['Date', 'time']:
                 continue
@@ -139,6 +140,8 @@ def Get_AURN_data(site_names, years):
         ## the end of the hour the measurement was taken.
         df['Date and Time'] = df['Date and Time'].apply(TidyData.subtract_hour)
         df.set_index('Date and Time', inplace = True)
+
+        df.drop(['Date', 'time'], axis = 1, inplace = True)
 
         all_dataframes.append(df)
     final_df = pd.concat(all_dataframes)
