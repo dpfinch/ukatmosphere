@@ -1,19 +1,19 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2246b4d088997b5376701f2001dbede3174011c6273f2753d64a4651c4e85738"
+            "sha256": "90413c29724b0096e3fb7bab899ce8e6935ea738299fdcacd7b32825a49dd675"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.6.4",
+            "implementation_version": "3.5.2",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
             "platform_release": "4.4.0-116-generic",
             "platform_system": "Linux",
             "platform_version": "#140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018",
-            "python_full_version": "3.6.4",
-            "python_version": "3.6",
+            "python_full_version": "3.5.2",
+            "python_version": "3.5",
             "sys_platform": "linux"
         },
         "pipfile-spec": 6,
@@ -107,6 +107,13 @@
                 "sha256:d81a1652963c81488e709729a80b510394050e312f386037f26b54912a3a10d0"
             ],
             "version": "==2.0.4"
+        },
+        "django-extensions": {
+            "hashes": [
+                "sha256:37a543af370ee3b0721ff50442d33c357dd083e6ea06c5b94a199283b6f9e361",
+                "sha256:bc9f2946c117bb2f49e5e0633eba783787790ae810ea112fe7fd82fa64de2ff1"
+            ],
+            "version": "==2.0.6"
         },
         "django-redis-cache": {
             "hashes": [

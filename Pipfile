@@ -23,6 +23,7 @@ redis = "*"
 django-redis-cache = "*"
 flask-caching = "*"
 sqlalchemy = "*"
+django-extensions = "*"
 
 
 [requires]
