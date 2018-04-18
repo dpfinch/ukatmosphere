@@ -22,6 +22,12 @@ def DEFRA_AURN_data_to_db(df,site_code):
             pollutant_cols.append(c)
 
     for i, col in enumerate(pollutant_cols):
+        # Check to see if I've got info on the variable.
+        # Only have info on standard AURN variables so far
+        try:
+            chemical_formula = Get_Chemical_Formula(col)
+        except IndexError:
+            continue
         # Get the unit for the column variable
         # The corresponding unit column is:
         unit_col = df[unit_cols[i]]
@@ -35,16 +41,19 @@ def DEFRA_AURN_data_to_db(df,site_code):
         status_col.replace('R','V', inplace = True)
         # Fill the nan values with 'U' for unknown - although this will rarely be
         # a problem as all nan status have a matching nan measurement
-        status_col.fillna('U')
+        status_col.dropna(inplace = True)
+        status_col.fillna('U', inplace = True)
 
-        chemical_formula = Get_Chemical_Formula(col)
         measurement_name = 'DEFRA_AURN_%s' % chemical_formula
-        for n in range(len(df[col])):
-            x = df[col][n]
+        temp_col = df[col]
+        temp_col.dropna(inplace = True)
+        for n in range(len(temp_col)):
+
+            x = temp_col[n]
             entry = measurement_data(
-                date_and_time = df.index[n],
+                date_and_time = temp_col.index[n],
                 value = x,
-                verified = satus_col[n],
+                verified = status_col[n],
             )
 
             if site_info.objects.filter(site_code = site_code).exists():
@@ -55,7 +64,7 @@ def DEFRA_AURN_data_to_db(df,site_code):
             else:
                 meas_info = measurement_info(
                     variable_name = col,
-                    unit = unit
+                    unit = unit,
                     chemical_formula = chemical_formula,
                     measurement_name = measurement_name
                 )
@@ -134,20 +143,24 @@ def Update_DEFRA_Data(site_name):
         status_col.replace('R','V', inplace = True)
         # Fill the nan values with 'U' for unknown - although this will rarely be
         # a problem as all nan status have a matching nan measurement
+        status_col.dropna(inplace = True)
         status_col.fillna('U')
 
         chemical_formula = Get_Chemical_Formula(col)
         measurement_name = 'DEFRA_AURN_%s' % chemical_formula
 
-        for x in range(len(new_df[col])):
+        temp_col = new_df[col]
+        temp_col.dropna(inplace = True)
+
+        for x in range(len(temp_col)):
             # Filter the data by measurement_id, site and time
             # There should only be one data entry for each of these
             data_entry = measurement_data.objects.filter(
                 measurement_id = measurement_name).filter(
                 site_id = site_id).filter(
-                date_and_time = new_df[col].index[x])[0]
+                date_and_time = temp_col.index[x])[0]
 
-            if data_entry.verified = 'V':
+            if data_entry.verified == 'V':
                 continue
             elif status_col[x] in ['U','N']:
                 continue
@@ -155,7 +168,7 @@ def Update_DEFRA_Data(site_name):
                 continue
             else:
                 data_entry.verified = status_col[x]
-                data_entry.value = new_df[col][x]
+                data_entry.value = temp_col[x]
                 data_entry.save()
 
 
@@ -169,6 +182,9 @@ def Fill_DEFRA_AURN_DB():
     ## Likely/hopefully only need this the once.
     all_sites_query = site_info.objects.all()
 
+    ## Need to prioritise input as this takes and absolute age.
+
+
     for site in all_sites_query:
         site_name = site.site_name
         site_code = site.site_code
@@ -176,13 +192,30 @@ def Fill_DEFRA_AURN_DB():
         date_open = site.date_open
         date_closed = site.date_closed
 
+        # This skips sites that have already been added to the database
+        ### THIS IS NOT A SMART WAY OF DOING THIS BUT IS A TEMP BODGE
+        if measurement_data.objects.filter(site_id = site_info.objects.filter(site_name = site_name)).exists():
+            continue
+
+        # Don't include sites that are just a quick PM10 site
+        # Only inlcudes Brighton Roadside PM10 & Northampton PM10
+        if 'PM10' in site_name:
+            continue
+
         # Load in dataframe - could be a memory issue here with the
         # site open the longest
         if site_open:
-            date_closed = dt.now().year
-        df = LoadData.Get_AURN_data(site_name, [date_open, date_closed])
+            date_closed = dt.now()
 
-        DEFRA_AURN_data_to_db(df,site_code)
+        # For the time being only get 2018 data
+        if site_open:
+
+            print('Getting data for %s: %d - %d (%s)' % (site_name, date_open.year, date_closed.year, site_code))
+            df = LoadData.Get_AURN_data(site_name, [2018,2018],
+                drop_status_and_units = False)
+
+            DEFRA_AURN_data_to_db(df,site_code)
+            print('Submitted to database')
 
 
 def Get_Chemical_Formula(chemical_name):

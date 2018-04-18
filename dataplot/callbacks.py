@@ -26,26 +26,50 @@ import pandas as pd
     [Input('site_region_choice', 'value'),
     Input('site_env_choice', 'values'),])
 def list_available_sites(site_region, env_choice):
-    sites = LoadData.AURN_site_list(site_region, env_choice)
+    sites = LoadData.AURN_site_list_db(site_region, env_choice)
     options = [{'label': i, 'value': i} for i in sites]
     return options
 
 ### Callback to set the limit on the range of years. So can choose a site
 ### and not go beyond when it was active
+@app.callback(Output('minimum_year','value'),
+    [Input('site_choice','value')])
+def fill_maximum_year(site):
+    start_year, end_year = LoadData.get_site_year_range_db(site)
+    return start_year
+
 @app.callback(Output('minimum_year', 'options'),
     [Input('site_choice','value')])
 def get_site_minimum_year(site):
-    start_year, end_year = LoadData.get_site_year_range(site)
+    start_year, end_year = LoadData.get_site_year_range_db(site)
 
     options = [{'label': i, 'value': i} for i in range(start_year,end_year + 1)]
     return options
 
+@app.callback(Output('maximum_year','value'),
+    [Input('site_choice','value')])
+def fill_maximum_year(site):
+    start_year, end_year = LoadData.get_site_year_range_db(site)
+    return end_year
+
+### Callback to list the variable options
+@app.callback(Output('variable_options', 'options'),
+    [Input('site_choice', 'value')],
+    )
+def varaible_list(site):
+    site_vars = LoadData.Get_Site_Variables(site)
+    
+    var_options = [{'label': i, 'value': i} for i in site_vars]
+    return var_options
+
 ### Callback to prevent the end year being before the start year
 @app.callback(Output('maximum_year', 'options'),
-    [Input('minimum_year', 'value')
+    [Input('minimum_year', 'value'),
+    Input('site_choice', 'value')
     ])
-def get_correct_year_range(min_year):
-    options = [{'label': i, 'value': i} for i in range(min_year,2019)]
+def get_correct_year_range(min_year,site):
+    start_year, end_year = LoadData.get_site_year_range_db(site)
+    options = [{'label': i, 'value': i} for i in range(min_year,end_year + 1)]
     return options
 ### Cache the loaded dataframe so we don't have to load it each time
 @cache.memoize()
@@ -88,22 +112,6 @@ def return_user_choice_info(data_info):
 ### AFTER SUBMIT BUTTON
 ### ===========================================================
 
-### Callback to list the variable options
-@app.callback(Output('variable_options', 'options'),
-    [Input('dataframe-holder', 'children')],
-    )
-def site_user_choices(data):
-    if not data:
-        return ''
-    data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
-    if isinstance(df, pd.DataFrame):
-        variable_list = AnalysisDriver.GetSiteVariables(df)
-        var_options = [{'label': i, 'value': i} for i in variable_list]
-
-    else:
-        return ''
-    return var_options
 
 ### Callback for the variables choices (dropdown menu)
 @app.callback(Output('variable_options','value'),

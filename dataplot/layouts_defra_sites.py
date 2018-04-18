@@ -54,7 +54,7 @@ def DEFRA_individual_sites():
     dcc.Dropdown(
         id = 'site_choice',
         placeholder = 'Select sites...',
-        value = 'Aberdeen'
+        # value = 'Aberdeen'
     ),
     html.Br(),
 
@@ -62,29 +62,17 @@ def DEFRA_individual_sites():
     dcc.Dropdown(
         id = 'minimum_year',
         placeholder = 'Select start year...',
-        value = 2017
+        # value = 2017
     ),
     html.P('To'),
     dcc.Dropdown(
         id = 'maximum_year',
         placeholder = 'Select end year...',
-        value = 2018
+        # value = 2018
     ),
     html.Br(),
     ### Have a submit button to load in the choices and then load the relevant
     ### data
-
-    html.Button('Submit', id = 'site_choice_button'),
-    html.Br(),
-    html.Br(),
-
-    html.Div(id = 'user_criteria'),
-
-    html.Hr(),
-    ###  Create a div to place the dataframe while its being used but not
-    ### viewable by the user. Make data Json - very slow when being read
-    html.Div(id = 'dataframe-holder', style = {'display': 'none'}),
-
     html.Label('Select a variable:'),
     dcc.Dropdown(id = 'variable_options',
     multi = True,
@@ -96,6 +84,19 @@ def DEFRA_individual_sites():
     options = [{'label': i, 'value': i} for i in ['Combine', 'Separate']],
     value = 'Combine'),
     html.Br(),
+    
+    html.Button('Submit', id = 'site_choice_button'),
+    html.Br(),
+    html.Br(),
+
+    html.Div(id = 'user_criteria'),
+
+    html.Hr(),
+    ###  Create a div to place the dataframe while its being used but not
+    ### viewable by the user. Make data Json - very slow when being read
+    html.Div(id = 'dataframe-holder', style = {'display': 'none'}),
+
+
 
     # Resample the data
     html.Label('How do you want the data resampled?'),

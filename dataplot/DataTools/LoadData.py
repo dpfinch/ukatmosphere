@@ -9,6 +9,8 @@ import os.path
 from dataplot.DataTools import TidyData
 import numpy as np
 import pickle
+from dataplot.models import *
+from datetime import datetime as dt
 #==============================================================================
 
 def FromCSV(filename = None, parameters = []):
@@ -53,7 +55,7 @@ def FromCSV(filename = None, parameters = []):
 
 def Get_AURN_data(site_names, years, drop_status_and_units = True):
 
-    filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
+    filename = 'dataplot/InfoFiles/DEFRA_AURN_all_sites_info.csv'
     sites = pd.read_csv(filename)
     site_code = sites['Site Code'].loc[sites['Site Name'] == site_names]
     site_code = site_code.values[0]
@@ -182,6 +184,34 @@ def AURN_site_list(region, environment):
     final_site_list = env_sites['Site Name']
     return final_site_list
 
+def AURN_site_list_db(region,environment):
+    # Get all the avaible sites in the databse (which are AURN related)
+    # Get unique site codes primary keys
+    avail_sites_pks = list(measurement_data.objects.values_list('site_id', flat=True).distinct())
+
+    site_df = pd.DataFrame(list(site_info.objects.filter(id__in = avail_sites_pks).values()))
+    aurn_df = site_df.loc[site_df.site_type.isin(['DEFRA AURN'])]
+
+    # If one value is submitted it will be a string not a list. Make it a Lists
+    if type(region) == str:
+        region = [region]
+    if type(environment) == str:
+        environment = [environment]
+
+    if 'All' in region:
+        regioned_sites = aurn_df
+    else:
+        regioned_sites = aurn_df.loc[aurn_df['region'].isin(region)]
+
+    if 'All' in environment:
+        env_sites = regioned_sites
+    else:
+        env_sites = regioned_sites.loc[regioned_sites['environment_type'].isin(environment)]
+
+    final_site_list = env_sites['site_name']
+    return final_site_list
+
+
 def get_site_info(site_name):
     filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
     all_sites = pd.read_csv(filename)
@@ -192,6 +222,19 @@ def get_site_info(site_name):
         site_dict[c] = site[c].values[0]
 
     return site_dict
+
+def get_site_year_range_db(site_name):
+    site = site_info.objects.filter(site_name = site_name)
+
+    avail_data = measurement_data.objects.filter(site_id = site)
+    start_year = avail_data.earliest('date_and_time').date_and_time.year
+    end_year = avail_data.latest('date_and_time').date_and_time.year
+
+    # if site.date_closed:
+    #     end_year = site.date_closed.year
+    # else:
+    #     end_year = dt.now().year
+    return start_year, end_year
 
 def get_site_year_range(site_name):
     sites = pickle.load(open('dataplot/InfoFiles/All_AURN_site_variables.p', 'rb'))
@@ -205,6 +248,14 @@ def get_site_year_range(site_name):
         end_year = None
 
     return start_year, end_year
+
+def Get_Site_Variables(site):
+    site = site_info.objects.filter(site_name = site)
+    site_variables = list(pollutants_details.objects.filter(relevant_site = site).values_list('pollutant_name'))
+
+    variable_list = [x[0] for x in site_variables]
+
+    return variable_list
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the

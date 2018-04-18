@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import urllib.parse as urlparse
+import pickle
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -134,8 +135,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Database URL commands (taken from Heroku docs):
 import dj_database_url
-db_from_env =  dj_database_url.config(default = 'postgres://xpkexvfzlmezoi:fe7f3285c91a25690c45684573c6602fe2dddbb8d2b9b2eb056864cd8441f4d1@ec2-46-137-94-97.eu-west-1.compute.amazonaws.com:5432/d4k0p8vf123cm8')
-DATABASES['default'].update(db_from_env)
+# db_from_env =  dj_database_url.config(default = 'postgres://xpkexvfzlmezoi:fe7f3285c91a25690c45684573c6602fe2dddbb8d2b9b2eb056864cd8441f4d1@ec2-46-137-94-97.eu-west-1.compute.amazonaws.com:5432/d4k0p8vf123cm8')
+# DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=600)
+if len(db_from_env) == 0:
+    db_from_env = pickle.load(open('database_info.p','rb'))
+DATABASES['default'] = db_from_env
 
 # Import REDIS requirement things
 redis_url = urlparse.urlparse(os.environ.get('REDIS_URL'))
