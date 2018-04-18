@@ -224,7 +224,7 @@ def get_site_info(site_name):
     return site_dict
 
 def get_site_year_range_db(site_name):
-    site = site_info.objects.filter(site_name = site_name)
+    site = site_info.objects.get(site_name = site_name)
 
     avail_data = measurement_data.objects.filter(site_id = site)
     start_year = avail_data.earliest('date_and_time').date_and_time.year
@@ -250,10 +250,14 @@ def get_site_year_range(site_name):
     return start_year, end_year
 
 def Get_Site_Variables(site):
-    site = site_info.objects.filter(site_name = site)
+    site = site_info.objects.get(site_name = site)
     site_variables = list(pollutants_details.objects.filter(relevant_site = site).values_list('pollutant_name'))
 
     variable_list = [x[0] for x in site_variables]
+
+    for v in variable_list:
+        if 'modelled' in v.lower().split():
+            variable_list.remove(v)
 
     return variable_list
 

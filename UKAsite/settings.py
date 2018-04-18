@@ -27,7 +27,7 @@ SECRET_KEY = 'ei=upevndr+yn0h=)z*phnwv@!h4d9d29ei+(i_2mu=-ib5&bq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.ukatmosphere.org', '127.0.0.1','ukatmosphere.herokuapp.com','0.0.0.0:5000']
+ALLOWED_HOSTS = ['www.ukatmosphere.org', '127.0.0.1','ukatmosphere.herokuapp.com','0.0.0.0']
 
 
 # Application definition
