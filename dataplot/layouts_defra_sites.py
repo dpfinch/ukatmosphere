@@ -11,11 +11,11 @@ def DEFRA_individual_sites():
     ## Get the sites availble from the DEFRA AURN network
     site_regions = LoadData.AURN_regions()
     region_choices = ['All'] + site_regions
-    region_options = [{'label': i, 'value': i} for i in region_choices]
+    region_options = [{'label': i.strip(), 'value': i.strip()} for i in region_choices]
 
     site_envs = LoadData.AURN_environment_types()
     env_choices = ['All'] + site_envs
-    env_options = [{'label': i, 'value': i} for i in env_choices]
+    env_options = [{'label': i.strip(), 'value': i.strip()} for i in env_choices]
 
     #### Start the page layout
     page_layout = html.Div(id = 'full_page_container', children =
@@ -84,7 +84,7 @@ def DEFRA_individual_sites():
     options = [{'label': i, 'value': i} for i in ['Combine', 'Separate']],
     value = 'Combine'),
     html.Br(),
-    
+
     html.Button('Submit', id = 'site_choice_button'),
     html.Br(),
     html.Br(),

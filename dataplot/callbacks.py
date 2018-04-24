@@ -57,8 +57,8 @@ def fill_maximum_year(site):
     [Input('site_choice', 'value')],
     )
 def varaible_list(site):
-    site_vars = LoadData.Get_Site_Variables(site)
-    
+    site_vars = LoadData.Get_Site_Variables_db(site)
+
     var_options = [{'label': i, 'value': i} for i in site_vars]
     return var_options
 
@@ -73,10 +73,11 @@ def get_correct_year_range(min_year,site):
     return options
 ### Cache the loaded dataframe so we don't have to load it each time
 @cache.memoize()
-def load_station_data(site_type, sites, years):
+def load_station_data(site_type, sites, years, variables):
     if sites:
         if site_type == 'DEFRA AURN':
-            df = LoadData.Get_AURN_data( sites, years)
+            # df = LoadData.Get_AURN_data( sites, years, variables)
+            df = LoadData.Get_One_Site_Data(sites,years, variables)
         else:
             print("Don't have any other data yet")
     else:
@@ -89,11 +90,12 @@ def load_station_data(site_type, sites, years):
     [State('site_choice', 'value'),
     State('minimum_year', 'value'),
     State('maximum_year', 'value'),
+    State('variable_options','value'),
     ])
-def load_data(button_clicked,sites, min_year, max_year):
-    years = [str(min_year), str(max_year)]
-    load_station_data('DEFRA AURN', sites, years)
-    info_string = 'DEFRA AURN' + ',' + sites + ',' + str(min_year) + ',' + str(max_year)
+def load_data(button_clicked,sites, min_year, max_year, variables):
+    years = [min_year, max_year]
+    load_station_data('DEFRA AURN', sites, years, variables)
+    info_string = 'DEFRA AURN' + ',' + sites + ',' + str(min_year) + ',' + str(max_year) + ',' + ','.join(variables)
     return info_string
 
 @app.callback(Output('user_criteria', 'children'),
@@ -113,19 +115,19 @@ def return_user_choice_info(data_info):
 ### ===========================================================
 
 
-### Callback for the variables choices (dropdown menu)
-@app.callback(Output('variable_options','value'),
-    [Input('dataframe-holder', 'children'),
-    Input('variable_options','options')])
-def variable_user_choices(data,options):
-    if not data:
-        return ''
-    data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
-    if not isinstance(df, pd.DataFrame):
-        return ''
-    #Currently only return the first option the page can't handle more yet
-    return options[0]['value']
+# ### Callback for the variables choices (dropdown menu)
+# @app.callback(Output('variable_options','value'),
+#     [Input('dataframe-holder', 'children'),
+#     Input('variable_options','options')])
+# def variable_user_choices(data,options):
+#     if not data:
+#         return ''
+#     data = data.split(',')
+#     df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
+#     if not isinstance(df, pd.DataFrame):
+#         return ''
+#     #Currently only return the first option the page can't handle more yet
+#     return options[0]['value']
 
 
 ### Callback for the year range slider - will set values for date range
@@ -138,7 +140,10 @@ def get_range_min(resample_value, data):
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    variable_list = data[4:]
+
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], variable_list)
+
     if not isinstance(df, pd.DataFrame):
         return ''
     resample_rate = resample_value[0]
@@ -156,7 +161,8 @@ def get_range_min(data, site_value, resample_value):
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    variable_list = data[4:]
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], variable_list)
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -174,7 +180,8 @@ def get_range_marks(data, site_value, resample_value):
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    variable_list = data[4:]
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], variable_list)
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -201,7 +208,8 @@ def print_date_choices(data, site_value, resample_value,
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    variable_list = data[4:]
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], variable_list)
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -264,7 +272,8 @@ def change_timeseries(data, variable_options,site_choice, combine_choice, DataRe
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -297,7 +306,7 @@ def change_histogram(data, variable_options,site_choice, combine_choice, DataRes
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -317,7 +326,7 @@ def get_colourbychoices(data,value):
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -358,7 +367,7 @@ def change_correlation(data, variable_options,site_choice, combine_choice, DataR
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -394,7 +403,7 @@ def change_dirunalplot(data, variable_options,site_choice, combine_choice, DataR
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -433,7 +442,7 @@ def change_hourlybox(data, variable_options,site_choice, combine_choice, DataRes
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -466,7 +475,7 @@ def change_Weeklyplot(data, variable_options,site_choice, combine_choice, DataRe
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -498,7 +507,7 @@ def change_weeklybox(data, variable_options,site_choice, combine_choice, DataRes
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -531,7 +540,9 @@ def change_Annualplot(data, variable_options,site_choice, combine_choice, DataRe
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    if (int(data[3]) - int(data[2])) < 2:
+        return html.H3('Annual mean needs more than one year of data.')
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 
@@ -579,7 +590,7 @@ def change_datedayheatmap(data, variable_options,site_choice, combine_choice, Da
     if not data:
         return ''
     data = data.split(',')
-    df  = load_station_data(data[0],data[1],[data[2],data[3]])
+    df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
 

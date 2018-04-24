@@ -28,6 +28,10 @@ def DEFRA_AURN_data_to_db(df,site_code):
             chemical_formula = Get_Chemical_Formula(col)
         except IndexError:
             continue
+
+        # Check this is actually data in the dataframe
+        if df[col].count() == 0:
+            continue
         # Get the unit for the column variable
         # The corresponding unit column is:
         unit_col = df[unit_cols[i]]

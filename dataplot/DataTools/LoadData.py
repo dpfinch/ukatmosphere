@@ -82,26 +82,26 @@ def Get_AURN_data(site_names, years, drop_status_and_units = True):
             if x.split('.')[0] not in ['Date', 'time', 'status','unit']:
                 col_vars.append(x)
 
-        column_name_change = {}
-        for n,v in enumerate(col_vars):
-            if n == 0 :
-                unit_name = 'unit'
-            else:
-                unit_name = 'unit.' + str(n)
-
-            # Need to find the unit of the variable -> make sure its not a 'nan'
-            var_unit_col = df[unit_name]
-            units_in_col = list(var_unit_col.unique())
-
-            for us in units_in_col:
-                if type(us) == str:
-                    var_unit = "(%s)" % us
-            if not var_unit in locals():
-                var_unit = ''
-
-            column_name_change[v] = "%s %s" % (v, var_unit)
-
-        df.rename(columns = column_name_change, inplace = True)
+        # column_name_change = {}
+        # for n,v in enumerate(col_vars):
+        #     if n == 0 :
+        #         unit_name = 'unit'
+        #     else:
+        #         unit_name = 'unit.' + str(n)
+        #
+        #     # Need to find the unit of the variable -> make sure its not a 'nan'
+        #     var_unit_col = df[unit_name]
+        #     units_in_col = list(var_unit_col.unique())
+        #
+        #     for us in units_in_col:
+        #         if type(us) == str:
+        #             var_unit = "(%s)" % us
+        #     if not var_unit in locals():
+        #         var_unit = ''
+        #
+        #     column_name_change[v] = "%s %s" % (v, var_unit)
+        #
+        # df.rename(columns = column_name_change, inplace = True)
 
         # Get all the new column names
         column_names = df.columns
@@ -147,6 +147,43 @@ def Get_AURN_data(site_names, years, drop_status_and_units = True):
 
         all_dataframes.append(df)
     final_df = pd.concat(all_dataframes)
+    return final_df
+
+def Get_One_Site_Data(site,years, variables):
+
+    if type(variables) == str:
+        variables = [variables]
+
+    queried_measurements = measurement_data.objects.filter(
+        site_id = site_info.objects.get(
+            site_name = site
+        )
+    )
+
+    queried_variables = queried_measurements.filter(measurement_id__in = measurement_info.objects.filter(
+        variable_name__in = variables
+    ))
+
+    # Get the range of years chosen
+    year_range = range(years[0],years[1] + 1)
+    selected_years = queried_measurements.filter(date_and_time__year__in = year_range)
+
+    all_var_dfs = []
+    for var in variables:
+
+        var_info = measurement_info.objects.get(variable_name = var)
+
+        temp_df = pd.DataFrame(list(selected_years.filter(measurement_id = var_info.id).values(
+            'date_and_time', 'value', 'verified'
+        )))
+
+        temp_df.set_index('date_and_time', inplace = True)
+
+        temp_df.rename(columns = {'value': var, 'verified':'Verified_'+var}, inplace = True)
+
+        all_var_dfs.append(temp_df)
+
+    final_df = pd.concat(all_var_dfs,axis = 0)
     return final_df
 
 def AURN_environment_types():
@@ -254,10 +291,22 @@ def Get_Site_Variables(site):
     site_variables = list(pollutants_details.objects.filter(relevant_site = site).values_list('pollutant_name'))
 
     variable_list = [x[0] for x in site_variables]
+    variable_list.sort()
 
     for v in variable_list:
         if 'modelled' in v.lower().split():
             variable_list.remove(v)
+
+    return variable_list
+
+def Get_Site_Variables_db(site):
+    site_query = site_info.objects.get(site_name = site)
+    # Get the availble measured info from the site
+    avail_measurements = measurement_data.objects.filter(site_id = site_query)
+    measurement_ids = list(avail_measurements.values_list('measurement_id', flat = True).distinct())
+
+    variable_list = list(measurement_info.objects.filter(
+        id__in = measurement_ids).values_list('variable_name', flat = True))
 
     return variable_list
 
