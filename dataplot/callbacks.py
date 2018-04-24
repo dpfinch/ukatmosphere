@@ -330,7 +330,7 @@ def get_colourbychoices(data,value):
     if not isinstance(df, pd.DataFrame):
         return ''
 
-    variable_list = AnalysisDriver.GetSiteVariables(df)
+    variable_list = LoadData.Get_Site_Variables_db(data[1])
     var_options = [{'label': i, 'value': i} for i in variable_list]
     return var_options
 
@@ -367,6 +367,8 @@ def change_correlation(data, variable_options,site_choice, combine_choice, DataR
     if not data:
         return ''
     data = data.split(',')
+    if colourby:
+        data.append(colourby)
     df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
