@@ -1,0 +1,66 @@
+
+{% extends 'dataplot/base.html' %}
+
+{% block content %}
+
+  <div class = "about_text_holder">
+
+  <div class = "about_sections">
+    <h2 class = "about_header">Analysis Tools</h2>
+  <p class = "about_text">
+    This site is designed to perform quick analysis on air quality data from the
+    <a href="https://uk-air.defra.gov.uk/">DEFRA AURN</a> observations sites around the UK.
+    To use the tools developed, simply
+     select an observation site and the variables you wish to plot for a given
+     time period and hit the submit button.
+     <br>
+    This will produce the a number of plots, all of which are interactive and can
+    be adapted by the user and downloaded as a png file. The extent of the adaptation
+     vary on the type of plot and more adaptability will be added as the site development
+     continues.
+
+  </p>
+</div>
+
+<div class = "about_sections">
+  <h2 class = "about_header">Future Plans</h2>
+  <p class = "about_text">
+    This website is being constantly developed and changed. The analysis tools available
+    are an example of the analysis that can be performed with air quality data,
+    however they are by
+    no means the limit of what can be done. The tools will be adapted to better fit
+    the needs of the users and more tools will be added as they are developed.
+    <br>
+    More data will be added over time and better ways of selecting data will become
+     available in the future.
+     <br>
+     The site is in the early stages of deployment so you may come across a number
+     of bugs which will be ironed out over time. If you spot any bugs or have ideas
+     of tools you would like to use then please <a href="mailto:d.finch@ed.ac.uk">contact me</a>.
+
+  </p>
+</div>
+
+<div class = "about_sections">
+  <h2 class = "about_header">About Us</h2>
+  <p class = "about_text">
+    The main developer for this site and the analysis tools is Douglas Finch, a
+    data scientist at the University of Edinburgh in the School of Geosciences.
+    This site is being developed as part of a larger project by the Natural
+     Environment Research Council (NERC), with a focus improving the accessibility
+     air quality data from new observational super sites being set up around the UK
+     in the coming years.
+     <br>
+     This is collaborative project between a large number of UK Universities and
+      will be expanded as required by all collaborating partners and other users
+      to the site.
+      <br>
+      If you would like to contact the the developer for this site please feel free to <a href="mailto:d.finch@ed.ac.uk">email</a>.
+  </p>
+</div>
+</div>
+
+<div class = "home_page", id = "about_page"></div>
+<!-- <div class = "home_page", id = "about_page"></div> -->
+
+{% endblock %}

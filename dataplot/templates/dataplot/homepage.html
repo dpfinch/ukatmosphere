@@ -1,29 +1,27 @@
+
 {% extends 'dataplot/base.html' %}
 
 {% block content %}
 <div class = "home_page">
-
-  <!-- Need buttons to redirect user
-  To data analysis tools
-  To redirect to and "about" page
-  To redirect to a news page?
-  And something else for symmetry  -->
+  <div class = "home_page_spacer"></div>
   <table class = "button_table">
     <tr>
-    <td><a href = "/dataplot/main"><div class = "home_buttons" id = "analysis_tool_button">
+    <td><a href = "/dataplot/DEFRA_sites"><div class = "home_buttons" id = "analysis_tool_button">
       <div class = "home_button_text"><h1> Analysis Tools</h1>
         <p> Use the toolkit to plot air quality data</p>
       </div>
     </div></a></td>
 
-    <td><a href = "{% url 'analysis' %}"><div class = "home_buttons" id = "about_button">
+    <td><a href = ""><div class = "home_buttons" id = "news_button">
       <div class = "home_button_text"><h1> News</h1>
-        <p> The latest developments of the UK Atmosphere Tools</p>
+        <h2>Coming Soon</h2>
+        <!-- <p> The latest developments of the UK Atmosphere Tools</p> -->
       </div>
     </div></a></td>
     </tr>
+
     <tr>
-    <td><a href = ""><div class = "home_buttons" id = "news_button">
+    <td><a href = "{% url 'about' %}"><div class = "home_buttons" id = "about_button">
       <div class = "home_button_text"><h1> About <h1>
         <p> Find more about how to use the tools</p>
       </div>
@@ -31,7 +29,8 @@
 
     <td><a href = ""><div class = "home_buttons" id = "contact_button">
       <div class = "home_button_text"><h1> Download Tools</h1>
-        <p> Download our analysis package in Python </p>
+        <h2>Coming Soon</h2>
+        <!-- <p> Download our analysis package in Python </p> -->
       </div>
     </div></a></td>
     <tr>

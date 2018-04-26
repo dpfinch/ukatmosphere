@@ -27,6 +27,8 @@ import pandas as pd
     Input('site_env_choice', 'values'),])
 def list_available_sites(site_region, env_choice):
     sites = LoadData.AURN_site_list_db(site_region, env_choice)
+    sites = list(sites)
+    sites.sort()
     options = [{'label': i, 'value': i} for i in sites]
     return options
 

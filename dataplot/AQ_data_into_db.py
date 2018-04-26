@@ -186,7 +186,7 @@ def Fill_DEFRA_AURN_DB():
     ## Likely/hopefully only need this the once.
     all_sites_query = site_info.objects.all()
 
-    ## Need to prioritise input as this takes and absolute age.
+    ## Need to prioritise input as this takes an absolute age.
 
 
     for site in all_sites_query:
@@ -221,6 +221,50 @@ def Fill_DEFRA_AURN_DB():
             DEFRA_AURN_data_to_db(df,site_code)
             print('Submitted to database')
 
+def Fill_Year_DEFRA_Data(year):
+    ## This will be a module to fill up the db with the past values
+    ## Likely/hopefully only need this the once.
+    all_sites_query = site_info.objects.all()
+
+    ## Need to prioritise input as this takes an absolute age.
+
+    for site in all_sites_query:
+        site_name = site.site_name
+        site_code = site.site_code
+        site_open = site.site_open
+        date_open = site.date_open
+        date_closed = site.date_closed
+
+
+
+        # This skips sites that have already been added to the database
+        ### THIS IS NOT A SMART WAY OF DOING THIS BUT IS A TEMP BODGE
+        if measurement_data.objects.filter(date_and_time__year = year).filter(
+            site_id = site_info.objects.filter(site_name = site_name)).exists():
+            continue
+
+        # Don't include sites that are just a quick PM10 site
+        # Only inlcudes Brighton Roadside PM10 & Northampton PM10
+        if 'PM10' in site_name:
+            continue
+
+        if date_open.year > year:
+            continue
+
+        # Load in dataframe - could be a memory issue here with the
+        # site open the longest
+        if site_open:
+            date_closed = dt.now()
+
+        # For the time being only get 2018 data
+        if site_open:
+
+            print('Getting data for %s: %d - %d (%s)' % (site_name, date_open.year, date_closed.year, site_code))
+            df = LoadData.Get_AURN_data(site_name, [year,year],
+                drop_status_and_units = False)
+
+            DEFRA_AURN_data_to_db(df,site_code)
+            print('Submitted to database')
 
 def Get_Chemical_Formula(chemical_name):
     chems = pd.read_csv('dataplot/InfoFiles/Chemical_Formula.csv', dtype = str).rename(columns=lambda x: x.strip())

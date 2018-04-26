@@ -250,7 +250,7 @@ def AURN_site_list_db(region,environment):
 
 
 def get_site_info(site_name):
-    filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
+    filename = 'dataplot/InfoFiles/DEFRA_AURN_all_sites_info.csv'
     all_sites = pd.read_csv(filename)
     site = all_sites.loc[all_sites['Site Name'] == site_name]
 

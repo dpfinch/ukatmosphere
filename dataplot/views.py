@@ -33,8 +33,11 @@ def dispatcher(request):
 
 # Create a simple view for the homepage
 def homepage(request):
-    return render(request, 'dataplot/under_construction.html')
-    # return render(request, 'dataplot/homepage.html')
+    # return render(request, 'dataplot/under_construction.html')
+    return render(request, 'dataplot/homepage.html')
+
+def about(request):
+    return render(request,'dataplot/about.html')
 
 def dash(request, **kwargs):
     return HttpResponse(dispatcher(request))

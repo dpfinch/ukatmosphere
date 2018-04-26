@@ -29,7 +29,9 @@ component.
 ––––––––––––––––––––––––––––––––––––––––––––––––––
 */
 
-
+html{
+  height: 100%;
+}
 
 h1 a {
     color: #1D5F75;
@@ -123,13 +125,23 @@ a:hover{
 }
 
 .home_page{
-  align-items: center;
+  /*align-items: center;*/
   background-image: url(../industrial_photo.jpg);
-  background-size: cover;
+  /*background-size: cover;*/
   background-blend-mode: lighten;
   height: 100%;
-  padding: 100px;
-  flex-grow: 100;
+  /*padding: 100px;*/
+  /*flex-grow: 100;*/
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /*position: absolute;*/
+}
+
+.home_page_spacer{
+  height: 60px;
+
 }
 
 .button_table{
@@ -158,6 +170,43 @@ a:hover{
 .home_button_text p{
   font-size: 15pt;
   /*font-family: 'Tinos';*/
+}
+
+
+/*
+  About page styles
+––––––––––––––––––––––––––––––––––––––––––––––––––
+*/
+.about_text_holder{
+  /*background: transparent;*/
+  position: absolute;
+  height: auto;
+  width: auto;
+}
+
+.about_sections{
+  /*display: block;*/
+  background-color: #333333;
+  text-align: left;
+  border-radius: 10px;
+  height: auto;
+  width: 82%;
+  margin: 10px;
+  background: rgba(51,51, 51, 0.45);
+  margin: auto;
+}
+
+.about_header{
+  padding: 10px;
+  color: black;
+}
+
+.about_text{
+  font-size: 14pt;
+  color: black;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
 }
 
 /*
