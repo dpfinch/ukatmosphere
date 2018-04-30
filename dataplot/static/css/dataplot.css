@@ -192,18 +192,20 @@ a:hover{
   height: auto;
   width: 82%;
   margin: 10px;
-  background: rgba(51,51, 51, 0.45);
+  background: rgba(51,51, 51, 09);
   margin: auto;
 }
 
 .about_header{
   padding: 10px;
   color: black;
+  color: rgb(138,144,145);
+  font-weight: 600;
 }
 
 .about_text{
   font-size: 14pt;
-  color: black;
+  color: rgb(138,144,145);
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 10px;
