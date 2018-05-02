@@ -7,6 +7,7 @@
 from datetime import datetime, timedelta
 import pandas as pd
 from dataplot.DataTools import LoadData
+from dataplot.models import *
 #==============================================================================
 
 def DateClean_Heathfeild(df):
@@ -91,8 +92,39 @@ def site_info_message(site_info_string):
     gov_region = site_dict['Government Region']
 
     message = "Plotting data for the %s site %s between %s and %s, which is a %s site in %s.\n" % (site_type, sites, min_year, max_year, env_type, gov_region)
-
     return message
+
+def Axis_Title(chosen_vars, chemical_formula = False):
+    ## Get units & name for variables
+    if not chosen_vars:
+        return ''
+
+    vars_used = measurement_info.objects.filter(variable_name__in = chosen_vars)
+    units = [x[0] for x in vars_used.values_list('unit')]
+    if len(set(units)) > 1:
+        # If the variables have different units then....
+        var_units = list(set(units))
+    else:
+        var_units = set(units).pop()
+
+    if type(var_units) != str:
+        unit_suffix = ''
+    else:
+        unit_suffix = "(%s)" % var_units
+
+    if len(chosen_vars) > 1:
+        prefix = 'Concentration '
+    else:
+        if chemical_formula:
+            prefix = measurement_info.objects.get(variable_name = chosen_vars[0]).chemical_formula
+
+        else:
+            prefix = chosen_vars[0]
+
+    title = prefix + ' ' + unit_suffix
+
+    return title
+
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the

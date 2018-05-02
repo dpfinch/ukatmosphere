@@ -48,15 +48,16 @@ def Histogram(df, **kwargs):
         bin_size = (resampled_df.max() -resampled_df.min()) / num_bins
         bin_size = 5
         x = resampled_df
-        
+
         if kwargs['probability'] == ['Probability']:
 
             all_plots.append(go.Histogram(
-            x = x,
-            histnorm = 'probability',
-            nbinsx = num_bins,
-            name = var
+                x = x,
+                histnorm = 'probability',
+                nbinsx = num_bins,
+                name = var
             ))
+            yaxisTitle = 'Probability'
         else:
             all_plots.append(go.Histogram(
                 x = x,
@@ -67,10 +68,12 @@ def Histogram(df, **kwargs):
                 name = var
                 ))
 
+            yaxisTitle = 'Frequency'
+
     plot_layout = {
         'bargap': 0.2,
         'bargroupgap': 0.1,
-        'yaxis': {'title': 'Frequency'},
+        'yaxis': {'title': yaxisTitle},
         'xaxis': {'title': kwargs['xtitle']},
         'title': kwargs['title'],
         }

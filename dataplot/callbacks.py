@@ -109,27 +109,18 @@ def return_user_choice_info(data_info):
     else:
         return html.P(TidyData.site_info_message(data_info))
 
-
+#
+# @app.callback(Output('submit_counter', 'children'),
+#     [Input('site_choice_button', 'n_clicks')],
+#     )
+# def submit_button_counter(data):
+#     # print(data)
+#     return str(data)
 
 
 ### ===========================================================
 ### AFTER SUBMIT BUTTON
 ### ===========================================================
-
-
-# ### Callback for the variables choices (dropdown menu)
-# @app.callback(Output('variable_options','value'),
-#     [Input('dataframe-holder', 'children'),
-#     Input('variable_options','options')])
-# def variable_user_choices(data,options):
-#     if not data:
-#         return ''
-#     data = data.split(',')
-#     df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
-#     if not isinstance(df, pd.DataFrame):
-#         return ''
-#     #Currently only return the first option the page can't handle more yet
-#     return options[0]['value']
 
 
 ### Callback for the year range slider - will set values for date range
@@ -249,11 +240,19 @@ def rolling_mean_options(value):
 
     return rmean_options
 
-# @app.callback(Output('TimeSeriesYTitle', 'value'),
-#     [Input('variable_options', 'value')])
-# def get_timeseries_ytitle(variable_options):
-#     ytitle = variable_options
-#     return ytitle
+@app.callback(Output('TimeSeriesYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('TimeSeriesLabelFormat', 'value')])
+def get_timeseries_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
 
 ### Callback for the TimeSeries plot
 @app.callback(Output('TimeSeries', 'children'),
@@ -267,10 +266,11 @@ def rolling_mean_options(value):
     Input('TimeSeriesXTitle', 'value'),
     Input('TimeSeriesYTitle', 'value'),
     Input('TimeSeriesRollingMean', 'values'),
-    Input('TimeSeriesLineOrScatter', 'value')
+    Input('TimeSeriesLineOrScatter', 'value'),
+    Input('TimeSeriesLabelFormat', 'value')
     ])
 def change_timeseries(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, xtitle, ytitle, rollingMean, lineorscatter):
+    date_range, title, xtitle, ytitle, rollingMean, lineorscatter, label_format):
     if not data:
         return ''
     data = data.split(',')
@@ -278,17 +278,32 @@ def change_timeseries(data, variable_options,site_choice, combine_choice, DataRe
     df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
-
+    variable_options = data[4:]
     from dataplot.DataTools.AnalysisTools import TimeSeries
-    return TimeSeries.TimeSeries(df,variable_options = variable_options,
+    return TimeSeries.TimeSeries(df,variable_options =variable_options,
         site_choice = site_choice, combine_choice = combine_choice,
         DataResample = DataResample, date_range = date_range, title = title,
         rollingMean = rollingMean, xtitle = xtitle, ytitle = ytitle,
-        lineorscatter = lineorscatter )
+        lineorscatter = lineorscatter, label_format = label_format )
 
 # ### *********** HISTOGRAM PLOT *******************
-# ### Callback for the Histogram interaction
-#
+### Callback for the Histogram interaction
+@app.callback(Output('HistogramXTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('HistogramLabelFormat', 'value')])
+def get_histo_xtitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
+
 # ### Callback for the Histogram plot
 @app.callback(Output('Histogram', 'children'),
     [Input('dataframe-holder', 'children'),
@@ -300,10 +315,11 @@ def change_timeseries(data, variable_options,site_choice, combine_choice, DataRe
     Input('HistogramTitle', 'value'),
     Input('HistogramXTitle', 'value'),
     Input('HistogramBins','value'),
-    Input('HistogramProbability','values')
+    Input('HistogramProbability','values'),
+    Input('HistogramLabelFormat', 'value')
     ])
 def change_histogram(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, xtitle, histbins, probability):
+    date_range, title, xtitle, histbins, probability, label_format):
 
     if not data:
         return ''
@@ -312,11 +328,12 @@ def change_histogram(data, variable_options,site_choice, combine_choice, DataRes
     if not isinstance(df, pd.DataFrame):
         return ''
 
+    variable_options = data[4:]
     from dataplot.DataTools.AnalysisTools import Histogram
     return Histogram.Histogram(df,variable_options = variable_options,
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, histbins = histbins,
-    title = title, xtitle = xtitle, probability = probability)
+    title = title, xtitle = xtitle, probability = probability, label_format = label_format )
 
 ### *********** CORRELATION PLOT *******************
 ### Callback for the Correlation interaction
@@ -336,18 +353,61 @@ def get_colourbychoices(data,value):
     var_options = [{'label': i, 'value': i} for i in variable_list]
     return var_options
 
+@app.callback(Output('CorrelationXTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('CorrelationLabelFormat', 'value')])
+def get_correlation_xtitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
 
-# @app.callback(Output('CorrelationYTitle', 'value'),
-#     [Input('variable_options', 'value')])
-# def get_correlation_ytitle(variable_options):
-#     ytitle = variable_options[1]
-#     return ytitle
-#
-# @app.callback(Output('CorrelationXTitle', 'value'),
-#     [Input('variable_options', 'value')])
-# def get_correlation_xtitle(variable_options):
-#     xtitle = variable_options[0]
-#     return xtitle
+    if not data_info:
+        return ''
+
+    if len(data_info.split(',')[4:]) > 1:
+        variable_options = data_info.split(',')[4:][0]
+    else:
+        return ''
+
+    ytitle = TidyData.Axis_Title([variable_options],
+        chemical_formula)
+    return ytitle
+
+@app.callback(Output('CorrelationYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('CorrelationLabelFormat', 'value')])
+def get_correlation_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+
+    if not data_info:
+        return ''
+    if len(data_info.split(',')[4:]) > 1:
+        variable_options = data_info.split(',')[4:][1]
+    else:
+        return ''
+
+    ytitle = TidyData.Axis_Title([variable_options], chemical_formula)
+    return ytitle
+
+
+@app.callback(Output('CorrelationCLabel', 'value'),
+    [Input('correlation_colourby', 'value'),
+    Input('CorrelationLabelFormat', 'value')])
+def get_correlation_clabel(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+
+    if not data_info:
+        return ''
+
+    ytitle = TidyData.Axis_Title([data_info], chemical_formula)
+    return ytitle
 
 # ### Callback for the Correlation plot
 @app.callback(Output('Correlation', 'children'),
@@ -362,15 +422,17 @@ def get_colourbychoices(data,value):
     Input('CorrelationYTitle','value'),
     Input('CorrelationSwapButton', 'n_clicks'),
     Input('correlation_colourby','value'),
-    Input('CorrelationCLabel', 'value')
+    Input('CorrelationCLabel', 'value'),
     ])
 def change_correlation(data, variable_options,site_choice, combine_choice, DataResample,
     date_range, title, xtitle, ytitle, swap_button, colourby, clabel):
     if not data:
         return ''
     data = data.split(',')
+    variable_options = data[4:]
     if colourby:
         data.append(colourby)
+        variable_options = data[4:-1]
     df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
@@ -385,7 +447,19 @@ def change_correlation(data, variable_options,site_choice, combine_choice, DataR
 
 ### *********** Diurnal Cycle *******************
 ### Callback for the diurnal cycle interaction
-
+@app.callback(Output('DiurnalCycleYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('DiurnalCycleLabelFormat', 'value')])
+def get_dirunal_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
 
 ### Callback for the diurnal cycle plot
 @app.callback(Output('DiurnalCycle', 'children'),
@@ -401,9 +475,10 @@ def change_correlation(data, variable_options,site_choice, combine_choice, DataR
     Input('DiurnalCycleWeekdaySplit', 'value'),
     Input('DiurnalCycleSampleType', 'value'),
     Input('DiurnalCycleErrors', 'value'),
+    Input('DiurnalCycleLabelFormat', 'value'),
     ])
 def change_dirunalplot(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, ytitle, xtitle, weekdaysplit, sample_type, errors):
+    date_range, title, ytitle, xtitle, weekdaysplit, sample_type, errors, label_format):
     if not data:
         return ''
     data = data.split(',')
@@ -413,21 +488,35 @@ def change_dirunalplot(data, variable_options,site_choice, combine_choice, DataR
 
     from dataplot.DataTools.AnalysisTools import DiurnalCycle
 
+    variable_options = data[4:]
     if weekdaysplit == 'Yes':
         return DiurnalCycle.DiurnalCycleSplit(df,variable_options = variable_options,
         site_choice = site_choice, combine_choice = combine_choice,
         DataResample = DataResample, date_range = date_range, title = title,
         ytitle = ytitle, xtitle = xtitle, weekdaysplit = weekdaysplit, sample_type = sample_type,
-        errors = errors)
+        errors = errors, label_format = label_format )
     else:
         return DiurnalCycle.DiurnalCycle(df,variable_options = variable_options,
         site_choice = site_choice, combine_choice = combine_choice,
         DataResample = DataResample, date_range = date_range, title = title,
         ytitle = ytitle, xtitle = xtitle, weekdaysplit = weekdaysplit, sample_type = sample_type,
-        errors = errors)
+        errors = errors, label_format = label_format )
 
 ### *********** HOURLY BOXPLOT *******************
 ### Callback for the Hourly boxplot interaction
+@app.callback(Output('HourlyBoxYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('HourlyBoxLabelFormat', 'value')])
+def get_hourly_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
 
 ### Callback for the hourly box plot
 @app.callback(Output('HourlyBoxplots', 'children'),
@@ -439,10 +528,11 @@ def change_dirunalplot(data, variable_options,site_choice, combine_choice, DataR
     Input('date-slider', 'value'),
     Input('HourlyBoxTitle', 'value'),
     Input('HourlyBoxYTitle', 'value'),
-    Input('HourlyBoxMean', 'values')
+    Input('HourlyBoxMean', 'values'),
+    Input('HourlyBoxLabelFormat', 'value'),
     ])
 def change_hourlybox(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, ytitle, showmean):
+    date_range, title, ytitle, showmean, label_format):
     if not data:
         return ''
     data = data.split(',')
@@ -450,15 +540,28 @@ def change_hourlybox(data, variable_options,site_choice, combine_choice, DataRes
     if not isinstance(df, pd.DataFrame):
         return ''
 
+    variable_options = data[4:]
     from dataplot.DataTools.AnalysisTools import HourlyBoxplots
     return HourlyBoxplots.HourlyBoxplots(df,variable_options = variable_options,
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, title = title,
-    ytitle = ytitle, showmean = showmean)
+    ytitle = ytitle, showmean = showmean, label_format = label_format )
 
 ### *********** Weekly Cycle *******************
 ### Callback for the Weekly cycle interaction
-
+@app.callback(Output('WeeklyCycleYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('WeeklyCycleLabelFormat', 'value')])
+def get_weeklycycle_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
 
 ### Callback for the Weekly cycle plot
 @app.callback(Output('WeeklyCycle', 'children'),
@@ -473,9 +576,10 @@ def change_hourlybox(data, variable_options,site_choice, combine_choice, DataRes
     Input('WeeklyCycleXTitle', 'value'),
     Input('WeeklyCycleSampleType', 'value'),
     Input('WeeklyCycleErrors', 'value'),
+    Input('WeeklyCycleLabelFormat', 'value'),
     ])
 def change_Weeklyplot(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, ytitle, xtitle, sample_type, errors):
+    date_range, title, ytitle, xtitle, sample_type, errors, label_format):
     if not data:
         return ''
     data = data.split(',')
@@ -483,16 +587,30 @@ def change_Weeklyplot(data, variable_options,site_choice, combine_choice, DataRe
     if not isinstance(df, pd.DataFrame):
         return ''
 
+    variable_options = data[4:]
     from dataplot.DataTools.AnalysisTools import WeeklyCycle
     return WeeklyCycle.WeeklyCycle(df,variable_options = variable_options,
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, title = title,
     ytitle = ytitle, xtitle = xtitle, sample_type = sample_type,
-    errors = errors)
+    errors = errors, label_format = label_format )
 
 
 ### *********** WEEKLY BOXPLOT *******************
 ### Callback for the Weekly boxplot interaction
+@app.callback(Output('WeeklyBoxYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('WeeklyBoxLabelFormat', 'value')])
+def get_weeklybox_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
 
 ### Callback for the weekly box plot
 @app.callback(Output('WeeklyBoxplots', 'children'),
@@ -504,26 +622,39 @@ def change_Weeklyplot(data, variable_options,site_choice, combine_choice, DataRe
     Input('date-slider', 'value'),
     Input('WeeklyBoxTitle', 'value'),
     Input('WeeklyBoxYTitle', 'value'),
-    Input('WeeklyBoxMean', 'values')
+    Input('WeeklyBoxMean', 'values'),
+    Input('WeeklyBoxLabelFormat', 'value'),
     ])
 def change_weeklybox(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, ytitle, showmean):
+    date_range, title, ytitle, showmean, label_format):
     if not data:
         return ''
     data = data.split(',')
     df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
-
+    variable_options = data[4:]
     from dataplot.DataTools.AnalysisTools import WeeklyBoxplots
     return WeeklyBoxplots.WeeklyBoxplots(df,variable_options = variable_options,
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, title = title,
-    ytitle = ytitle, showmean = showmean)
+    ytitle = ytitle, showmean = showmean, label_format = label_format )
 
 ### *********** Annual Cycle *******************
 ### Callback for the annual cycle interaction
-
+@app.callback(Output('AnnualCycleYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('AnnualCycleLabelFormat', 'value')])
+def get_annaualcycle_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
 
 ### Callback for the Annual cycle plot
 @app.callback(Output('AnnualCycle', 'children'),
@@ -538,9 +669,10 @@ def change_weeklybox(data, variable_options,site_choice, combine_choice, DataRes
     Input('AnnualCycleXTitle', 'value'),
     Input('AnnualCycleSampleType', 'value'),
     Input('AnnualCycleErrors', 'value'),
+    Input('AnnualCycleLabelFormat', 'value'),
     ])
 def change_Annualplot(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title, ytitle, xtitle, sample_type, errors):
+    date_range, title, ytitle, xtitle, sample_type, errors, label_format):
     if not data:
         return ''
     data = data.split(',')
@@ -549,13 +681,13 @@ def change_Annualplot(data, variable_options,site_choice, combine_choice, DataRe
     df  = load_station_data(data[0],data[1],[int(data[2]),int(data[3])], data[4:])
     if not isinstance(df, pd.DataFrame):
         return ''
-
+    variable_options = data[4:]
     from dataplot.DataTools.AnalysisTools import AnnualCycle
     return AnnualCycle.AnnualCycle(df,variable_options = variable_options,
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, title = title,
     ytitle = ytitle, xtitle = xtitle, sample_type = sample_type,
-    errors = errors)
+    errors = errors, label_format = label_format )
 
 
 ### *********** MONTHLY BOXPLOT *******************
@@ -580,6 +712,21 @@ def change_Annualplot(data, variable_options,site_choice, combine_choice, DataRe
 ### *********** DATE AND DAY HEATMAP *******************
 ### Callback for the Date and Day Heatmap interaction
 
+@app.callback(Output('DateDayHeatmapCLabel', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('DateDayHeatmapLabelFormat', 'value')])
+def get_heatmap_Ctitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
+
 @app.callback(Output('DateDayHeatmap', 'children'),
     [Input('dataframe-holder', 'children'),
     Input('variable_options','value'),
@@ -588,9 +735,10 @@ def change_Annualplot(data, variable_options,site_choice, combine_choice, DataRe
     Input('DataResample', 'value'),
     Input('date-slider', 'value'),
     Input('DateDayHeatmapTitle', 'value'),
+    Input('DateDayHeatmapCLabel','value'),
     ])
 def change_datedayheatmap(data, variable_options,site_choice, combine_choice, DataResample,
-    date_range, title):
+    date_range, title, clabel):
     if not data:
         return ''
     data = data.split(',')
@@ -598,10 +746,12 @@ def change_datedayheatmap(data, variable_options,site_choice, combine_choice, Da
     if not isinstance(df, pd.DataFrame):
         return ''
 
+    variable_options = data[4:]
     from dataplot.DataTools.AnalysisTools import DateDayHeatmap
     return DateDayHeatmap.DateDayHeatmap(df,variable_options = variable_options,
     site_choice = site_choice, combine_choice = combine_choice,
     DataResample = DataResample, date_range = date_range, title = title,
+    clabel=clabel
     )
 
 

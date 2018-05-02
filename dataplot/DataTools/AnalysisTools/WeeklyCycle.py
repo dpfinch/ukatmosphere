@@ -132,6 +132,7 @@ def WeeklyCycle(df,**kwargs):
 
     layout = go.Layout(
         xaxis = dict( title = xtitle),
+        yaxis = dict( title = ytitle),
         title = plot_title,
         )
 

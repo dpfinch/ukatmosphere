@@ -9,6 +9,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 from dataplot.DataTools import ColourPicker
+from dataplot.models import measurement_info
 #==============================================================================
 
 
@@ -94,8 +95,10 @@ def TimeSeries(df, **kwargs):
                 x = rolling.mean().index
                 ))
 
+
     xtitle = kwargs['xtitle']
     ytitle = kwargs['ytitle']
+
     plot_title = kwargs['title']
 
     plot_layout = {'title':plot_title,

@@ -82,8 +82,13 @@ def Correlation(df,**kwargs):
             marker = markers,
         )]
 
-        xtitle = kwargs['xtitle']
-        ytitle = kwargs['ytitle']
+        if swap_axis_button_clicks % 2 == 1:
+            xtitle = kwargs['xtitle']
+            ytitle = kwargs['ytitle']
+        else:
+            ytitle = kwargs['xtitle']
+            xtitle = kwargs['ytitle']
+
         plot_title = kwargs['title']
 
         plot_layout = {'title':plot_title,

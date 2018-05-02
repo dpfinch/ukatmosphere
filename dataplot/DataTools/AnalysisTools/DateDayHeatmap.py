@@ -44,6 +44,8 @@ def DateDayHeatmap(df, **kwargs):
         x = var.index,
         y = hours_in_day,
         colorscale = 'Viridis',
+        colorbar = {'title': kwargs['clabel'],
+                    'titleside': 'right'}
     )]
 
     xtitle = 'Date'
