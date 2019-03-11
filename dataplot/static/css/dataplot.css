@@ -87,6 +87,16 @@ a:hover{
   /*border: 2px solid white;*/
 }
 
+#eo-pi-logo{
+  display: block;
+  position: absolute;
+  /*margin-top: 8px;*/
+  height: 90px;
+  width: 90px;
+  content: url('/static/EO_Pi_Logo.png');
+  /*border: 2px solid white;*/
+}
+
 #home-logo-holder{
   display: inline-block;
   height: 90px;

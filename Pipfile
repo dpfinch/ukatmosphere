@@ -24,7 +24,8 @@ django-redis-cache = "*"
 flask-caching = "*"
 sqlalchemy = "*"
 django-extensions = "*"
-
+schedule = "*"
+urllib3 = "*"
 
 [requires]
 
