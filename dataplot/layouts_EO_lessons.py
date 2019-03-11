@@ -17,7 +17,7 @@ def EO_Lessons():
         html.H1(id = 'UploadHolder', children = 'Choose a lesson...'),
         html.Br(),
         html.P(id = 'EO_lessons_intro', children = [
-        'Earth observation is good.']),
+        'Earth observation info here.']),
     ]),
     html.Div([
 
