@@ -7,6 +7,8 @@ from dataplot.DataTools import AnalysisDriver
 from dataplot.DataTools import LoadData
 from dataplot.DataTools import TidyData
 import pandas as pd
+from dataplot.EO_Lesson_Tools import Satellite_Tools
+from dataplot.EO_Lesson_Tools import TIR_Tools
 
 ### ===================================================================
 ### The first callbacks are for the choices effecting every plot
@@ -834,6 +836,18 @@ def create_map(region, environ, hour_choice, main_graph_layout):
 ### ===================================================================
 ### ALL EO LESSON PLANS GO HERE
 ### ===================================================================
+
+### Callback for EO lesson tabs
+@app.callback(Output('tabs-content', 'children'),
+              [Input('tabs', 'value')])
+def render_content(tab):
+    if tab == 'tab-1':
+        output = TIR_Tools.quick_test()
+
+    elif tab == 'tab-2':
+        output = Satellite_Tools.quick_test()
+
+    return output
 
 
 ### ===================================================================

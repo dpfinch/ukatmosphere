@@ -24,28 +24,13 @@ def EO_Lessons():
         'Earth observation info here.']),
     ]),
 
+    html.Div([
+    dcc.Tabs(id="tabs", value='tab-1', children=[
+        dcc.Tab(label='Thermal Sensor Analysis', value='tab-1'),
+        dcc.Tab(label='Satellite Fire Detection', value='tab-2'),
+    ]),
+    html.Div(id='tabs-content')
+    ]),
 
-    html.Label('Select a lesson:'),
-    dcc.Dropdown(id = 'EO_lesson_choice',
-        multi = False,
-        options = lesson_options,
-        value = 'All'),
-    html.Br(),
-
-    # html.Div([
-    #
-    # html.Div(className='EO_Home_Page', children = [
-    # html.Div(className='Link_Box', children = [
-    #     html.Div(className='LinkTIR', children = [
-    # dcc.Link('Thermal Camera Analysis', href='/app1', className='Link_Text'),
-    # ])]),
-    #
-    #
-    # html.Div(className='Link_Box', children = [
-    #     html.Div(className='LinkLessons',children = [
-    # dcc.Link('Satellite Fire Detection', href='/app2', className='Link_Text'),
-    # ])]),
-    #
-    # ])])
 ])
     return page_layout
