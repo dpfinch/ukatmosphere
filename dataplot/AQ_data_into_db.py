@@ -89,9 +89,10 @@ def Get_Latest_AURN_Data(site_name, year):
     site_code = site_code.values[0]
 
     # Query the site info based on the site code
-    site_id = site_info.objects.filter(side_code = site_code)
+    site_id = site_info.objects.filter(site_code = site_code)
     # Get the latest date and time in the database for a given site
-    most_recent_date = measurement_info.objects.latest('date_and_time').date_and_time
+    site_measurements = measurement_data.objects.filter(site_id = site_id)
+    most_recent_date = site_measurements.latest('date_and_time').date_and_time
 
     trimmed_df = df.loc[df.index > most_recent_date]
 
@@ -100,7 +101,7 @@ def Get_Latest_AURN_Data(site_name, year):
 def Update_DEFRA_Data(site_name):
     ## Find where the database still has unverified data in and see
     ## if the DEFRA site has been updated.
-    site_id = site_info.objects.filter(side_code = site_code)
+    site_id = site_info.objects.filter(site_code = site_code)
     site_data = measurement_info.objects.filter(site_id = site_id)
 
     # Only get data that hasn't been verified but isn't unknown

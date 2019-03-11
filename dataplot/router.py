@@ -2,13 +2,15 @@ from dash.dependencies import Output, Input
 
 from .server import app#, server
 from . import layouts_defra_sites, layouts_defra_map, layouts_data_upload
+from . import layouts_EO_lessons
 
 
 
 pages = (
     ('DEFRA_sites', layouts_defra_sites.DEFRA_individual_sites),
     ('DEFRA_map', layouts_defra_map.DEFRA_map_page),
-    ('Data_Upload', layouts_data_upload.data_upload_page)
+    ('Data_Upload', layouts_data_upload.data_upload_page),
+    ('EO_Lessons', layouts_EO_lessons_page.EO_Lessons),
     )
 
 routes = {f"{app.url_base_pathname}{path}": layout for path, layout in pages}
