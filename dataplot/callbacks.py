@@ -832,22 +832,60 @@ def create_map(region, environ, hour_choice, main_graph_layout):
     fig = dict(data=data, layout=layout)
 
     return fig
-
+### ===================================================================
 ### ===================================================================
 ### ALL EO LESSON PLANS GO HERE
 ### ===================================================================
+### ===================================================================
+
+### ===================================================================
+### Tabs for main page
+### ===================================================================
+
 
 ### Callback for EO lesson tabs
 @app.callback(Output('tabs-content', 'children'),
               [Input('tabs', 'value')])
 def render_content(tab):
     if tab == 'tab-1':
-        output = TIR_Tools.quick_test()
+        output = TIR_Tools.TIR_Walkthrough()
 
     elif tab == 'tab-2':
         output = Satellite_Tools.quick_test()
 
+    elif tab == 'tab-3':
+        output = html.Div([
+            html.H3('More info & links')
+        ])
+
     return output
+
+### ===================================================================
+### File uploader callback
+### ===================================================================
+
+@app.callback(Output('output-data-upload', 'children'),
+              [Input('upload-data', 'contents')],
+              [State('upload-data', 'filename'),
+               State('upload-data', 'last_modified')])
+def update_output(contents, filename, dates):
+    if contents is not None:
+
+        return filename
+
+
+### ===================================================================
+### FLoad example data
+### ===================================================================
+
+### Callback for TIR Use example data
+@app.callback(Output('output-example-data', 'children'),
+              [Input('Example_Data_button', 'n_clicks')])
+def render_content(n_clicks):
+    print(n_clicks)
+    if n_clicks:
+        return 'yoyoyo'
+
 
 
 ### ===================================================================

@@ -28,6 +28,7 @@ def EO_Lessons():
     dcc.Tabs(id="tabs", value='tab-1', children=[
         dcc.Tab(label='Thermal Sensor Analysis', value='tab-1'),
         dcc.Tab(label='Satellite Fire Detection', value='tab-2'),
+        dcc.Tab(label='More Information', value='tab-3'),
     ]),
     html.Div(id='tabs-content')
     ]),
