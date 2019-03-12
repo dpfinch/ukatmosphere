@@ -89,6 +89,60 @@ def Histogram(df, **kwargs):
 
     return figure
 
+def EO_Lesson_Hist(df, **kwargs):
+
+    all_plots = []
+
+    vals = df.values.flatten()
+
+    try:
+        num_bins = int(kwargs['histbins'])
+    except ValueError:
+        num_bins = 20 ## Maybe need to set this to None or something?
+
+    bin_start = vals.min()
+    bin_end = vals.max()
+    bin_size = (vals.max() -vals.min()) / num_bins
+    bin_size = 5
+    x = vals
+
+    if kwargs['probability'] == ['Probability']:
+
+        all_plots.append(go.Histogram(
+            x = x,
+            histnorm = 'probability',
+            nbinsx = num_bins,
+        ))
+        yaxisTitle = 'Probability'
+    else:
+        all_plots.append(go.Histogram(
+            x = x,
+            # xbins = {'start': bin_start,
+            #         'end': bin_end,
+            #         'size': bin_size},
+            nbinsx = num_bins,
+            ))
+
+        yaxisTitle = 'Frequency'
+
+    plot_layout = {
+        'bargap': 0.2,
+        'bargroupgap': 0.1,
+        'yaxis': {'title': yaxisTitle},
+        'xaxis': {'title': 'Temperature'},
+        'title': kwargs['title'],
+        }
+
+    figure = dcc.Graph(
+        id='HistogramPlot',
+        figure={
+            'data': all_plots,
+            'layout': plot_layout
+        }
+        )
+
+
+    return figure
 ## ============================================================================
 ## END OF PROGRAM
 ## ============================================================================

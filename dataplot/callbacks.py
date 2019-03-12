@@ -3,6 +3,8 @@ from random import randint
 from dash.dependencies import Output, Input, State
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_table
+import dash_daq as daq
 from dataplot.DataTools import AnalysisDriver
 from dataplot.DataTools import LoadData
 from dataplot.DataTools import TidyData
@@ -280,7 +282,7 @@ def change_timeseries(data, variable_options,site_choice, combine_choice, DataRe
         rollingMean = rollingMean, xtitle = xtitle, ytitle = ytitle,
         lineorscatter = lineorscatter, label_format = label_format )
 
-# ### *********** HISTOGRAM PLOT *******************
+#### *********** HISTOGRAM PLOT *******************
 ### Callback for the Histogram interaction
 @app.callback(Output('HistogramXTitle', 'value'),
     [Input('dataframe-holder', 'children'),
@@ -298,7 +300,7 @@ def get_histo_xtitle(data_info, format):
     ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
     return ytitle
 
-# ### Callback for the Histogram plot
+#### Callback for the Histogram plot
 @app.callback(Output('Histogram', 'children'),
     [Input('dataframe-holder', 'children'),
     Input('variable_options','value'),
@@ -851,7 +853,7 @@ def render_content(tab):
         output = TIR_Tools.TIR_Walkthrough()
 
     elif tab == 'tab-2':
-        output = Satellite_Tools.quick_test()
+        output = Satellite_Tools.Satellite_Walkthrough()
 
     elif tab == 'tab-3':
         output = html.Div([
@@ -875,18 +877,86 @@ def update_output(contents, filename, dates):
 
 
 ### ===================================================================
-### FLoad example data
+### Load example data
 ### ===================================================================
-
-### Callback for TIR Use example data
-@app.callback(Output('output-example-data', 'children'),
+# Intermediate step to store data in secret div
+@app.callback(Output('stored_data', 'children'),
               [Input('Example_Data_button', 'n_clicks')])
-def render_content(n_clicks):
-    print(n_clicks)
+def load_content(n_clicks):
     if n_clicks:
-        return 'yoyoyo'
+        example_data = TIR_Tools.Get_Example_Data()
+        return example_data.to_json(orient = 'split')
 
 
+## Callback for TIR Use example data
+@app.callback(Output('output-example-data', 'children'),
+              [Input('show_data', 'on'),
+              Input('stored_data', 'children')])
+def create_data_table(on,data_store):
+    if on:
+        try:
+            data = pd.read_json(data_store,orient = 'split')
+            data_table = html.Div(id = 'table_container', children = [
+                html.H3('Thermal Data:'),
+                dash_table.DataTable(id = 'Example_Data_Table',
+                    columns = [{"name": i, "id": i} for i in data.columns],
+                    data=data.to_dict('rows'),
+                    style_table = {'maxHeight':300,
+                            'overflowY':'scroll'}),
+                html.Br(),
+                html.Br(),
+                html.Hr(),
+            ])
+        except ValueError:
+            data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})
+    else:
+        try:
+            data = pd.read_json(data_store,orient = 'split')
+            data_table = html.Div(html.H3('Data Hidden'), style = {'textAlign':'center'})
+        except ValueError:
+            data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})
+    return data_table
+
+## Callback to describe the data
+@app.callback(Output('data_desc_holder', 'children'),
+              [Input('stored_data', 'children')])
+def data_desciber(data_store):
+    try:
+        data = pd.read_json(data_store,orient = 'split')
+        stats_table = TIR_Tools.StatsTable(data)
+    except ValueError:
+        stats_table = html.Div(html.H3('Load in some data to see descriptive statistics'))
+    return stats_table
+
+#### *********** EO Lessons HISTOGRAM PLOT *******************
+
+#### Callback for the Histogram plot
+@app.callback(Output('EOHistogram', 'children'),
+    [Input('stored_data', 'children'),
+    Input('EOHistogramTitle', 'value'),
+    Input('EOHistogramBins','value'),
+    Input('EOHistogramProbability','values')
+    ])
+def change_histogram(data_store, title, histbins, probability):
+    try:
+        data = pd.read_json(data_store,orient = 'split')
+        from dataplot.DataTools.AnalysisTools import Histogram
+
+        return Histogram.EO_Lesson_Hist(data, histbins = histbins,
+        title = title, probability = probability )
+    except ValueError:
+        return ''
+
+#### *********** EO Lessons Satellite Imagery *******************
+
+### Callback to select different wavelengths
+
+@app.callback(Output('satellite_image_holder', 'children'),
+    [Input('Satellite_image_selector', 'value')])
+def Satellite_Image_renderer(value):
+    # img = Satellite_Tools.render_image(value)
+    img = html.Img(src='/dataplot/assets/fire_count.png')
+    return img
 
 ### ===================================================================
 ### END OF PROGRAM

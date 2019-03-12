@@ -25,12 +25,14 @@ def EO_Lessons():
     ]),
 
     html.Div([
+    ### Create a hidden div to store the users data
+    html.Div(id='stored_data', children = [], style={'display': 'none'}),
     dcc.Tabs(id="tabs", value='tab-1', children=[
         dcc.Tab(label='Thermal Sensor Analysis', value='tab-1'),
         dcc.Tab(label='Satellite Fire Detection', value='tab-2'),
         dcc.Tab(label='More Information', value='tab-3'),
     ]),
-    html.Div(id='tabs-content')
+    html.Div(id='tabs-content'),
     ]),
 
 ])

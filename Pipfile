@@ -25,7 +25,11 @@ flask-caching = "*"
 sqlalchemy = "*"
 django-extensions = "*"
 schedule = "*"
-urllib3 = "*"
+"urllib3" = "*"
+scipy = "*"
+dash-table = "*"
+dash-daq = "*"
+
 
 [requires]
 
