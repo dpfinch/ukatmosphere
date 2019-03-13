@@ -7,17 +7,22 @@ import numpy as np
 from scipy.interpolate import griddata
 import math
 import string
+from dataplot.EO_Lesson_Tools import TIR_Data_Process
 
-def Get_Example_Data():
+def Get_Example_Data(timesteps):
+
     points = [(math.floor(ix / 8), (ix % 8)) for ix in range(0, 64)]
     grid_x, grid_y = np.mgrid[0:7:32j, 0:7:32j]
 
-    pixels = np.random.randint(18,34,64)
+    pixels = np.random.randint(18,34,[timesteps,64])
 
-    output = griddata(points, pixels, (grid_x, grid_y), method='cubic')
-    labels = list(string.ascii_letters)[:32]
-    output = pd.DataFrame(data = output, index = labels,
-        columns = labels)
+    full_arr = []
+
+    for n in range(pixels.shape[0]):
+        snapshot = griddata(points, pixels[n], (grid_x, grid_y), method='cubic')
+        full_arr.append(snapshot)
+
+    output = TIR_Data_Process.from_3d_numpy_to_pd(np.stack(full_arr))
     return output
 
 def TIR_Walkthrough():
@@ -75,21 +80,51 @@ def TIR_Walkthrough():
     html.Div(id = 'data_desc_holder'),
     html.Hr(),
     html.Hr(),
+    # Contour plot of the data
+    html.Div(id = 'EOContourHolder', className = 'plot_holder', children = [
+        html.Div(id = 'EOContour', className = 'main_plot'),
+        html.Div(id = 'EOContourTools', className = 'plot_tools', children = [
+            html.H3('Contour Tools:'),
+            html.Br(),
+            html.Label('Plot Title '),
+            dcc.Input( id = 'EOContourTitle',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+            html.P('Timestep:'),
+            daq.Slider(
+            id = 'ContourSlider',
+            min = 1,
+            step = 1,
+            value = 1
+            ),
+            html.Br(),
+            html.P(id='timestep_label'),
+        ]),
+    ]),
+    html.P('Questions and information could go here'),
+    html.H3('What features can you see in the contour plot?'),
+    html.H3('What is the maximum and minimum tempearture?'),
+    html.Hr(),
     # Some plots
     html.Div(id = 'EOHistogramHolder', className = 'plot_holder', children = [
         html.Div(id = 'EOHistogram', className = 'main_plot'),
         html.Div(id = 'EOHistogramTools', className = 'plot_tools', children = [
             html.H3('Histogram Tools:'),
             html.Br(),
-            html.Label('Plot Title'),
+            html.Label('Plot Title '),
             dcc.Input( id = 'EOHistogramTitle',
                 placeholder = 'Enter Title',
                 value = ''),
             html.Br(),
             html.Label('Choose the maximum number of histogram bins'),
-            dcc.Input( id = 'EOHistogramBins',
-                placeholder = 'Number of bins...',
-                value = '25'),
+            daq.Slider(
+            id = 'HistBinSlider',
+            min = 1,
+            max = 100,
+            step = 1,
+            value = 25,
+            ),
             html.Br(),
             html.Br(),
             dcc.Checklist( id = 'EOHistogramProbability',
@@ -98,8 +133,32 @@ def TIR_Walkthrough():
 
         ]),
     ]),
+    html.H3('What is the most common (modal) tempearture?'),
+    html.P('More information and questions'),
     html.Hr(),
+    ## TimeSeries layout
+    html.Div(id = 'EOTimeSeriesHolder', className = 'plot_holder', children = [
+        html.Div(id = 'EOTimeSeries', className = 'main_plot'),
+        html.Div(id = 'EOTimeSeriesTools', className = 'plot_tools', children = [
+            html.H3('Timeseries Tools:'),
+            html.Br(),
+            html.Label('Plot Title '),
+            dcc.Input( id = 'EOTimeSeriesTitle',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+            dcc.RadioItems(id = 'EOTimeSeriesLine',
+            options = [{'label': i, 'value': i} for i in ['Scatter', 'Line', 'Line & Scatter']],
+            value = 'Scatter',
+            ),
+            html.P('Choose which analysis to plot:'),
+            dcc.Checklist(id = 'EOTimeSeriesMeanMinMax',
+            options = [{'label': i, 'value': i} for i in ['Mean', 'Minimum', 'Maximum']],
+            values = ['Mean'],
+            )
 
+        ]),
+    ]),
     ## Put a buffer on the bottom of the page so it looks nicer
     html.Br(),
     html.Br(),
