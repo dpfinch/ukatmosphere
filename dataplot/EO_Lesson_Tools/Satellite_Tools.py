@@ -9,18 +9,33 @@ def Satellite_Walkthrough():
     [
     html.Br(),
     html.Div(id = 'Satellite_Images', children =[
-    dcc.RadioItems(
-        id = 'Satellite_image_selector',
-        options=[
-            {'label': '4um Wavelength', 'value': 'T4'},
-            {'label': '11um Wavelength', 'value': 'T11'},
-            {'label': '12um Wavelength', 'value': 'T12'},
-            {'label': '0.6um Wavelength', 'value': 'p65'},
-            {'label': '0.8um Wavelength', 'value': 'p86'},
-        ],
-        value='T4'
-        ),
-    html.Div(id = 'satellite_image_holder')
+    html.H2('Sentinenl 2 Brightness Temperature Over Austrailia'),
+    html.P('Information about things could go here'),
+    html.P('And more information....'),
+    html.P('Look at the different wavelengths - what do they highlight?'),
+    dcc.Tabs(id="img_tabs", value='T4', children=[
+        dcc.Tab(label='4\265m Wavelength', value='T4'),
+        dcc.Tab(label='11\265m Wavelength', value='T11'),
+        dcc.Tab(label='12\265m Wavelength', value='T12'),
+        dcc.Tab(label='0.6\265m Wavelength', value='p65'),
+        dcc.Tab(label='0.8\265m Wavelength', value='p86'),
+    ]),
+    # dcc.RadioItems(
+    #     id = 'Satellite_image_selector',
+    #     options=[
+    #         {'label': '4\265m Wavelength', 'value': 'T4'},
+    #         {'label': '11\265m Wavelength', 'value': 'T11'},
+    #         {'label': '12\265m Wavelength', 'value': 'T12'},
+    #         {'label': '0.6\265m Wavelength', 'value': 'p65'},
+    #         {'label': '0.8\265m Wavelength', 'value': 'p86'},
+    #     ],
+    #     value='T4'
+    #     ),
+    html.Div(id = 'satellite_image_holder'),
+    html.Hr(),
+    html.Br(),
+    html.Br(),
+    html.Br(),
     ])
     ])
 
@@ -28,10 +43,10 @@ def Satellite_Walkthrough():
 
 def render_image(wavelength):
     img_width = 1600
-    img_height = 900
+    img_height = 1400
     scale_factor = 0.5
 
-    layout = go.Layout(
+    layout = dict(
         xaxis = go.layout.XAxis(
             visible = False,
             range = [0, img_width*scale_factor]),
@@ -53,14 +68,22 @@ def render_image(wavelength):
             opacity=1.0,
             layer="below",
             sizing="stretch",
-            source='https://raw.githubusercontent.com/michaelbabyn/plot_data/master/bridge.jpg')]
+            source='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')]
     )
     # we add a scatter trace with data points in opposite corners to give the Autoscale feature a reference point
-    fig = go.Figure(data=[{
+    data=[{
         'x': [0, img_width*scale_factor],
         'y': [0, img_height*scale_factor],
         'mode': 'markers',
-        'marker': {'opacity': 0}}],layout = layout)
+        'marker': {'opacity': 0}}]
 
 
-    return fig
+    img = dcc.Graph(
+        id = 'sat_image',
+        figure = {
+            'data':data,
+            'layout':layout
+        }
+    )
+
+    return img

@@ -952,10 +952,10 @@ def change_histogram(data_store, title, histbins, probability):
 ### Callback to select different wavelengths
 
 @app.callback(Output('satellite_image_holder', 'children'),
-    [Input('Satellite_image_selector', 'value')])
+    [Input('img_tabs', 'value')])
 def Satellite_Image_renderer(value):
-    # img = Satellite_Tools.render_image(value)
-    img = html.Img(src='/dataplot/assets/fire_count.png')
+    img = Satellite_Tools.render_image(value)
+    # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
     return img
 
 ### ===================================================================
