@@ -11,6 +11,7 @@ from dataplot.DataTools import TidyData
 import pandas as pd
 from dataplot.EO_Lesson_Tools import Satellite_Tools
 from dataplot.EO_Lesson_Tools import TIR_Tools
+from dataplot.EO_Lesson_Tools import TIR_Data_Process
 
 ### ===================================================================
 ### The first callbacks are for the choices effecting every plot
@@ -856,8 +857,10 @@ def render_content(tab):
         output = Satellite_Tools.Satellite_Walkthrough()
 
     elif tab == 'tab-3':
-        output = html.Div([
-            html.H3('More info & links')
+        output = html.Div(children = [
+            html.H3('More info & links'),
+            html.H3('Links to jupyter notebooks')
+
         ])
 
     return output
@@ -881,10 +884,11 @@ def update_output(contents, filename, dates):
 ### ===================================================================
 # Intermediate step to store data in secret div
 @app.callback(Output('stored_data', 'children'),
-              [Input('Example_Data_button', 'n_clicks')])
-def load_content(n_clicks):
+              [Input('Example_Data_button', 'n_clicks')],
+              [State('timesteps','value')])
+def load_content(n_clicks,timesteps):
     if n_clicks:
-        example_data = TIR_Tools.Get_Example_Data()
+        example_data = TIR_Tools.Get_Example_Data(timesteps)
         return example_data.to_json(orient = 'split')
 
 
@@ -911,7 +915,7 @@ def create_data_table(on,data_store):
             data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})
     else:
         try:
-            data = pd.read_json(data_store,orient = 'split')
+            data = TIR_Data_Process.from_stored_json(data_store)
             data_table = html.Div(html.H3('Data Hidden'), style = {'textAlign':'center'})
         except ValueError:
             data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})
@@ -922,7 +926,8 @@ def create_data_table(on,data_store):
               [Input('stored_data', 'children')])
 def data_desciber(data_store):
     try:
-        data = pd.read_json(data_store,orient = 'split')
+        data = TIR_Data_Process.from_stored_json(data_store)
+
         stats_table = TIR_Tools.StatsTable(data)
     except ValueError:
         stats_table = html.Div(html.H3('Load in some data to see descriptive statistics'))
@@ -930,22 +935,75 @@ def data_desciber(data_store):
 
 #### *********** EO Lessons HISTOGRAM PLOT *******************
 
+# Callback for the time slider with the contour plot
+@app.callback(Output('ContourSlider', 'max'),
+    [Input('timesteps','value')])
+def define_slider(max_val):
+    return max_val
+
+# Label for the timesteps
+@app.callback(Output('timestep_label', 'children'),
+    [Input('timesteps','value'),
+    Input('ContourSlider', 'value')])
+def timestep_label(max_val, slide_val):
+    s = 'Showing timestep {} out of {}.'.format(slide_val, max_val)
+    return s
+
+#### Callback for the contour plot
+@app.callback(Output('EOContour', 'children'),
+    [Input('stored_data', 'children'),
+    Input('EOContourTitle', 'value'),
+    Input('ContourSlider','value')
+    ])
+def change_contour(data_store, title, slider_val):
+    try:
+        data = TIR_Data_Process.from_stored_json(data_store)
+        from dataplot.DataTools.AnalysisTools import ContourPlot
+
+        return ContourPlot.EO_Lesson_Contour(data,title = title,
+        timestep = slider_val)
+    except ValueError:
+        return ''
+
+
+
 #### Callback for the Histogram plot
 @app.callback(Output('EOHistogram', 'children'),
     [Input('stored_data', 'children'),
     Input('EOHistogramTitle', 'value'),
-    Input('EOHistogramBins','value'),
+    Input('HistBinSlider','value'),
     Input('EOHistogramProbability','values')
     ])
 def change_histogram(data_store, title, histbins, probability):
     try:
-        data = pd.read_json(data_store,orient = 'split')
+        data = TIR_Data_Process.from_stored_json(data_store)
         from dataplot.DataTools.AnalysisTools import Histogram
 
         return Histogram.EO_Lesson_Hist(data, histbins = histbins,
         title = title, probability = probability )
     except ValueError:
         return ''
+
+
+#### Callback for the tiemseries plot
+@app.callback(Output('EOTimeSeries', 'children'),
+    [Input('stored_data', 'children'),
+    Input('EOTimeSeriesTitle', 'value'),
+    Input('EOTimeSeriesLine', 'value'),
+    Input('EOTimeSeriesMeanMinMax', 'values')])
+def Change_Timeseries(data_store, title, linemode, linetype):
+    try:
+        data = TIR_Data_Process.from_stored_json(data_store)
+        if data.shape[0] < 2:
+            return html.P('Need more than one timestep to create a timeseries')
+        else:
+            from dataplot.DataTools.AnalysisTools import TimeSeries
+
+            return TimeSeries.EO_Lessons_TimeSeries(data, title = title,
+            linemode = linemode, stattype = linetype )
+    except ValueError:
+        return ''
+
 
 #### *********** EO Lessons Satellite Imagery *******************
 

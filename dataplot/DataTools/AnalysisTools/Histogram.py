@@ -89,11 +89,11 @@ def Histogram(df, **kwargs):
 
     return figure
 
-def EO_Lesson_Hist(df, **kwargs):
+def EO_Lesson_Hist(inarray, **kwargs):
 
     all_plots = []
 
-    vals = df.values.flatten()
+    vals = inarray.flatten()
 
     try:
         num_bins = int(kwargs['histbins'])
@@ -129,7 +129,7 @@ def EO_Lesson_Hist(df, **kwargs):
         'bargap': 0.2,
         'bargroupgap': 0.1,
         'yaxis': {'title': yaxisTitle},
-        'xaxis': {'title': 'Temperature'},
+        'xaxis': {'title': 'Temperature \260C'},
         'title': kwargs['title'],
         }
 
