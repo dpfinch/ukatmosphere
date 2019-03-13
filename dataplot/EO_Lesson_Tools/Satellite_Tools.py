@@ -8,6 +8,9 @@ def Satellite_Walkthrough():
     page_layout = html.Div(id ='full_page_container', children =
     [
     html.Br(),
+    html.Div(id='Firepic', children = [
+    html.Img(src='https://ktfnews.com/wp-content/uploads/2017/10/Black-Saturday.jpeg',
+    style = {'width':'800px'}),
     html.Div(id = 'Satellite_Images', children =[
     html.H2('Sentinenl 2 Brightness Temperature Over Austrailia'),
     html.P('Information about things could go here'),
@@ -35,6 +38,7 @@ def Satellite_Walkthrough():
     html.Hr(),
     html.Br(),
     html.Br(),
+    ])], style = {'textAlign':'center'}),
     html.Hr(),
     html.H2('Cloud Masking'),
     html.Br(),
@@ -42,7 +46,6 @@ def Satellite_Walkthrough():
     html.Br(),
     html.Hr(),
     html.Br(),
-    ])
     ])
 
     return page_layout

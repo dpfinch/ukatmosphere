@@ -8,6 +8,7 @@ from scipy.interpolate import griddata
 import math
 import string
 from dataplot.EO_Lesson_Tools import TIR_Data_Process
+from dataplot.EO_Lesson_Tools import Text_Providers
 
 def Get_Example_Data(timesteps):
 
@@ -103,6 +104,7 @@ def TIR_Walkthrough():
         ]),
     ]),
     html.P('Questions and information could go here'),
+    Text_Providers.test_string2(),
     html.H3('What features can you see in the contour plot?'),
     html.H3('What is the maximum and minimum tempearture?'),
     html.Hr(),
