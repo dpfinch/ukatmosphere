@@ -42,6 +42,7 @@ def Satellite_Walkthrough():
     return page_layout
 
 def render_image(wavelength):
+
     img_width = 1600
     img_height = 1400
     scale_factor = 0.5
@@ -68,7 +69,7 @@ def render_image(wavelength):
             opacity=1.0,
             layer="below",
             sizing="stretch",
-            source='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')]
+            source='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_Aus.png'.format(wavelength))]
     )
     # we add a scatter trace with data points in opposite corners to give the Autoscale feature a reference point
     data=[{
@@ -78,12 +79,14 @@ def render_image(wavelength):
         'marker': {'opacity': 0}}]
 
 
-    img = dcc.Graph(
+    img = html.Div(children = [
+    html.H3('Brightness Tempearture at the {} wavelength band'.format(wavelength)),
+    dcc.Graph(
         id = 'sat_image',
         figure = {
             'data':data,
             'layout':layout
         }
-    )
+    )])
 
     return img
