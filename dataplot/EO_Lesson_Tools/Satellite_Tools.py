@@ -42,6 +42,18 @@ def Satellite_Walkthrough():
     html.Hr(),
     html.H2('Cloud Masking'),
     html.Br(),
+    html.Hr(),
+    html.Div(id = 'ParentFireHolder', children = [
+    html.H2('Fire Locations'),
+    html.Button('Show Fire Locations', id = 'show_fire_button',
+    style = {'width':'200px',
+            'height':'50px',
+        'borderRadius':'5px'}),
+    html.Div(id = 'FireMapHolder', children = [
+        html.Div(id = 'FireMap')
+    ])], style = {'textAlign':'center'}),
+    html.Hr(),
+    html.Br(),
 
     html.Br(),
     html.Hr(),

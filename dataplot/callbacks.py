@@ -1016,6 +1016,18 @@ def Satellite_Image_renderer(value):
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
     return img
 
+
+### Callback to show fire locations on map
+
+@app.callback(Output('FireMapHolder', 'children'),
+    [Input('show_fire_button', 'n_clicks')])
+def Satellite_Image_renderer(clicked):
+    if clicked:
+        from dataplot.EO_Lesson_Tools import Scatter_map
+        f_map = Scatter_map.fire_loc_map()
+        return f_map
+
+
 ### ===================================================================
 ### END OF PROGRAM
 ### ===================================================================
