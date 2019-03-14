@@ -12,6 +12,8 @@ def Satellite_Walkthrough():
     html.Img(src='https://ktfnews.com/wp-content/uploads/2017/10/Black-Saturday.jpeg',
     style = {'width':'800px'}),
     html.Div(id = 'Satellite_Images', children =[
+    html.Video(src='https://www.youtube.com/embed/Q3YYwIsMHzw'),
+    html.Br(),
     html.H2('Sentinenl 2 Brightness Temperature Over Austrailia'),
     html.P('Information about things could go here'),
     html.P('And more information....'),

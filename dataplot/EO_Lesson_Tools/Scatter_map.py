@@ -35,7 +35,7 @@ def fire_loc_map():
                 lon=142
             ),
             pitch=0,
-            zoom=5
+            zoom=3
         ),
     )
 

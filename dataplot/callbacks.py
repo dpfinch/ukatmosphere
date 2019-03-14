@@ -889,6 +889,8 @@ def update_output(contents, filename, dates):
 def load_content(n_clicks,timesteps):
     if n_clicks:
         example_data = TIR_Tools.Get_Example_Data(timesteps)
+        # from sys import getsizeof
+        # print(getsizeof(example_data.to_json(orient = 'split')))
         return example_data.to_json(orient = 'split')
 
 
@@ -911,13 +913,13 @@ def create_data_table(on,data_store):
                 html.Br(),
                 html.Hr(),
             ])
-        except ValueError:
+        except (ValueError) as e:
             data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})
     else:
         try:
             data = TIR_Data_Process.from_stored_json(data_store)
             data_table = html.Div(html.H3('Data Hidden'), style = {'textAlign':'center'})
-        except ValueError:
+        except (ValueError, AttributeError) as e:
             data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})
     return data_table
 
@@ -929,7 +931,7 @@ def data_desciber(data_store):
         data = TIR_Data_Process.from_stored_json(data_store)
 
         stats_table = TIR_Tools.StatsTable(data)
-    except ValueError:
+    except (ValueError, AttributeError) as e:
         stats_table = html.Div(html.H3('Load in some data to see descriptive statistics'))
     return stats_table
 
@@ -962,7 +964,7 @@ def change_contour(data_store, title, slider_val):
 
         return ContourPlot.EO_Lesson_Contour(data,title = title,
         timestep = slider_val)
-    except ValueError:
+    except (ValueError, AttributeError) as e:
         return ''
 
 
@@ -981,7 +983,7 @@ def change_histogram(data_store, title, histbins, probability):
 
         return Histogram.EO_Lesson_Hist(data, histbins = histbins,
         title = title, probability = probability )
-    except ValueError:
+    except (ValueError, AttributeError) as e:
         return ''
 
 
@@ -1001,7 +1003,7 @@ def Change_Timeseries(data_store, title, linemode, linetype):
 
             return TimeSeries.EO_Lessons_TimeSeries(data, title = title,
             linemode = linemode, stattype = linetype )
-    except ValueError:
+    except (ValueError, AttributeError) as e:
         return ''
 
 

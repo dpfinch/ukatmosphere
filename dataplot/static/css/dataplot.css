@@ -94,7 +94,7 @@ a:hover{
   /*margin-top: 8px;*/
   height: 90px;
   width: 90px;
-  content: url('/static/EO_Pi_Logo.png');
+  content: url('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/EO_Pi_Logo.png');
   /*border: 2px solid white;*/
 }
 

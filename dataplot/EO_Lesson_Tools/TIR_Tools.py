@@ -56,7 +56,7 @@ def TIR_Walkthrough():
     daq.NumericInput(
       id='timesteps',
       min=1,
-      max=1000,
+      max=350,
       value=1,
       label='Choose number of timesteps',
       size = 120

@@ -30,6 +30,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['www.ukatmosphere.org', '127.0.0.1','ukatmosphere.herokuapp.com','0.0.0.0']
 
 
+# Change the data upload maximum size (currently at 5MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5242880
+
 # Application definition
 
 INSTALLED_APPS = [
