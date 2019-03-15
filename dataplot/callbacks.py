@@ -12,6 +12,7 @@ import pandas as pd
 from dataplot.EO_Lesson_Tools import Satellite_Tools
 from dataplot.EO_Lesson_Tools import TIR_Tools
 from dataplot.EO_Lesson_Tools import TIR_Data_Process
+from dataplot.EO_Lesson_Tools import Scatter_map
 
 ### ===================================================================
 ### The first callbacks are for the choices effecting every plot
@@ -1014,9 +1015,10 @@ def Change_Timeseries(data_store, title, linemode, linetype):
 @app.callback(Output('satellite_image_holder', 'children'),
     [Input('img_tabs', 'value')])
 def Satellite_Image_renderer(value):
-    img = Satellite_Tools.render_image(value)
+    # img = Satellite_Tools.render_image(value)
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
-    return img
+    f_map = Scatter_map.satellite_scatter(value)
+    return f_map
 
 
 ### Callback to show fire locations on map
@@ -1025,9 +1027,8 @@ def Satellite_Image_renderer(value):
     [Input('show_fire_button', 'n_clicks')])
 def Satellite_Image_renderer(clicked):
     if clicked:
-        from dataplot.EO_Lesson_Tools import Scatter_map
-        # f_map = Scatter_map.fire_loc_map()
-        f_map = Scatter_map.satellite_scatter()
+        f_map = Scatter_map.fire_loc_map()
+        # f_map = Scatter_map.satellite_scatter()
         return f_map
 
 

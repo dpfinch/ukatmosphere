@@ -6,9 +6,13 @@ import plotly.graph_objs as go
 import pandas as pd
 
 
-def satellite_scatter():
+def satellite_scatter(value):
     mapbox_access_token = 'pk.eyJ1IjoiZG91Z2ZpbmNoIiwiYSI6ImNqZHhjYnpqeDBteDAyd3FsZXM4ZGdqdTAifQ.xLS22vmqzVYR0SAEDWdLpQ'
-    brightness = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/T4_wavelenght.csv', header = None)
+
+
+    brightness = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'.format(value),
+        header = None)
+
     lats = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lats.csv', header = None)
     lons = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lons.csv', header = None)
 
@@ -18,11 +22,10 @@ def satellite_scatter():
         lon=lons[0],
         mode='markers',
         marker=go.scattermapbox.Marker(
-            size=3,
-            symbol = 'square',
-            color=brightness[0]
+            size=5,
+            color=brightness[0],
+            ),
         ),
-    )
     ]
 
     layout = go.Layout(
@@ -32,25 +35,27 @@ def satellite_scatter():
             accesstoken=mapbox_access_token,
             bearing=0,
             center=go.layout.mapbox.Center(
-                lat=-15,
-                lon=142
+                lat=-22,
+                lon=148
             ),
             pitch=0,
-            zoom=3
+            zoom=4
         ),
+        height = 850,
+        width = 850
     )
 
     fig = dcc.Graph(id = 'fire_mapbox',
         figure = {'data':data, 'layout':layout})
-        
+
     return fig
 
 def fire_loc_map():
 
 
     mapbox_access_token = 'pk.eyJ1IjoiZG91Z2ZpbmNoIiwiYSI6ImNqZHhjYnpqeDBteDAyd3FsZXM4ZGdqdTAifQ.xLS22vmqzVYR0SAEDWdLpQ'
-    fire_locs = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_locs.csv', header = None)
-
+    fire_locs = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_locs.csv')
+    print(fire_locs.columns)
     data = [
     go.Scattermapbox(
         lat=fire_locs.Lats,
@@ -80,5 +85,5 @@ def fire_loc_map():
 
     fig = dcc.Graph(id = 'fire_mapbox',
         figure = {'data':data, 'layout':layout})
-    print(fig)
+
     return fig

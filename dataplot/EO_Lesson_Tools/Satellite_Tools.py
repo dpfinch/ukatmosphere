@@ -22,8 +22,8 @@ def Satellite_Walkthrough():
         dcc.Tab(label='4\265m Wavelength', value='T4'),
         dcc.Tab(label='11\265m Wavelength', value='T11'),
         dcc.Tab(label='12\265m Wavelength', value='T12'),
-        dcc.Tab(label='0.6\265m Wavelength', value='P65'),
-        dcc.Tab(label='0.8\265m Wavelength', value='P86'),
+        dcc.Tab(label='0.6\265m Wavelength', value='p65'),
+        dcc.Tab(label='0.8\265m Wavelength', value='p86'),
     ]),
     # dcc.RadioItems(
     #     id = 'Satellite_image_selector',
