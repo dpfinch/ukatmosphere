@@ -1026,7 +1026,8 @@ def Satellite_Image_renderer(value):
 def Satellite_Image_renderer(clicked):
     if clicked:
         from dataplot.EO_Lesson_Tools import Scatter_map
-        f_map = Scatter_map.fire_loc_map()
+        # f_map = Scatter_map.fire_loc_map()
+        f_map = Scatter_map.satellite_scatter()
         return f_map
 
 
