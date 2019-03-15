@@ -36,7 +36,26 @@ def Satellite_Walkthrough():
     #     ],
     #     value='T4'
     #     ),
-    html.Div(id = 'satellite_image_holder'),
+    html.Div(id = 'Satellite_Image_Holder', className = 'plot_holder', children = [
+        html.Div(id = 'Satellite_Image', className = 'main_plot'),
+        html.Div(id = 'Sat_Img_Tools', className = 'plot_tools', children = [
+            html.H3('Image Tools:'),
+            html.Br(),
+            html.Label('Plot Title '),
+            dcc.Input( id = 'Sat_Img_Title',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+            html.Br(),
+            html.Button('Remove anything <310 Kelvin', id = 'remove_310_K',
+    style = {'width':'200px',
+            'height':'50px',
+        'borderRadius':'5px'}),
+            html.Br(),
+            html.Br(),
+
+        ]),
+    ]),
     html.Hr(),
     html.Br(),
     html.Br(),

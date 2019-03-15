@@ -6,7 +6,7 @@ import plotly.graph_objs as go
 import pandas as pd
 
 
-def satellite_scatter(value):
+def satellite_scatter(value, removed_310K):
     mapbox_access_token = 'pk.eyJ1IjoiZG91Z2ZpbmNoIiwiYSI6ImNqZHhjYnpqeDBteDAyd3FsZXM4ZGdqdTAifQ.xLS22vmqzVYR0SAEDWdLpQ'
 
 
@@ -16,14 +16,25 @@ def satellite_scatter(value):
     lats = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lats.csv', header = None)
     lons = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lons.csv', header = None)
 
+    if removed_310K:
+        t4 = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'.format('T4'),
+        header = None)
+        lats = lats[0][t4[0]>310]
+        lons = lons[0][t4[0]>310]
+        brightness = brightness[0][t4[0]>310]
+    else:
+        lats = lats[0]
+        lons = lons[0]
+        brightness = brightness[0] 
+
     data = [
     go.Scattermapbox(
-        lat=lats[0],
-        lon=lons[0],
+        lat=lats,
+        lon=lons,
         mode='markers',
         marker=go.scattermapbox.Marker(
             size=5,
-            color=brightness[0],
+            color=brightness,
             ),
         ),
     ]

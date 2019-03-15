@@ -1012,12 +1012,20 @@ def Change_Timeseries(data_store, title, linemode, linetype):
 
 ### Callback to select different wavelengths
 
-@app.callback(Output('satellite_image_holder', 'children'),
-    [Input('img_tabs', 'value')])
-def Satellite_Image_renderer(value):
+@app.callback(Output('Satellite_Image', 'children'),
+    [Input('img_tabs', 'value'),
+    Input('remove_310_K', 'n_clicks')])
+def Satellite_Image_renderer(value,n_clicks):
+    if n_clicks:
+        if n_clicks%2:
+            removed_310K = True
+        else:
+            removed_310K = False
+    else:
+        removed_310K = False
     # img = Satellite_Tools.render_image(value)
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
-    f_map = Scatter_map.satellite_scatter(value)
+    f_map = Scatter_map.satellite_scatter(value, removed_310K)
     return f_map
 
 
