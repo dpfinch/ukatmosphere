@@ -106,7 +106,7 @@ def TIR_Walkthrough():
     html.P('Questions and information could go here'),
     Text_Providers.test_string2(),
     html.H3('What features can you see in the contour plot?'),
-    html.H3('What is the maximum and minimum tempearture?'),
+    html.H3('What is the maximum and minimum temperature?'),
     html.Hr(),
     # Some plots
     html.Div(id = 'EOHistogramHolder', className = 'plot_holder', children = [
@@ -135,7 +135,7 @@ def TIR_Walkthrough():
 
         ]),
     ]),
-    html.H3('What is the most common (modal) tempearture?'),
+    html.H3('What is the most common (modal) temperature?'),
     html.P('More information and questions'),
     html.Hr(),
     ## TimeSeries layout

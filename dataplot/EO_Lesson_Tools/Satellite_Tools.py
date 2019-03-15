@@ -103,7 +103,7 @@ def render_image(wavelength):
 
 
     img = html.Div(children = [
-    html.H3('Brightness Tempearture at the {} wavelength band'.format(wavelength)),
+    html.H3('Brightness temperature at the {} wavelength band'.format(wavelength)),
     dcc.Graph(
         id = 'sat_image',
         figure = {

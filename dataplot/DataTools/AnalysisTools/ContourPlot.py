@@ -18,7 +18,7 @@ def EO_Lesson_Contour(inarray,**kwargs):
     z = inarray[timestep - 1],
     line = {'smoothing':1},
     contours = {'coloring':'fill', 'showlines':False},
-    colorbar = {'title':'Tempearture \260C', 'titleside':'right'}
+    colorbar = {'title':'Temperature \260C', 'titleside':'right'}
     )]
 
     plot_layout = {
