@@ -8,6 +8,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
+import pandas as pd
 #==============================================================================
 """
     Histogram info here
@@ -141,6 +142,40 @@ def EO_Lesson_Hist(inarray, **kwargs):
         }
         )
 
+
+    return figure
+
+def Satellite_Hist(value, removed_310K):
+
+    brightness = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'.format(value),
+        header = None)
+
+    if removed_310K:
+        t4 = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'.format('T4'),
+        header = None)
+        brightness = brightness[0][t4[0]>310]
+    else:
+        brightness = brightness[0]
+
+    plot = [go.Histogram(
+    x = brightness.values.flatten()
+    )]
+
+    plot_layout = {
+        'bargap': 0.2,
+        'bargroupgap': 0.1,
+        'yaxis': {'title': 'Frequency'},
+        'xaxis': {'title': 'Temperature \260C'},
+        'title' : 'Brightness Temperature Frequency'
+        }
+
+    figure = dcc.Graph(
+        id='SatHistogramPlot',
+        figure={
+            'data': plot,
+            'layout': plot_layout
+        }
+        )
 
     return figure
 ## ============================================================================

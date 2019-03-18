@@ -1026,14 +1026,27 @@ def Satellite_Image_renderer(value,n_clicks):
     # img = Satellite_Tools.render_image(value)
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
     f_map = Scatter_map.satellite_scatter(value, removed_310K)
-    return f_map
+    from dataplot.DataTools.AnalysisTools import Histogram
+    f_hist = Histogram.Satellite_Hist(value, removed_310K)
+    return [f_map, html.Br(), f_hist]
 
+@app.callback(Output('remove_310_K', 'children'),
+    [Input('remove_310_K','n_clicks')])
+def sat_img_button_label(n_clicks):
+    if n_clicks:
+        if n_clicks%2:
+            label  = 'Show all data'
+        else:
+            label = 'Remove anything <310 Kelvin'
+    else:
+        label = 'Remove anything <310 Kelvin'
 
+    return label
 ### Callback to show fire locations on map
 
 @app.callback(Output('FireMapHolder', 'children'),
     [Input('show_fire_button', 'n_clicks')])
-def Satellite_Image_renderer(clicked):
+def fire_Image_renderer(clicked):
     if clicked:
         f_map = Scatter_map.fire_loc_map()
         # f_map = Scatter_map.satellite_scatter()

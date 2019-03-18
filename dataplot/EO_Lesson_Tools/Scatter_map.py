@@ -25,7 +25,7 @@ def satellite_scatter(value, removed_310K):
     else:
         lats = lats[0]
         lons = lons[0]
-        brightness = brightness[0] 
+        brightness = brightness[0]
 
     data = [
     go.Scattermapbox(
@@ -35,6 +35,9 @@ def satellite_scatter(value, removed_310K):
         marker=go.scattermapbox.Marker(
             size=5,
             color=brightness,
+            cmax = brightness.max(),
+            colorbar=dict(title = 'Temperature',
+                titleside = 'right')
             ),
         ),
     ]
@@ -46,14 +49,14 @@ def satellite_scatter(value, removed_310K):
             accesstoken=mapbox_access_token,
             bearing=0,
             center=go.layout.mapbox.Center(
-                lat=-22,
-                lon=148
+                lat=-24,
+                lon=143
             ),
             pitch=0,
-            zoom=4
+            zoom=3.7
         ),
-        height = 850,
-        width = 850
+        height = 700,
+        width = 700
     )
 
     fig = dcc.Graph(id = 'fire_mapbox',

@@ -14,7 +14,7 @@ def Satellite_Walkthrough():
     html.Div(id = 'Satellite_Images', children =[
     html.Video(src='https://www.youtube.com/embed/Q3YYwIsMHzw'),
     html.Br(),
-    html.H2('Sentinenl 2 Brightness Temperature Over Austrailia'),
+    html.H2('Sentinenl 2 Brightness Temperature Over Australia'),
     html.P('Information about things could go here'),
     html.P('And more information....'),
     html.P('Look at the different wavelengths - what do they highlight?'),
@@ -37,6 +37,7 @@ def Satellite_Walkthrough():
     #     value='T4'
     #     ),
     html.Div(id = 'Satellite_Image_Holder', className = 'plot_holder', children = [
+        html.H3('Satellite data may take a few seconds to load...'),
         html.Div(id = 'Satellite_Image', className = 'main_plot'),
         html.Div(id = 'Sat_Img_Tools', className = 'plot_tools', children = [
             html.H3('Image Tools:'),
@@ -47,7 +48,7 @@ def Satellite_Walkthrough():
                 value = ''),
             html.Br(),
             html.Br(),
-            html.Button('Remove anything <310 Kelvin', id = 'remove_310_K',
+            html.Button(children = [], id = 'remove_310_K',
     style = {'width':'200px',
             'height':'50px',
         'borderRadius':'5px'}),
