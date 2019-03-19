@@ -1014,8 +1014,12 @@ def Change_Timeseries(data_store, title, linemode, linetype):
 
 @app.callback(Output('Satellite_Image', 'children'),
     [Input('img_tabs', 'value'),
-    Input('remove_310_K', 'n_clicks')])
-def Satellite_Image_renderer(value,n_clicks):
+    Input('remove_310_K', 'n_clicks'),
+    Input('cloud_mask', 'on'),
+    Input('reveal_fires', 'n_clicks'),
+    ])
+def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires):
+    # If removing 310 K is clicked
     if n_clicks:
         if n_clicks%2:
             removed_310K = True
@@ -1023,11 +1027,20 @@ def Satellite_Image_renderer(value,n_clicks):
             removed_310K = False
     else:
         removed_310K = False
+    # if
+    if show_fires:
+        if show_fires%2:
+            fires_on = True
+        else:
+            fires_on = False
+    else:
+        fires_on = False
+
     # img = Satellite_Tools.render_image(value)
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
-    f_map = Scatter_map.satellite_scatter(value, removed_310K)
+    f_map = Scatter_map.satellite_scatter(value, removed_310K, cloud_mask, fires_on)
     from dataplot.DataTools.AnalysisTools import Histogram
-    f_hist = Histogram.Satellite_Hist(value, removed_310K)
+    f_hist = Histogram.Satellite_Hist(value, removed_310K, cloud_mask)
     return [f_map, html.Br(), f_hist]
 
 @app.callback(Output('remove_310_K', 'children'),
@@ -1042,16 +1055,20 @@ def sat_img_button_label(n_clicks):
         label = 'Remove anything <310 Kelvin'
 
     return label
-### Callback to show fire locations on map
 
-@app.callback(Output('FireMapHolder', 'children'),
-    [Input('show_fire_button', 'n_clicks')])
-def fire_Image_renderer(clicked):
-    if clicked:
-        f_map = Scatter_map.fire_loc_map()
-        # f_map = Scatter_map.satellite_scatter()
-        return f_map
 
+@app.callback(Output('reveal_fires', 'children'),
+    [Input('reveal_fires','n_clicks')])
+def fire_button_label(n_clicks):
+    if n_clicks:
+        if n_clicks%2:
+            label  = 'Hide Fires'
+        else:
+            label = 'Reveal Fire Locations'
+    else:
+        label = 'Reveal Fire Locations'
+
+    return label
 
 ### ===================================================================
 ### END OF PROGRAM

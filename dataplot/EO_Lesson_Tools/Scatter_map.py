@@ -52,7 +52,17 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
     ]
 
     if fires_on:
-        fire_locs = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lons.csv')
+        fire_locs = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_locs.csv')
+        data.append(
+            go.Scattermapbox(
+            lat = fire_locs.Fire_Lats,
+            lon = fire_locs.Fire_Lons,
+            mode = 'markers',
+            marker = go.scattermapbox.Marker(
+                shape = 'fire-station'
+            )
+            )
+        )
 
 
     layout = go.Layout(

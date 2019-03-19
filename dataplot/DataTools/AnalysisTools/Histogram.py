@@ -145,7 +145,7 @@ def EO_Lesson_Hist(inarray, **kwargs):
 
     return figure
 
-def Satellite_Hist(value, removed_310K):
+def Satellite_Hist(value, removed_310K, cloud_mask):
 
     brightness = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'.format(value),
         header = None)
