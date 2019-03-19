@@ -2,6 +2,9 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.plotly as py
 import plotly.graph_objs as go
+import dash_table
+import dash_daq as daq
+from dataplot.EO_Lesson_Tools import Text_Providers
 
 def Satellite_Walkthrough():
 
@@ -10,13 +13,13 @@ def Satellite_Walkthrough():
     html.Br(),
     html.Div(id='Firepic', children = [
     html.Img(src='https://ktfnews.com/wp-content/uploads/2017/10/Black-Saturday.jpeg',
-    style = {'width':'800px'}),
+    style = {'height':'400px'}),
     html.Div(id = 'Satellite_Images', children =[
-    html.Video(src='https://www.youtube.com/embed/Q3YYwIsMHzw'),
     html.Br(),
-    html.H2('Sentinenl 2 Brightness Temperature Over Australia'),
-    html.P('Information about things could go here'),
-    html.P('And more information....'),
+    html.H2('Sentinel 2 Brightness Temperature Over Australia'),
+    html.Div(id = 'Sentinenl_Info_holder', children = [
+    Text_Providers.Sentinenl_Info()], style = {'textAlign':'left',
+        'padding':'20px'}),
     html.P('Look at the different wavelengths - what do they highlight?'),
     dcc.Tabs(id="img_tabs", value='T4', children=[
         dcc.Tab(label='4\265m Wavelength', value='T4'),
@@ -38,7 +41,7 @@ def Satellite_Walkthrough():
     #     ),
     html.Div(id = 'Satellite_Image_Holder', className = 'plot_holder', children = [
         html.H3('Satellite data may take a few seconds to load...'),
-        html.Div(id = 'Satellite_Image', className = 'main_plot'),
+        html.Div(id = 'Satellite_Image', className = 'satellite_plot'),
         html.Div(id = 'Sat_Img_Tools', className = 'plot_tools', children = [
             html.H3('Image Tools:'),
             html.Br(),
@@ -49,12 +52,22 @@ def Satellite_Walkthrough():
             html.Br(),
             html.Br(),
             html.Button(children = [], id = 'remove_310_K',
-    style = {'width':'200px',
-            'height':'50px',
-        'borderRadius':'5px'}),
+                style = {'width':'200px',
+                        'height':'50px',
+                    'borderRadius':'5px'}),
             html.Br(),
             html.Br(),
-
+            daq.BooleanSwitch(
+                id = 'cloud_mask',
+                on=False,
+                label="Mask Clouds",
+                labelPosition="top"
+            ),
+            html.Br(),
+        html.Button(children = [], id = 'reveal_fires',
+            style = {'width':'200px',
+                    'height':'50px',
+                'borderRadius':'5px'}),
         ]),
     ]),
     html.Hr(),
@@ -62,24 +75,7 @@ def Satellite_Walkthrough():
     html.Br(),
     ])], style = {'textAlign':'center'}),
     html.Hr(),
-    html.H2('Cloud Masking'),
-    html.Br(),
-    html.Hr(),
-    html.Div(id = 'ParentFireHolder', children = [
-    html.H2('Fire Locations'),
-    html.Button('Show Fire Locations', id = 'show_fire_button',
-    style = {'width':'200px',
-            'height':'50px',
-        'borderRadius':'5px'}),
-    html.Div(id = 'FireMapHolder', children = [
-        html.Div(id = 'FireMap')
-    ])], style = {'textAlign':'center'}),
-    html.Hr(),
-    html.Br(),
 
-    html.Br(),
-    html.Hr(),
-    html.Br(),
     ])
 
     return page_layout
