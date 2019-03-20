@@ -5,7 +5,6 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
-from mpl_toolkits.basemap import Basemap
 
 
 def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
@@ -94,5 +93,28 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
 
 
 def simple_map():
-    # coastline = pd.read_csv('')
-    pass
+    coastline = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/coastline.csv')
+
+    data = [
+        go.Scatter(
+        x = coastline.Lon,
+        y = coastline.Lat,
+        mode = 'lines'
+        )
+    ]
+
+    layout = go.Layout(
+        autosize=True,
+        hovermode='closest',
+        height = 700,
+        width = 700
+    )
+
+    fig = dcc.Graph(id = 'simple_sat_map',
+        figure = {'data':data, 'layout':layout},
+                config={
+                'scrollZoom': True
+            })
+
+
+    return fig
