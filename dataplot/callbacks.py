@@ -1049,7 +1049,7 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_da
     f_map = Scatter_map.simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data)
     from dataplot.DataTools.AnalysisTools import Histogram
     f_hist = Histogram.Satellite_Hist(value, removed_310K, cloud_mask)
-    return [f_map, html.Br(), f_hist]
+    return [f_map, f_hist]
 
 @app.callback(Output('remove_310_K', 'children'),
     [Input('remove_310_K','n_clicks')])

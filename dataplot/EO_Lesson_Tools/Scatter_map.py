@@ -5,6 +5,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
+import time
 
 
 def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
@@ -93,6 +94,7 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
 
 
 def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
+
     data_dirc = 'https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'
     coastline = pd.read_json(coastline_data, orient = 'split')
 
@@ -129,7 +131,10 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
         mode='markers',
         marker = {'color':brightness,
             'showscale':True,
-        },
+            'cmax':brightness.max(),
+            'colorbar': dict(title = 'Temperature',
+                titleside = 'right')},
+        text = brightness,
         name = value
         ))
 
@@ -140,7 +145,8 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
             y = fire_locs.Fire_Lats,
             x = fire_locs.Fire_Lons,
             mode = 'markers',
-            marker = {'symbol':'hexagon-open'}
+            marker = {'symbol':'hexagon-open',
+                'color':'red'}
             )
             )
 
@@ -169,5 +175,5 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
             'scrollZoom': True
             })
 
-
+    #print(ti0,ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9)
     return fig
