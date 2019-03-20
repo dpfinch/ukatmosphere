@@ -92,16 +92,42 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
     return fig
 
 
-def simple_map():
+def simple_map(value, removed_310K, cloud_mask, fires_on):
+    data_dirc = 'https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'
     coastline = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/coastline.csv')
 
-    data = [
-        go.Scatter(
+    brightness = pd.read_csv(data_dirc.format(value),
+        header = None)[0]
+
+    lats = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lats.csv', header = None)[0]
+    lons = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lons.csv', header = None)[0]
+
+    t4 = pd.read_csv(data_dirc.format('T4'),header = None)
+
+    data = []
+
+    data.append(
+        go.Scattergl(
+        x = lons,
+        y = lats,
+        mode='markers',
+        marker = {'color':brightness,
+            'showscale':True,
+        },
+        name = value
+        )
+    )
+
+    data.append(
+        go.Scattergl(
         x = coastline.Lon,
         y = coastline.Lat,
-        mode = 'lines'
+        mode = 'lines',
+        line = {'color':'black',
+            'width':1},
+        name = 'Coastline'
         )
-    ]
+    )
 
     layout = go.Layout(
         autosize=True,
@@ -112,9 +138,9 @@ def simple_map():
 
     fig = dcc.Graph(id = 'simple_sat_map',
         figure = {'data':data, 'layout':layout},
-                config={
-                'scrollZoom': True
-            })
+            config={
+            'scrollZoom': True
+            )
 
 
     return fig
