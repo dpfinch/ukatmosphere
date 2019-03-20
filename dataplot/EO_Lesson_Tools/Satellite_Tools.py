@@ -11,6 +11,8 @@ def Satellite_Walkthrough():
     page_layout = html.Div(id ='full_page_container', children =
     [
     html.Br(),
+    html.Div(id='coastline_data', children = [], style={'display': 'none'}),
+    html.Div(),
     html.Div(id='Firepic', children = [
     html.Img(src='https://ktfnews.com/wp-content/uploads/2017/10/Black-Saturday.jpeg',
     style = {'height':'400px'}),
@@ -41,6 +43,7 @@ def Satellite_Walkthrough():
     #     ),
     html.Div(id = 'Satellite_Image_Holder', className = 'plot_holder', children = [
         html.H3('Satellite data may take a few seconds to load...'),
+        html.Br(),
         html.Div(id = 'Satellite_Image', className = 'satellite_plot',
                 ),
         html.Div(id = 'Sat_Img_Tools', className = 'plot_tools', children = [

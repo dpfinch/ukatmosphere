@@ -92,9 +92,9 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
     return fig
 
 
-def simple_map(value, removed_310K, cloud_mask, fires_on):
+def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
     data_dirc = 'https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'
-    coastline = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/coastline.csv')
+    coastline = pd.read_json(coastline_data, orient = 'split')
 
     brightness = pd.read_csv(data_dirc.format(value),
         header = None)[0]
@@ -102,7 +102,23 @@ def simple_map(value, removed_310K, cloud_mask, fires_on):
     lats = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lats.csv', header = None)[0]
     lons = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lons.csv', header = None)[0]
 
-    t4 = pd.read_csv(data_dirc.format('T4'),header = None)
+    if removed_310K:
+        t4 = pd.read_csv(data_dirc.format('T4'),
+        header = None)
+        lats = lats[t4[0]>310]
+        lons = lons[t4[0]>310]
+        brightness = brightness[t4[0]>310]
+
+    if cloud_mask:
+        t12 = pd.read_csv(data_dirc.format('T12'), header = None)[0]
+        p65 = pd.read_csv(data_dirc.format('p65'), header = None)[0]
+        p86 = pd.read_csv(data_dirc.format('p86'), header = None)[0]
+        cloud_mask1 = p65 + p86 > 0.9
+        cloud_mask2 = t12 < 265
+        cloud_mask3 =(p65+p86 >0.7) & (t12<300)
+        brightness[cloud_mask1+cloud_mask2+cloud_mask3] = np.nan
+        lats[cloud_mask1+cloud_mask2+cloud_mask3] = np.nan
+        lons[cloud_mask1+cloud_mask2+cloud_mask3] = np.nan
 
     data = []
 
@@ -115,8 +131,18 @@ def simple_map(value, removed_310K, cloud_mask, fires_on):
             'showscale':True,
         },
         name = value
-        )
-    )
+        ))
+
+    if fires_on:
+        fire_locs = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_locs.csv')
+        data.append(
+            go.Scattergl(
+            y = fire_locs.Fire_Lats,
+            x = fire_locs.Fire_Lons,
+            mode = 'markers',
+            marker = {'symbol':"hexagon-open"}
+            )
+            )
 
     data.append(
         go.Scattergl(
@@ -133,14 +159,15 @@ def simple_map(value, removed_310K, cloud_mask, fires_on):
         autosize=True,
         hovermode='closest',
         height = 700,
-        width = 700
+        width = 800,
+        showlegend = False,
     )
 
     fig = dcc.Graph(id = 'simple_sat_map',
         figure = {'data':data, 'layout':layout},
             config={
             'scrollZoom': True
-            )
+            })
 
 
     return fig

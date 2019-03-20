@@ -1010,6 +1010,11 @@ def Change_Timeseries(data_store, title, linemode, linetype):
 
 #### *********** EO Lessons Satellite Imagery *******************
 
+@app.callback(Output('coastline_data', 'children'),
+    [Input('img_tabs', 'value'),])
+def load_coastline_data(value):
+    coastline = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/coastline.csv')
+    return coastline.to_json(orient = 'split')
 ### Callback to select different wavelengths
 
 @app.callback(Output('Satellite_Image', 'children'),
@@ -1017,9 +1022,11 @@ def Change_Timeseries(data_store, title, linemode, linetype):
     Input('remove_310_K', 'n_clicks'),
     Input('cloud_mask', 'on'),
     Input('reveal_fires', 'n_clicks'),
-    ])
-def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires):
+    Input('coastline_data', 'children')])
+def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_data):
     # If removing 310 K is clicked
+    if not coastline_data:
+        return [html.Br(),html.P('Retrieving data...')]
     if n_clicks:
         if n_clicks%2:
             removed_310K = True
@@ -1039,7 +1046,7 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires):
     # img = Satellite_Tools.render_image(value)
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
     # f_map = Scatter_map.satellite_scatter(value, removed_310K, cloud_mask, fires_on)
-    f_map = Scatter_map.simple_map(value, removed_310K, cloud_mask, fires_on)
+    f_map = Scatter_map.simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data)
     from dataplot.DataTools.AnalysisTools import Histogram
     f_hist = Histogram.Satellite_Hist(value, removed_310K, cloud_mask)
     return [f_map, html.Br(), f_hist]
