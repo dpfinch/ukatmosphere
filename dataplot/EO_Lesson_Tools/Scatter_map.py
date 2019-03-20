@@ -59,7 +59,7 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
             lon = fire_locs.Fire_Lons,
             mode = 'markers',
             marker = go.scattermapbox.Marker(
-                shape = 'fire-station'
+                symbol = 'fire-station'
             )
             )
         )
@@ -84,7 +84,10 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
     )
 
     fig = dcc.Graph(id = 'fire_mapbox',
-        figure = {'data':data, 'layout':layout})
+        figure = {'data':data, 'layout':layout},
+                config={
+                'scrollZoom': True
+            })
 
     return fig
 
