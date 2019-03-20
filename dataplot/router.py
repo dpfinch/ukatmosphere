@@ -11,6 +11,7 @@ pages = (
     ('DEFRA_map', layouts_defra_map.DEFRA_map_page),
     ('Data_Upload', layouts_data_upload.data_upload_page),
     ('EO_Lessons', layouts_EO_lessons.EO_Lessons),
+    ('EO_lessons',layouts_EO_lessons.EO_Lessons)
     )
 
 routes = {f"{app.url_base_pathname}{path}": layout for path, layout in pages}
