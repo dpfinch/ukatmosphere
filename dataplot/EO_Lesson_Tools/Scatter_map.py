@@ -140,7 +140,7 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
             y = fire_locs.Fire_Lats,
             x = fire_locs.Fire_Lons,
             mode = 'markers',
-            marker = {'symbol':"hexagon-open"}
+            marker = {'symbol':'hexagon-open'}
             )
             )
 
