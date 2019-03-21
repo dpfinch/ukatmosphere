@@ -146,12 +146,15 @@ def EO_Lesson_Hist(inarray, **kwargs):
     return figure
 
 def Satellite_Hist(value, removed_310K, cloud_mask):
+    import os
+    cwd = os.getcwd()
+    data_dirc = cwd + '/dataplot/static/{}_wavelenght.csv'
 
-    brightness = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'.format(value),
+    brightness = pd.read_csv(data_dirc.format(value),
         header = None)
 
     if removed_310K:
-        t4 = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'.format('T4'),
+        t4 = pd.read_csv(data_dirc.format('T4'),
         header = None)
         brightness = brightness[0][t4[0]>310]
     else:

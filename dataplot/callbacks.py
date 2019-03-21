@@ -1015,7 +1015,6 @@ def Change_Timeseries(data_store, title, linemode, linetype):
 def load_coastline_data(value):
     import os
     cwd = os.getcwd()
-    print('*'*15, cwd)
     coastline = pd.read_csv(cwd + '/dataplot/static/coastline.csv')
     return coastline.to_json(orient = 'split')
 ### Callback to select different wavelengths

@@ -143,7 +143,7 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
         ))
 
     if fires_on:
-        fire_locs = pd.read_csv(cwd + 'dataplot/static/fire_locs.csv')
+        fire_locs = pd.read_csv(cwd + '/dataplot/static/fire_locs.csv')
         data.append(
             go.Scattergl(
             y = fire_locs.Fire_Lats,
