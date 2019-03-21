@@ -1013,7 +1013,10 @@ def Change_Timeseries(data_store, title, linemode, linetype):
 @app.callback(Output('coastline_data', 'children'),
     [Input('img_tabs', 'value'),])
 def load_coastline_data(value):
-    coastline = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/coastline.csv')
+    import os
+    cwd = os.getcwd()
+    print('*'*15, cwd)
+    coastline = pd.read_csv(cwd + '/dataplot/static/coastline.csv')
     return coastline.to_json(orient = 'split')
 ### Callback to select different wavelengths
 
