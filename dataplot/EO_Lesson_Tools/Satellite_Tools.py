@@ -41,6 +41,7 @@ def Satellite_Walkthrough():
     #     ],
     #     value='T4'
     #     ),
+
     html.Div(id = 'Satellite_Image_Holder', className = 'plot_holder', children = [
         html.H3('Satellite data may take a few seconds to load...'),
         html.Br(),

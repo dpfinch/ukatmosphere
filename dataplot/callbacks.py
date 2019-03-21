@@ -1016,6 +1016,7 @@ def load_coastline_data(value):
     import os
     cwd = os.getcwd()
     coastline = pd.read_csv(cwd + '/dataplot/static/coastline.csv')
+    print('Read coastline data')
     return coastline.to_json(orient = 'split')
 ### Callback to select different wavelengths
 
