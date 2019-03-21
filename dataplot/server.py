@@ -12,8 +12,16 @@ server = Flask(__name__, static_folder = "static")
 app = Dash(
     __name__,
     server=server,
-    url_base_pathname=URL_BASE_PATHNAME
+    url_base_pathname=URL_BASE_PATHNAME,
+    assets_folder = 'files/assets',
+    static_folder = 'static'
 )
+
+STATIC_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+
+@app.server.route('/static/<resource>')
+def serve_static(resource):
+    return flask.send_from_directory(STATIC_PATH, resource)
 
 app.config['suppress_callback_exceptions'] = True
 

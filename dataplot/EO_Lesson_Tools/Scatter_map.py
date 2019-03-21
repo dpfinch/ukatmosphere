@@ -95,17 +95,18 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
 
 def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
 
-    data_dirc = 'https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'
-    # data_dirc = '/dataplot/assets/{}_wavelenght.csv'
+    # data_dirc = 'https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'
+    # data_dirc = '/home/dfinch/ukatmosphere/dataplot/static/{}_wavelenght.csv'
     import os
-    print(os.getcwd())
+    cwd = os.getcwd()
+    data_dirc = cwd + '/dataplot/static/{}_wavelenght.csv'
     coastline = pd.read_json(coastline_data, orient = 'split')
 
     brightness = pd.read_csv(data_dirc.format(value),
         header = None)[0]
 
-    lats = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lats.csv', header = None)[0]
-    lons = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/lons.csv', header = None)[0]
+    lats = pd.read_csv(cwd + '/dataplot/static/lats.csv', header = None)[0]
+    lons = pd.read_csv(cwd + '/dataplot/static/lons.csv', header = None)[0]
 
     if removed_310K:
         t4 = pd.read_csv(data_dirc.format('T4'),
@@ -142,7 +143,7 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
         ))
 
     if fires_on:
-        fire_locs = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_locs.csv')
+        fire_locs = pd.read_csv(cwd + 'dataplot/static/fire_locs.csv')
         data.append(
             go.Scattergl(
             y = fire_locs.Fire_Lats,
