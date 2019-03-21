@@ -56,13 +56,13 @@ def DiurnalCycle(df,**kwargs):
                 y = mean_data,
                 x = hour_names,
                 name = 'Mean ' + var,
-                mode = 'line',
+                mode = 'lines',
                 ))
             all_plots.append( go.Scatter(
                 y = median_data,
                 x = hour_names,
                 name = 'Median ' + var,
-                mode = 'line',
+                mode = 'lines',
                 line = {'dash' : 'dash'}
                 ))
 
@@ -78,7 +78,7 @@ def DiurnalCycle(df,**kwargs):
                 y = plot_data,
                 x = hour_names,
                 name = var,
-                mode = 'line',
+                mode = 'lines',
                 ))
 
         error_type = kwargs['errors']
