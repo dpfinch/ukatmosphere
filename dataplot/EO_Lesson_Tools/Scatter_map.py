@@ -96,6 +96,9 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
 def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
 
     data_dirc = 'https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/{}_wavelenght.csv'
+    # data_dirc = '/dataplot/assets/{}_wavelenght.csv'
+    import os
+    print(os.getcwd())
     coastline = pd.read_json(coastline_data, orient = 'split')
 
     brightness = pd.read_csv(data_dirc.format(value),
