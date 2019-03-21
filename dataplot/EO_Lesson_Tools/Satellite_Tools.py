@@ -60,13 +60,13 @@ def Satellite_Walkthrough():
                         'height':'50px',
                     'borderRadius':'5px'}),
             html.Br(),
-            html.Br(),
-            daq.BooleanSwitch(
-                id = 'cloud_mask',
-                on=False,
-                label="Mask Clouds",
-                labelPosition="top"
-            ),
+            # html.Br(),
+            # daq.BooleanSwitch(
+            #     id = 'cloud_mask',
+            #     on=False,
+            #     label="Mask Clouds",
+            #     labelPosition="top"
+            # ),
             html.Br(),
         html.Button(children = [], id = 'reveal_fires',
             style = {'width':'200px',
