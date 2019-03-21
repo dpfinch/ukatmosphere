@@ -58,13 +58,13 @@ def AnnualCycle(df,**kwargs):
                 y = mean_data,
                 x = months,
                 name = 'Mean ' + var,
-                mode = 'line',
+                mode = 'lines',
                 ))
             all_plots.append( go.Scatter(
                 y = median_data,
                 x = months,
                 name = 'Median ' + var,
-                mode = 'line',
+                mode = 'lines',
                 line = {'dash' : 'dash'}
                 ))
 
@@ -80,7 +80,7 @@ def AnnualCycle(df,**kwargs):
                 y = plot_data,
                 x = months,
                 name = var,
-                mode = 'line',
+                mode = 'lines',
                 ))
 
         error_type = kwargs['errors']
@@ -102,7 +102,7 @@ def AnnualCycle(df,**kwargs):
                     y = y,
                     x = x,
                     fill = 'tozerox',
-                    line = {'color':'transparent'},
+                    line = {'color':'rgba(0,100,80,0.2)'},
                     fillcolor='rgba(0,100,80,0.2)',
                     name = var,
                     showlegend = False,
@@ -120,7 +120,7 @@ def AnnualCycle(df,**kwargs):
                     y = y,
                     x = x,
                     fill = 'tozerox',
-                    line = {'color':'transparent'},
+                    line = {'color':'rgba(0,100,80,0.2)'},
                     fillcolor='rgba(0,100,80,0.2)',
                     name = var,
                     showlegend = False,
