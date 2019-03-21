@@ -1016,7 +1016,6 @@ def load_coastline_data(value):
     import os
     cwd = os.getcwd()
     coastline = pd.read_csv(cwd + '/dataplot/static/coastline.csv')
-    print('Read coastline data')
     return coastline.to_json(orient = 'split')
 ### Callback to select different wavelengths
 
@@ -1030,6 +1029,7 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_da
     # If removing 310 K is clicked
     if not coastline_data:
         return [html.Br(),html.P('Retrieving data...')]
+        print('No data found')
     if n_clicks:
         if n_clicks%2:
             removed_310K = True
@@ -1045,7 +1045,7 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_da
             fires_on = False
     else:
         fires_on = False
-
+    print('Rendering figure')
     # img = Satellite_Tools.render_image(value)
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
     # f_map = Scatter_map.satellite_scatter(value, removed_310K, cloud_mask, fires_on)
