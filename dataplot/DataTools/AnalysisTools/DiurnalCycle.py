@@ -190,13 +190,13 @@ def DiurnalCycleSplit(df, **kwargs):
                     y = mean_data,
                     x = hour_names,
                     name = 'Mean ' + var,
-                    mode = 'line',
+                    mode = 'lines',
                     ),1,n + 1)
                 fig.append_trace( go.Scatter(
                     y = median_data,
                     x = hour_names,
                     name = 'Median ' + var,
-                    mode = 'line',
+                    mode = 'lines',
                     line = {'dash' : 'dash'}
                     ),1,n + 1)
 
@@ -212,7 +212,7 @@ def DiurnalCycleSplit(df, **kwargs):
                     y = plot_data,
                     x = hour_names,
                     name = var,
-                    mode = 'line',
+                    mode = 'lines',
                     showlegend = False,
                     ),1,n+1)
 
