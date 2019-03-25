@@ -9,12 +9,20 @@ URL_BASE_PATHNAME = '/dataplot/'
 
 server = Flask(__name__, static_folder = "static")
 
+# external CSS stylesheets
+external_stylesheets = [
+    'http://www.ukatmosphere.org/static/css/dataplot.css',
+    'http://127.0.0.1:8000/static/css/dataplot.css'
+]
+
+
 app = Dash(
     __name__,
     server=server,
     url_base_pathname=URL_BASE_PATHNAME,
     assets_folder = 'files/assets',
-    static_folder = 'static'
+    static_folder = 'static',
+    external_stylesheets=external_stylesheets
 )
 
 STATIC_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
@@ -44,8 +52,6 @@ cache.init_app(app.server, config=CACHE_CONFIG)
 # app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 #my_css_url = "http://127.0.0.1:8000/static/css/dataplot.css"
-my_css_url = ["http://www.ukatmosphere.org/static/css/dataplot.css",
-    "http://127.0.0.1:8000/static/css/dataplot.css"
-    ]
-
-app.css.append_css({"external_url": my_css_url})
+# my_css_url = "http://www.ukatmosphere.org/static/css/dataplot.css"
+#
+# app.css.append_css({"external_url": my_css_url})

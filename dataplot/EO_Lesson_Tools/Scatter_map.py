@@ -36,6 +36,14 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
         lats[cloud_mask1+cloud_mask2+cloud_mask3] = np.nan
         lons[cloud_mask1+cloud_mask2+cloud_mask3] = np.nan
 
+
+    if value in {'T4', 'T11', 'T12'}:
+        cmax = 340
+        cmin = 230
+    else:
+        cmax = 1.3
+        cmin = 0
+
     data = [
     go.Scattermapbox(
         lat=lats,
@@ -43,8 +51,10 @@ def satellite_scatter(value, removed_310K, cloud_mask, fires_on):
         mode='markers',
         marker=go.scattermapbox.Marker(
             size=5,
+            symbol = 'square',
             color=brightness,
-            cmax = brightness.max(),
+            cmin = cmin,
+            cmax = cmax,
             colorbar=dict(title = 'Temperature',
                 titleside = 'right')
             ),
@@ -128,6 +138,13 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
 
     data = []
 
+    if value in {'T4', 'T11', 'T12'}:
+        cmax = 340
+        cmin = 230
+    else:
+        cmax = 1.3
+        cmin = 0
+
     data.append(
         go.Scattergl(
         x = lons,
@@ -135,7 +152,9 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
         mode='markers',
         marker = {'color':brightness,
             'showscale':True,
-            'cmax':brightness.max(),
+            'cmin':cmin,
+            'cmax':cmax,
+            'symbol':'square',
             'colorbar': dict(title = 'Temperature',
                 titleside = 'right')},
         text = brightness,
