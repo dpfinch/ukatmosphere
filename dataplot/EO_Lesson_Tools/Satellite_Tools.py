@@ -12,16 +12,16 @@ def Satellite_Walkthrough():
     [
     html.Br(),
     html.Div(id='coastline_data', children = [], style={'display': 'none'}),
-    html.Div(),
+    html.Div(id='satellite_head_title', children = [html.H1('Sentinel 2 Brightness Temperature Over Australia'),],
+    style = {'textAlign':'center'}),
     html.Div(id='Firepic', children = [
     html.Img(src='https://ktfnews.com/wp-content/uploads/2017/10/Black-Saturday.jpeg',
-    style = {'height':'400px'}),
-    html.Div(id = 'Satellite_Images', children =[
-    html.Br(),
-    html.H2('Sentinel 2 Brightness Temperature Over Australia'),
+    )]),
     html.Div(id = 'Sentinenl_Info_holder', children = [
     Text_Providers.Sentinenl_Info()], style = {'textAlign':'left',
         'padding':'20px'}),
+    html.Div(id = 'Satellite_Images', children =[
+    html.Br(),
     html.P('Look at the different wavelengths - what do they highlight?'),
     dcc.Tabs(id="img_tabs", value='T4', children=[
         dcc.Tab(label='4\265m Wavelength', value='T4'),
@@ -43,7 +43,7 @@ def Satellite_Walkthrough():
     #     ),
 
     html.Div(id = 'Satellite_Image_Holder', className = 'plot_holder', children = [
-        html.H3('Satellite data may take a few seconds to load...'),
+
         html.Br(),
         html.Div(id = 'Satellite_Image', className = 'satellite_plot',
                 ),
@@ -78,10 +78,9 @@ def Satellite_Walkthrough():
     html.Hr(),
     html.Br(),
     html.Br(),
-    ])], style = {'textAlign':'center'}),
+    ])]),
     html.Hr(),
 
-    ])
 
     return page_layout
 

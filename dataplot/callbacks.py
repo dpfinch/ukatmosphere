@@ -1028,7 +1028,7 @@ def load_coastline_data(value):
 def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_data):
     # If removing 310 K is clicked
     if not coastline_data:
-        return [html.Br(),html.P('Retrieving data...')]
+        return [html.Br(),html.H3('Satellite data may take a few seconds to load...'),]
 
     if n_clicks:
         if n_clicks%2:
