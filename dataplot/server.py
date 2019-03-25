@@ -21,7 +21,7 @@ app = Dash(
     __name__,
     server=server,
     url_base_pathname=URL_BASE_PATHNAME,
-    assets_folder = 'files/assets',
+    assets_folder = 'assets',
     static_folder = 'static',
     external_stylesheets=external_stylesheets
 )
