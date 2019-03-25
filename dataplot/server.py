@@ -12,7 +12,8 @@ server = Flask(__name__, static_folder = "static")
 # external CSS stylesheets
 external_stylesheets = [
     'http://www.ukatmosphere.org/static/css/dataplot.css',
-    'http://127.0.0.1:8000/static/css/dataplot.css'
+    'http://127.0.0.1:8000/static/css/dataplot.css',
+    'https://codepen.io/chriddyp/pen/bWLwgP.css'
 ]
 
 
