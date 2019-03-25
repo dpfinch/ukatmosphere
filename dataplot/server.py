@@ -44,7 +44,8 @@ cache.init_app(app.server, config=CACHE_CONFIG)
 # app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 #my_css_url = "http://127.0.0.1:8000/static/css/dataplot.css"
-my_css_url = "http://www.ukatmosphere.org/static/css/dataplot.css"
-
+my_css_url = ["http://www.ukatmosphere.org/static/css/dataplot.css",
+    "http://127.0.0.1:8000/static/css/dataplot.css"
+    ]
 
 app.css.append_css({"external_url": my_css_url})
