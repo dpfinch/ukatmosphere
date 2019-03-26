@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Barlow|Tinos|Roboto');
-/* @import url('/static/css/info_pages.css'); */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Barlow|Tinos|Roboto');
+@import url('/static/css/info_pages.css');
 /*
 **************************************************************************
                        UKAtmosphere CSS style sheet
@@ -44,11 +44,11 @@ body {
     background-color: white;
     height: 100%;
     margin: 0px;
-    font-family: 'Barlow';
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Barlow';
+    font-family: 'Open Sans', sans-serif;
 }
 
 ul{
@@ -117,7 +117,7 @@ a:hover{
 #page-header-text{
   color: #FCFCFC;
   text-decoration: none;
-  font-family: 'Barlow';
+  font-family: 'Open Sans', sans-serif;
   font-size: 38pt;
 }
 

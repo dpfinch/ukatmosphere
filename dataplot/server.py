@@ -11,7 +11,7 @@ from flask_caching import Cache
 # should start and end with a '/'
 URL_BASE_PATHNAME = '/dataplot/'
 
-server = Flask(__name__)#, static_folder = "static")
+server = Flask(__name__, static_folder = "static")
 
 # external CSS stylesheets
 external_stylesheets = [
@@ -49,6 +49,7 @@ CACHE_CONFIG = {
 }
 cache = Cache()
 cache.init_app(app.server, config=CACHE_CONFIG)
+
 # @server.route('/favicon.ico')
 # def favicon():
 #     return send_from_directory(os.path.join(server.root_path, 'static'),

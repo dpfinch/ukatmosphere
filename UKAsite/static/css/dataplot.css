@@ -36,7 +36,7 @@ html{
 
 h1 a {
     color: #1D5F75;
-    font-family: 'Tinos';
+    font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -44,11 +44,11 @@ body {
     background-color: white;
     height: 100%;
     margin: 0px;
-    font-family: 'Barlow';
+    font-family: 'Open Sans', sans-serif;
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Barlow';
+    font-family: 'Open Sans', sans-serif;
 }
 
 ul{
@@ -117,7 +117,7 @@ a:hover{
 #page-header-text{
   color: #FCFCFC;
   text-decoration: none;
-  font-family: 'Barlow';
+  font-family: 'Open Sans', sans-serif;
   font-size: 38pt;
 }
 

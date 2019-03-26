@@ -14,6 +14,7 @@ from dataplot.EO_Lesson_Tools import TIR_Tools
 from dataplot.EO_Lesson_Tools import TIR_Data_Process
 from dataplot.EO_Lesson_Tools import Scatter_map
 from dataplot.EO_Lesson_Tools import More_Info_Page
+from dataplot.EO_Lesson_Tools import Text_Providers
 
 ### ===================================================================
 ### The first callbacks are for the choices effecting every plot
@@ -1049,7 +1050,9 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_da
     f_map = Scatter_map.simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data)
     from dataplot.DataTools.AnalysisTools import Histogram
     f_hist = Histogram.Satellite_Hist(value, removed_310K, cloud_mask)
-    return [f_map, f_hist]
+    
+    hist_text = Text_Providers.Hist_Text()
+    return [f_map, hist_text, f_hist]
 
 @app.callback(Output('remove_310_K', 'children'),
     [Input('remove_310_K','n_clicks')])

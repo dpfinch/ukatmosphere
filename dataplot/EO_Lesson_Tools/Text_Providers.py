@@ -39,6 +39,23 @@ def Sentinenl_Info():
     return s
 
 
+def Hist_Text():
+    s = html.Div([
+    html.P("""
+    Below is a histogram of the different temperatures seen by the satellite at
+    a this wavelength. How often a certain temperature occurs (known as the frequency)
+    is plotted like a bar chart.
+    """),
+    html.P("""
+    Can you spot the most common temperature?"""),
+    html.P("""
+    Is there only one peak or are there more? Can you tell which peak might be the
+    temperature of the ocean and which might be the temperature of the land?
+    """),
+
+    ])
+    return s
+
 def test_string2():
     s = html.Div([
     html.P("""
