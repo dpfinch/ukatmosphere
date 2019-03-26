@@ -29,6 +29,7 @@ def dispatcher(request):
             response = server.full_dispatch_request()
         except Exception as e:
             response = server.make_response(server.handle_exception(e))
+        response.direct_passthrough = False
         return response.get_data()
 
 # Create a simple view for the homepage

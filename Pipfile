@@ -1,8 +1,11 @@
 [[source]]
+
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 
+
 [packages]
+
 dj-database-url = "*"
 django = "*"
 gunicorn = "*"
@@ -26,7 +29,10 @@ schedule = "*"
 scipy = "*"
 dash-table = "*"
 dash-daq = "*"
-psycopg2-binary = "*"
+"psycopg2-binary" = "*"
+flask = "*"
+
 
 [requires]
+
 python_version = "3.6"

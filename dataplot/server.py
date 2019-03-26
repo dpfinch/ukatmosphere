@@ -4,19 +4,19 @@ import os
 import redis
 from flask_caching import Cache
 
-from flask.helpers import get_root_path
-print('Helllllooo')
-print(get_root_path(__name__))
+# from flask.helpers import get_root_path
+# print('Helllllooo')
+# print(get_root_path(__name__))
 
 # should start and end with a '/'
 URL_BASE_PATHNAME = '/dataplot/'
 
-server = Flask(__name__, static_folder = "static")
+server = Flask(__name__)#, static_folder = "static")
 
 # external CSS stylesheets
 external_stylesheets = [
-    'http://127.0.0.1:8000/static/css/dataplot.css',
-    'http://www.ukatmosphere.org/static/css/dataplot.css',
+    # 'http://127.0.0.1:8000/static/css/dataplot.css',
+    # 'http://www.ukatmosphere.org/static/css/dataplot.css',
     'https://codepen.io/chriddyp/pen/bWLwgP.css'
 ]
 

@@ -13,6 +13,7 @@ from dataplot.EO_Lesson_Tools import Satellite_Tools
 from dataplot.EO_Lesson_Tools import TIR_Tools
 from dataplot.EO_Lesson_Tools import TIR_Data_Process
 from dataplot.EO_Lesson_Tools import Scatter_map
+from dataplot.EO_Lesson_Tools import More_Info_Page
 
 ### ===================================================================
 ### The first callbacks are for the choices effecting every plot
@@ -858,11 +859,7 @@ def render_content(tab):
         output = Satellite_Tools.Satellite_Walkthrough()
 
     elif tab == 'tab-3':
-        output = html.Div(children = [
-            html.H3('More info & links'),
-            html.H3('Links to jupyter notebooks')
-
-        ])
+        output = More_Info_Page.more_info_holder()
 
     return output
 
