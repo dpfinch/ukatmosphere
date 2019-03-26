@@ -25,6 +25,7 @@ def Satellite_Walkthrough():
     html.H2('Spotting fires over Australia'),
     html.P('Below is some satellite data - explain about it'),
     html.H3('Sentinel 2 Brightness Temperature'),
+
     html.P('Explanation of what this actually means'),
     html.P('Look at the different wavelengths - what do they highlight?'),
     dcc.Tabs(id="img_tabs", value='T4', children=[
@@ -84,6 +85,7 @@ def Satellite_Walkthrough():
     html.Br(),
     ])]),
     html.Hr(),
+    html.P(children = ['Any questions or issues? Email ', html.A('Doug Finch', href = 'mailto:d.finch@ed.ac.uk')]),
 
 
     return page_layout

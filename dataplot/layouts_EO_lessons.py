@@ -8,17 +8,16 @@ from dataplot.DataTools import TidyData
 
 def EO_Lessons():
 
-    EO_lesson_list = ['Thermal Camera Analysis', 'Satellite Fire Detection']
-    lesson_options  = [{'label': i.strip(), 'value': i.strip()} for i in EO_lesson_list]
-
     page_layout = html.Div(id ='full_page_container', children =
     [
     html.Div(className = 'page-header', children = [
-        html.Div(id = 'home-logo-holder', children = [html.A(id = 'eo-pi-logo', href="/dataplot/EO_Lessons")]),
+        html.Div(id = 'home-logo-holder', children = [html.A(id = 'eo-pi-logo', href="https://sites.google.com/view/eoscience/home")]),
         html.Div(id = 'page-header-holder', children = [html.A('Earth Observation',id = "page-header-text", href = "/dataplot/EO_Lessons")]),
     ]),
     html.Div(className = 'page-body',children = [
-        html.H1(id = 'UploadHolder', children = 'Learn about observing the Earth from space'),
+        html.H1(id = 'UploadHolder', children = ['The World On Fire'], style = {'textAlign':'center'}),
+        html.H3(id = 'EO_subheader', children =['Thermal Data Analysis'], style = {'textAlign':'center'}),
+        html.Hr(),
         html.Br(),
         html.P(id = 'EO_lessons_intro', children = [
         'Earth observation info here.']),

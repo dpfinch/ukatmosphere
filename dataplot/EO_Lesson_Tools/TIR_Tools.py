@@ -29,6 +29,8 @@ def Get_Example_Data(timesteps):
 def TIR_Walkthrough():
     page_layout = html.Div(id ='full_page_container', children =
     [html.Br(),
+    html.H1(children = ['Thermal Sensor Data Analysis'],style = {'textAlign':'center'}),
+    html.P('Information about the thermal sensor and what to do goes here'),
     dcc.Upload(
             id='upload-data',
             children=html.Div([
@@ -47,7 +49,7 @@ def TIR_Walkthrough():
             },
             # Allow multiple files to be uploaded
             multiple=False),
-    html.Div(children = [html.H2('OR'),
+    html.Div(children = [html.H3('OR'),
     html.Button('Use Example Data', id = 'Example_Data_button',
     style = {'width':'200px',
             'height':'50px',
@@ -165,6 +167,8 @@ def TIR_Walkthrough():
     html.Br(),
     html.Br(),
     html.Br(),
+    html.Hr(),
+    html.P(children = ['Any questions or issues? Email ', html.A('Doug Finch', href = 'mailto:d.finch@ed.ac.uk')]),
     ])
     return page_layout
 
