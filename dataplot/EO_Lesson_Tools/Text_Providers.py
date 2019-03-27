@@ -35,7 +35,7 @@ def Sentinenl_Info():
     satellite in the Sentinel mission can be found here:
     """
     ), html.A('Sentinel-2 Website', href='https://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Sentinel-2', target="_blank")
-])
+], className = 'text_holder')
     return s
 
 
@@ -53,7 +53,7 @@ def Hist_Text():
     temperature of the ocean and which might be the temperature of the land?
     """),
 
-    ])
+    ], className = 'text_holder')
     return s
 
 def Fire_Count():
@@ -75,31 +75,56 @@ def TIR_Info():
         If you've not got a your own file then you can use some sample data we've
         got. You can pick the number of time steps you want to analyise (up to 350).
     """)
-    ])
+    ], className = 'text_holder')
     return s
 
 def ContourInfo():
     s = html.Div([
     html.P("""
-        Information about fire count over time goes here.
+        A contour plot colours all the same values the same colour. This is useful
+        if we want to see patterns in the data. """),
+    html.P("""
+        It creates an plot that is similar
+        to a photograph - but coloured by temperature instead of light!
     """)
-    ])
+    ], className = 'text_holder')
+    return s
+
+def AfterContour():
+    s = html.Div([
+    html.H4('What features can you see in the contour plot?'),
+    html.P("""
+        The contour plot is slightly blured (this is only a small sensor after all),
+        but can you determine any shapes in the data?
+        """),
+
+    html.H4('What is the maximum and minimum temperature?'),
+    html.P("""
+        What is the range of temperatures seen in the plot?
+        """),
+    ], className = 'text_holder')
     return s
 
 def HistInfo():
     s = html.Div([
     html.P("""
-        Information about fire count over time goes here.
+        This histogram shows how often a particular temperature occurs - known
+        as the frequency. The data is gathered into 'bins' (or groups) of
+        temperatures.
     """)
-    ])
+    ], className = 'text_holder')
     return s
 
 def TimeseriesInfo():
     s = html.Div([
     html.P("""
-        Information about fire count over time goes here.
+        If there is more than one time step in the data then a timeseries can
+        show how the data changes over time. This time series plot takes the
+        mean, minimum or maximum temperature for each timestep and plots it one
+        after another. We can use this to see if the temperature is changing
+        over time.
     """)
-    ])
+    ], className = 'text_holder')
     return s
 
 

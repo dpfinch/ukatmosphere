@@ -69,8 +69,10 @@ def TIR_Walkthrough():
     html.Br(),
     html.Hr(),
     ###
+    html.Div([
     html.P("If the data is loaded, then you can look at it by switching the toggle below."),
-    html.Div(id='output-data-upload'),
+    html.P("This will show a table full of numbers - this isn't very useful unless we analyise this data with the tools below."),
+    html.Div(id='output-data-upload'),], className = 'text_holder'),
     daq.BooleanSwitch(
         id = 'show_data',
         on=False,
@@ -81,8 +83,9 @@ def TIR_Walkthrough():
     html.Br(),
     html.Hr(),
     html.H3('Data Description:'),
+    html.Div([
     html.P('Here are some statistics which tell us a few things about the data.'),
-
+    ], className = 'text_holder'),
     html.Div(id = 'data_desc_holder'),
     html.Hr(),
     html.Hr(),
@@ -112,9 +115,7 @@ def TIR_Walkthrough():
         ]),
     ]),
     html.P('Questions and information could go here'),
-    Text_Providers.test_string2(),
-    html.H4('What features can you see in the contour plot?'),
-    html.H4('What is the maximum and minimum temperature?'),
+    Text_Providers.AfterContour(),
     html.Hr(),
     # Some plots
     html.H2(children = ['Histogram'], style = {'textAlign':'center'}),
@@ -139,6 +140,7 @@ def TIR_Walkthrough():
             ),
             html.Br(),
             html.Br(),
+            html.P("You can change the plot from 'frequency' to 'probability' - this is how likely it is that a certain temperature will occur."),
             dcc.Checklist( id = 'EOHistogramProbability',
                 options = [{'label':'Probability', 'value': 'Probability'}],
                 values = []),

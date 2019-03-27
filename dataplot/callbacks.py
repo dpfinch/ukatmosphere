@@ -931,7 +931,8 @@ def data_desciber(data_store):
 
         stats_table = TIR_Tools.StatsTable(data)
     except (ValueError, AttributeError) as e:
-        stats_table = html.Div(html.H3('Load in some data to see descriptive statistics'))
+        stats_table = html.Div(html.H4('Load in some data to see descriptive statistics'),
+        style = {'textAlign':'center'})
     return stats_table
 
 #### *********** EO Lessons HISTOGRAM PLOT *******************
@@ -1050,7 +1051,7 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_da
     f_map = Scatter_map.simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data)
     from dataplot.DataTools.AnalysisTools import Histogram
     f_hist = Histogram.Satellite_Hist(value, removed_310K, cloud_mask)
-    
+
     hist_text = Text_Providers.Hist_Text()
     return [f_map, hist_text, f_hist]
 

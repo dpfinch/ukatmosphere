@@ -470,6 +470,10 @@ a:hover{
   border-left: 8px double #4d4d4d;
 }
 
+.text_holder{
+  padding: 30px;
+}
+
 #background_image{
   /*border: 2px solid red;*/
   display: block;
