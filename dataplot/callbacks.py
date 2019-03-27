@@ -1048,6 +1048,7 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_da
     # img = Satellite_Tools.render_image(value)
     # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
     # f_map = Scatter_map.satellite_scatter(value, removed_310K, cloud_mask, fires_on)
+    
     f_map = Scatter_map.simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data)
     from dataplot.DataTools.AnalysisTools import Histogram
     f_hist = Histogram.Satellite_Hist(value, removed_310K, cloud_mask)

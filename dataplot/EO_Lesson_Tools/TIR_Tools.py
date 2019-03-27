@@ -82,7 +82,7 @@ def TIR_Walkthrough():
     html.Div(id='output-example-data', children = []),
     html.Br(),
     html.Hr(),
-    html.H3('Data Description:'),
+    html.H3('Data Description:', style = {'padding':'30px'}),
     html.Div([
     html.P('Here are some statistics which tell us a few things about the data.'),
     ], className = 'text_holder'),
