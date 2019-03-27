@@ -190,6 +190,7 @@ def simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data):
         height = 700,
         width = 800,
         showlegend = False,
+        title = 'Satellite Image of Eastern Austrilia on 1st Nov 2017'
     )
 
     fig = dcc.Graph(id = 'simple_sat_map',

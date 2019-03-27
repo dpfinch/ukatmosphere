@@ -56,6 +56,53 @@ def Hist_Text():
     ])
     return s
 
+def Fire_Count():
+    s = html.Div([
+    html.P("""
+        Information about fire count over time goes here.
+    """)
+    ])
+    return s
+
+def TIR_Info():
+    s = html.Div([
+    html.P("""
+        Below are some tools to help process data from the Raspberry Pi Thermal
+        Sensor. If you've got your own data recorded from a Rapberry Pi sensor
+        then find the file and drag it into the box below.
+    """),
+    html.P("""
+        If you've not got a your own file then you can use some sample data we've
+        got. You can pick the number of time steps you want to analyise (up to 350).
+    """)
+    ])
+    return s
+
+def ContourInfo():
+    s = html.Div([
+    html.P("""
+        Information about fire count over time goes here.
+    """)
+    ])
+    return s
+
+def HistInfo():
+    s = html.Div([
+    html.P("""
+        Information about fire count over time goes here.
+    """)
+    ])
+    return s
+
+def TimeseriesInfo():
+    s = html.Div([
+    html.P("""
+        Information about fire count over time goes here.
+    """)
+    ])
+    return s
+
+
 def test_string2():
     s = html.Div([
     html.P("""

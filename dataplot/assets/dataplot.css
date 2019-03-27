@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Barlow|Tinos|Roboto');
-@import url('/static/css/info_pages.css');
+/* @import url('https://fonts.googleapis.com/css?family=Open+Sans|Barlow|Tinos|Roboto'); */
+/* @import url('/static/css/info_pages.css'); */
 /*
 **************************************************************************
                        UKAtmosphere CSS style sheet
@@ -320,6 +320,10 @@ a:hover{
 @-o-keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
+}
+
+._dash-undo-redo {
+  display: none;
 }
 
 /*

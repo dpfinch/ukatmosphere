@@ -30,7 +30,7 @@ def TIR_Walkthrough():
     page_layout = html.Div(id ='full_page_container', children =
     [html.Br(),
     html.H1(children = ['Thermal Sensor Data Analysis'],style = {'textAlign':'center'}),
-    html.P('Information about the thermal sensor and what to do goes here'),
+    Text_Providers.TIR_Info(),
     dcc.Upload(
             id='upload-data',
             children=html.Div([
@@ -59,7 +59,7 @@ def TIR_Walkthrough():
       id='timesteps',
       min=1,
       max=350,
-      value=1,
+      value=10,
       label='Choose number of timesteps',
       size = 120
     ),
@@ -69,6 +69,7 @@ def TIR_Walkthrough():
     html.Br(),
     html.Hr(),
     ###
+    html.P("If the data is loaded, then you can look at it by switching the toggle below."),
     html.Div(id='output-data-upload'),
     daq.BooleanSwitch(
         id = 'show_data',
@@ -80,10 +81,14 @@ def TIR_Walkthrough():
     html.Br(),
     html.Hr(),
     html.H3('Data Description:'),
+    html.P('Here are some statistics which tell us a few things about the data.'),
+
     html.Div(id = 'data_desc_holder'),
     html.Hr(),
     html.Hr(),
     # Contour plot of the data
+    html.H2(children = ['Contour Plot'], style = {'textAlign':'center'}),
+    Text_Providers.ContourInfo(),
     html.Div(id = 'EOContourHolder', className = 'plot_holder', children = [
         html.Div(id = 'EOContour', className = 'main_plot'),
         html.Div(id = 'EOContourTools', className = 'plot_tools', children = [
@@ -94,6 +99,7 @@ def TIR_Walkthrough():
                 placeholder = 'Enter Title',
                 value = ''),
             html.Br(),
+            html.P('Move the slider to see what each time step of the data looks like.'),
             html.P('Timestep:'),
             daq.Slider(
             id = 'ContourSlider',
@@ -107,10 +113,12 @@ def TIR_Walkthrough():
     ]),
     html.P('Questions and information could go here'),
     Text_Providers.test_string2(),
-    html.H3('What features can you see in the contour plot?'),
-    html.H3('What is the maximum and minimum temperature?'),
+    html.H4('What features can you see in the contour plot?'),
+    html.H4('What is the maximum and minimum temperature?'),
     html.Hr(),
     # Some plots
+    html.H2(children = ['Histogram'], style = {'textAlign':'center'}),
+    Text_Providers.HistInfo(),
     html.Div(id = 'EOHistogramHolder', className = 'plot_holder', children = [
         html.Div(id = 'EOHistogram', className = 'main_plot'),
         html.Div(id = 'EOHistogramTools', className = 'plot_tools', children = [
@@ -137,10 +145,12 @@ def TIR_Walkthrough():
 
         ]),
     ]),
-    html.H3('What is the most common (modal) temperature?'),
+    html.H4('What is the most common (modal) temperature?'),
     html.P('More information and questions'),
     html.Hr(),
     ## TimeSeries layout
+    html.H2(children = ['Timeseries Plot'], style = {'textAlign':'center'}),
+    Text_Providers.TimeseriesInfo(),
     html.Div(id = 'EOTimeSeriesHolder', className = 'plot_holder', children = [
         html.Div(id = 'EOTimeSeries', className = 'main_plot'),
         html.Div(id = 'EOTimeSeriesTools', className = 'plot_tools', children = [

@@ -22,9 +22,9 @@ def Satellite_Walkthrough():
         'padding':'20px'}),
     html.Div(id = 'Satellite_Images', children =[
     html.Br(),
-    html.H2('Spotting fires over Australia'),
+    html.H2(children = ['Spotting fires over Australia'], style = {'textAlign':'center'}),
     html.P('Below is some satellite data - explain about it'),
-    html.H3('Sentinel 2 Brightness Temperature'),
+    html.H3(children = ['Sentinel 2 Brightness Temperature'], style = {'textAlign':'center'}),
 
     html.P('Explanation of what this actually means'),
     html.P('Look at the different wavelengths - what do they highlight?'),
@@ -55,11 +55,6 @@ def Satellite_Walkthrough():
         html.Div(id = 'Sat_Img_Tools', className = 'plot_tools', children = [
             html.H3('Image Tools:'),
             html.Br(),
-            html.Label('Plot Title '),
-            dcc.Input( id = 'Sat_Img_Title',
-                placeholder = 'Enter Title',
-                value = ''),
-            html.Br(),
             html.Br(),
             html.Button(children = [], id = 'remove_310_K',
                 style = {'width':'200px',
@@ -70,8 +65,16 @@ def Satellite_Walkthrough():
             daq.BooleanSwitch(
                 id = 'cloud_mask',
                 on=False,
-                label="Mask Clouds",
+                label="Mask Temperature",
                 labelPosition="top"
+            ),
+            html.P('Select minimum temperature to mask:'),
+            daq.Slider(
+            id = 'TempSlider',
+            min = 230,
+            max = 340,
+            step = 1,
+            value = 1
             ),
             html.Br(),
         html.Button(children = [], id = 'reveal_fires',
@@ -82,10 +85,12 @@ def Satellite_Walkthrough():
     ]),
     html.Hr(),
     html.Br(),
+    html.H2(children  = ['Fire Count'], style = {'textAlign':'center'}),
+    Text_Providers.Fire_Count(),
     html.Br(),
-    ])]),
     html.Hr(),
     html.P(children = ['Any questions or issues? Email ', html.A('Doug Finch', href = 'mailto:d.finch@ed.ac.uk')]),
+    ])])
 
 
     return page_layout

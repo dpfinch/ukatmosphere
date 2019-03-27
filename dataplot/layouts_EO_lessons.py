@@ -19,8 +19,8 @@ def EO_Lessons():
         html.H3(id = 'EO_subheader', children =['Thermal Data Analysis'], style = {'textAlign':'center'}),
         html.Hr(),
         html.Br(),
-        html.P(id = 'EO_lessons_intro', children = [
-        'Earth observation info here.']),
+        html.H4(id = 'EO_lessons_intro', children = [
+        'Choose to either analyse some data from a thermal sensor or look at some satellite data.']),
     ]),
 
     html.Div([
