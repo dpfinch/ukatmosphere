@@ -11,12 +11,12 @@ from flask_caching import Cache
 # should start and end with a '/'
 URL_BASE_PATHNAME = '/dataplot/'
 
-server = Flask(__name__, static_folder = "static")
+server = Flask(__name__)#, static_folder = "static")
 
 # external CSS stylesheets
 external_stylesheets = [
     # 'http://127.0.0.1:8000/static/css/dataplot.css',
-    'http://www.ukatmosphere.org/static/css/dataplot.css',
+    # 'http://www.ukatmosphere.org/static/css/dataplot.css',
     'https://codepen.io/chriddyp/pen/bWLwgP.css'
 ]
 
@@ -25,7 +25,7 @@ app = Dash(
     __name__,
     server=server,
     url_base_pathname=URL_BASE_PATHNAME,
-    assets_folder = 'assets',
+    # assets_folder = 'assets',
     # static_folder = 'static',
     external_stylesheets=external_stylesheets
 )

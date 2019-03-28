@@ -130,7 +130,7 @@ def EO_Lesson_Hist(inarray, **kwargs):
         'bargap': 0.2,
         'bargroupgap': 0.1,
         'yaxis': {'title': yaxisTitle},
-        'xaxis': {'title': 'Temperature \260C'},
+        'xaxis': {'title': 'Temperature \260K'},
         'title': kwargs['title'],
         }
 

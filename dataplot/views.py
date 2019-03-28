@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+import mimetypes
+
 # from .forms import SiteSelector, VariableChoices, VarCombine
 
 from UKAsite.format_tools import PrettyWordList
@@ -44,5 +46,17 @@ def dash(request, **kwargs):
     return HttpResponse(dispatcher(request))
 
 @csrf_exempt
-def dash_ajax(request):
+def dash_json(request):
     return HttpResponse(dispatcher(request), content_type='application/json')
+
+def dash_index(request, **kwargs):
+    """Handle Dash CSS requests"""
+    return HttpResponse(dispatcher(request), content_type='text/html')
+
+
+def dash_guess_mimetype(request, **kwargs):
+    """Handle Dash requests and guess the mimetype. Needed for static files."""
+    # print('Guessing Mimetype')
+    url = request.get_full_path().split('?')[0]
+    content_type, _encoding = mimetypes.guess_type(url)
+    return HttpResponse(dispatcher(request), content_type=content_type)

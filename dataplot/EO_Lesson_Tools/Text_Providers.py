@@ -47,7 +47,7 @@ def Hist_Text():
     is plotted like a bar chart.
     """),
     html.P("""
-    Can you spot the most common temperature?"""),
+    Can you determine what the most common temperature is?"""),
     html.P("""
     Is there only one peak or are there more? Can you tell which peak might be the
     temperature of the ocean and which might be the temperature of the land?
@@ -85,7 +85,7 @@ def ContourInfo():
         if we want to see patterns in the data. """),
     html.P("""
         It creates an plot that is similar
-        to a photograph - but coloured by temperature instead of light!
+        to a photograph - but coloured by temperature instead of light.
     """)
     ], className = 'text_holder')
     return s
