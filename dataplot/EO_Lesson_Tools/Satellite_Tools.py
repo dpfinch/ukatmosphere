@@ -85,7 +85,7 @@ def Satellite_Walkthrough():
         ], style ={'paddingRight':'20px'}),
     ]),
     html.Hr(),
-    html.H2(children  = ['The effect of resoluton'], style = {'textAlign':'center'}),
+    html.H2(children  = ['The effect of resolution'], style = {'textAlign':'center'}),
     html.Br(),
     html.H2(children  = ['Fire Count'], style = {'textAlign':'center'}),
     Text_Providers.Fire_Count(),
