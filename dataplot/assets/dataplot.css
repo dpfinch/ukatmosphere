@@ -364,9 +364,13 @@ a:hover{
   width:100%;
   height: 180px;
   overflow: hidden;
+  text-align: center;
   /* border: 2px solid blue; */
 }
 
+#main_fire_pic{
+  margin: -350px;
+}
 
 .satellite_head_title{
   color: red;
@@ -467,6 +471,21 @@ a:hover{
   justify-content: center;
   flex-grow: 100;
   border-left: 8px double #4d4d4d;
+}
+
+.text_holder{
+  padding: 30px;
+}
+
+#return_button_holder{
+  text-align: center;
+}
+
+#EO_PI_link{
+  width: 70%;
+  height: 50px;
+  background-color: #225A67;
+  color: white;
 }
 
 #background_image{

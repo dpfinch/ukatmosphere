@@ -7,9 +7,10 @@ import dash_daq as daq
 from dataplot.EO_Lesson_Tools import Text_Providers
 
 def more_info_holder():
-    page_layout = html.Div(id ='full_page_container', children =
+    page_layout = html.Div(id = 'full_page_container', children =
     [
     html.Br(),
+    html.Div(className = 'text_holder', children = [
     html.H2('More Analysis'),
     html.P('Information about satellite analysis here and what more you can do'),
     html.H3('Jupyter Notebooks'),
@@ -24,11 +25,12 @@ def more_info_holder():
     html.A('Global Fire Emission Database', href = 'https://www.globalfiredata.org/index.html',target="_blank" ),
     html.Br(),
     html.Br(),
-    html.A(html.Button(children = ['Return to EO-Pi Site'],),
-        href = 'https://sites.google.com/view/eoscience/home'),
+    html.Div(id = 'return_button_holder', children = [
+    html.A(html.Button(children = ['Return to EO-Pi Site'],id = 'EO_PI_link' ),
+        href = 'https://sites.google.com/view/eoscience/home'),]),
     html.Br(),
     html.Hr(),
     html.P(children = ['Any questions or issues? Email ', html.A('Doug Finch', href = 'mailto:d.finch@ed.ac.uk')]),
-    ])
+    ]),])
 
     return page_layout

@@ -15,8 +15,8 @@ def Satellite_Walkthrough():
     html.Div(id='satellite_head_title', children = [html.H1('Detecting Fires From Space'),],
     style = {'textAlign':'center'}),
     html.Div(id='Firepic', children = [
-    html.Img(src='https://ktfnews.com/wp-content/uploads/2017/10/Black-Saturday.jpeg',
-    )], style = {'textAlign':'center'}),
+    html.Img(id = 'main_fire_pic', src='https://ktfnews.com/wp-content/uploads/2017/10/Black-Saturday.jpeg',
+    )]),
     html.Div(id = 'Sentinenl_Info_holder', children = [
     Text_Providers.Sentinenl_Info()], style = {'textAlign':'left',
         'padding':'20px'}),
