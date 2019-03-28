@@ -44,7 +44,7 @@ def Hist_Text():
     html.P("""
     Below is a histogram of the different temperatures seen by the satellite at
     a this wavelength. How often a certain temperature occurs (known as the frequency)
-    is plotted like a bar chart.
+    is plotted like a bar chart. This will be updated as the map is updated.
     """),
     html.P("""
     Can you determine what the most common temperature is?"""),
@@ -127,6 +127,58 @@ def TimeseriesInfo():
     ], className = 'text_holder')
     return s
 
+def cloud_step_1():
+    s = html.Div([ html.P("""
+        The first step is to remove the clouds from image. To do this there
+        are three rules we have to follow.
+    """),
+    html.P("""
+        Rule 1: Clouds are cold - any area in the image below 265 K at the 12\265m wavelength
+        is going to be a cloud (or ice which won't be on fire!).
+    """),
+    ])
+    return s
+
+def cloud_step_2():
+    s = html.Div([ html.P("""
+        Rule 2: Clouds are white and therefore reflective. Pixels in the image
+         that are above 0.9 (90%) relectance when the 0.6\265m and 0.8\265m wavelengths
+         are added together is going to be a cloud.
+    """),
+    ])
+    return s
+
+def cloud_step_3():
+    s = html.Div([ html.P("""
+        Rule 3: Some clouds are greyer and warmer than others. But they will still
+        be cooler than 300 K and have a reflectance higher than 0.7 (70%). We can
+        remove pixels that meet both of these characteristics.
+    """),
+    ])
+    return s
+
+def land_mask_1():
+        s = html.Div([ html.P("""
+            There are two more steps to find where is on fire.
+        """),
+        html.P("""
+        As we know fires are hot, we can remove anything the satellite sees that is
+        going to be too cool to be on fire. We can remove anything below 310 K on
+        the 4\265m wavelength.
+        """),
+        ])
+        return s
+
+
+def land_mask_2():
+    s = html.Div([ html.P("""
+        Finally, we can use a special property of the wavelengths of light emitted
+        by fire. If a pixel is on fire, the 4\265m and 11\265m wavelengths will
+        show a very similar temperature. The difference between the two wavelengths
+        must be within 10 K for it to be fire, otherwise it'll just hot land.
+    """),
+    ])
+    return s
 
 def test_string2():
     s = html.Div([

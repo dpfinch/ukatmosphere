@@ -1020,23 +1020,21 @@ def load_coastline_data(value):
 
 @app.callback(Output('Satellite_Image', 'children'),
     [Input('img_tabs', 'value'),
-    Input('remove_310_K', 'n_clicks'),
-    Input('cloud_mask', 'on'),
+    Input('cloud_1', 'on'),
+    Input('cloud_2', 'on'),
+    Input('cloud_3', 'on'),
+    Input('land_1', 'on'),
+    Input('land_2', 'on'),
     Input('reveal_fires', 'n_clicks'),
     Input('coastline_data', 'children')])
-def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_data):
+def Satellite_Image_renderer(value, cloud_1, cloud_2,
+    cloud_3, land_1, land_2, show_fires, coastline_data):
     # If removing 310 K is clicked
     if not coastline_data:
         return [html.Br(),html.H3('Satellite data may take a few seconds to load...'),]
 
-    if n_clicks:
-        if n_clicks%2:
-            removed_310K = True
-        else:
-            removed_310K = False
-    else:
-        removed_310K = False
-    # if
+    masks = {'cloud_1':cloud_1, 'cloud_2':cloud_2, 'cloud_3':cloud_3, 'land_1':land_1, 'land_2':land_2}
+
     if show_fires:
         if show_fires%2:
             fires_on = True
@@ -1045,29 +1043,41 @@ def Satellite_Image_renderer(value,n_clicks, cloud_mask,show_fires, coastline_da
     else:
         fires_on = False
 
-    # img = Satellite_Tools.render_image(value)
-    # img = html.Img(src='https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/fire_count.png')
-    # f_map = Scatter_map.satellite_scatter(value, removed_310K, cloud_mask, fires_on)
-
-    f_map = Scatter_map.simple_map(value, removed_310K, cloud_mask, fires_on, coastline_data)
+    f_map = Scatter_map.simple_map(value, masks, fires_on, coastline_data)
     from dataplot.DataTools.AnalysisTools import Histogram
-    f_hist = Histogram.Satellite_Hist(value, removed_310K, cloud_mask)
+    f_hist = Histogram.Satellite_Hist(value, masks)
 
     hist_text = Text_Providers.Hist_Text()
     return [f_map, hist_text, f_hist]
 
-@app.callback(Output('remove_310_K', 'children'),
-    [Input('remove_310_K','n_clicks')])
-def sat_img_button_label(n_clicks):
-    if n_clicks:
-        if n_clicks%2:
-            label  = 'Show all data'
-        else:
-            label = 'Remove <310 K'
+@app.callback([Output('TempSlider', 'min'),
+    Output('TempSlider', 'max'),
+    Output('TempSlider', 'value'),
+    Output('TempSlider', 'step')],
+    [Input('img_tabs', 'value')])
+def update_slider_limits(value):
+    if value in ['T4','T11','T12']:
+        new_min = 200
+        new_max = 400
+        outvalue = 200
+        outstep = 1
     else:
-        label = 'Remove <310 K'
+        new_min = 0
+        new_max = 1.5
+        outvalue = 0
+        outstep = 0.1
+    return new_min, new_max, outvalue, outstep
 
-    return label
+@app.callback(Output('cloud_mask', 'label'),
+    [Input('TempSlider', 'value'),
+    Input('img_tabs','value')])
+def update_mask_value(value, tab_val):
+    if tab_val in ['T4','T11','T12']:
+        unit = '\260K'
+    else:
+        unit = ''
+    outlabel = 'Mask below {}{}'.format(value, unit)
+    return outlabel
 
 
 @app.callback(Output('reveal_fires', 'children'),
@@ -1077,9 +1087,9 @@ def fire_button_label(n_clicks):
         if n_clicks%2:
             label  = 'Hide Fires'
         else:
-            label = 'Reveal Fire Locations'
+            label = 'Count Fires'
     else:
-        label = 'Reveal Fire Locations'
+        label = 'Count Fires'
 
     return label
 

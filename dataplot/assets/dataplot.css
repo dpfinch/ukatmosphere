@@ -413,6 +413,20 @@ a:hover{
   flex: 1;
   width: 25%;
 }
+
+#Sat_Img_Tools{
+  display: inline-block;
+  flex: 1;
+  width: 40%;
+}
+
+#Satellite_Image{
+  display: inline-block;
+  width: 60%;
+}
+
+
+
 /*TimeSeries*/
 /*#TimeSeriesHolder{
   display: flex;

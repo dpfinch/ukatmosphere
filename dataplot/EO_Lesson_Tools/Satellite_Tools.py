@@ -35,17 +35,6 @@ def Satellite_Walkthrough():
         dcc.Tab(label='0.6\265m Wavelength', value='p65'),
         dcc.Tab(label='0.8\265m Wavelength', value='p86'),
     ]),
-    # dcc.RadioItems(
-    #     id = 'Satellite_image_selector',
-    #     options=[
-    #         {'label': '4\265m Wavelength', 'value': 'T4'},
-    #         {'label': '11\265m Wavelength', 'value': 'T11'},
-    #         {'label': '12\265m Wavelength', 'value': 'T12'},
-    #         {'label': '0.6\265m Wavelength', 'value': 'p65'},
-    #         {'label': '0.8\265m Wavelength', 'value': 'p86'},
-    #     ],
-    #     value='T4'
-    #     ),
 
     html.Div(id = 'Satellite_Image_Holder', className = 'plot_holder', children = [
 
@@ -53,37 +42,50 @@ def Satellite_Walkthrough():
         html.Div(id = 'Satellite_Image', className = 'satellite_plot',
                 ),
         html.Div(id = 'Sat_Img_Tools', className = 'plot_tools', children = [
-            html.H3('Image Tools:'),
-            html.Br(),
-            html.Br(),
-            html.P('Select minimum temperature to mask:'),
-            daq.Slider(
-            id = 'TempSlider',
-            min = 230,
-            max = 340,
-            step = 1,
-            value = 1,
-            ),
+            html.H3('Finding Fires'),
+            html.H4('Step one: Remove Clouds'),
+            Text_Providers.cloud_step_1(),
             daq.BooleanSwitch(
-                id = 'cloud_mask',
-                on=False,
-                label="Mask Temperature",
-                labelPosition="top",
+              id='cloud_1',
+              label = 'Remove pixels below 265 K',
+              on=False
             ),
-            html.Br(),
-            html.Button(children = [], id = 'remove_310_K',
-                style = {'width':'200px',
-                        'height':'50px',
-                    'borderRadius':'5px'}),
-            html.Br(),
-            html.Br(),
+
+            Text_Providers.cloud_step_2(),
+            daq.BooleanSwitch(
+              id='cloud_2',
+              label = 'Remove 0.9 reflectance',
+              on=False
+            ),
+            Text_Providers.cloud_step_3(),
+            daq.BooleanSwitch(
+              id='cloud_3',
+              label = 'Remove warmer duller clouds',
+              on=False
+            ),
+            html.H4('Step two: Check the land Temperature'),
+            Text_Providers.land_mask_1(),
+            daq.BooleanSwitch(
+              id='land_1',
+              label = 'Remove colder land',
+              on=False
+            ),
+            Text_Providers.land_mask_2(),
+            daq.BooleanSwitch(
+              id='land_2',
+              label = 'Remove non-burning pixel',
+              on=False
+            ),
+            html.Hr(),
+            html.Div(id = 'fire_button_container', children = [
         html.Button(children = [], id = 'reveal_fires',
             style = {'width':'200px',
                     'height':'50px',
-                'borderRadius':'5px'}),
-        ]),
+                'borderRadius':'5px'})], style = {'textAlign':'center'}),
+        ], style ={'paddingRight':'20px'}),
     ]),
     html.Hr(),
+    html.H2(children  = ['The effect of resoluton'], style = {'textAlign':'center'}),
     html.Br(),
     html.H2(children  = ['Fire Count'], style = {'textAlign':'center'}),
     Text_Providers.Fire_Count(),

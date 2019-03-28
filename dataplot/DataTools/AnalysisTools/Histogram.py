@@ -9,6 +9,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
 import pandas as pd
+import numpy as np
 #==============================================================================
 """
     Histogram info here
@@ -145,7 +146,7 @@ def EO_Lesson_Hist(inarray, **kwargs):
 
     return figure
 
-def Satellite_Hist(value, removed_310K, cloud_mask):
+def Satellite_Hist(value, masks):
     import os
     cwd = os.getcwd()
     data_dirc = cwd + '/dataplot/static/{}_wavelenght.csv'
@@ -153,12 +154,35 @@ def Satellite_Hist(value, removed_310K, cloud_mask):
     brightness = pd.read_csv(data_dirc.format(value),
         header = None)
 
-    if removed_310K:
-        t4 = pd.read_csv(data_dirc.format('T4'),
-        header = None)
-        brightness = brightness[0][t4[0]>310]
-    else:
-        brightness = brightness[0]
+    if masks['cloud_1']:
+        t12 = pd.read_csv(data_dirc.format('T12'), header = None)[0]
+        brightness[t12 < 265] = np.nan
+
+    if masks['cloud_2']:
+        p65 = pd.read_csv(data_dirc.format('p65'), header = None)[0]
+        p86 = pd.read_csv(data_dirc.format('p86'), header = None)[0]
+
+        brightness[p65 + p86 > 0.9] = np.nan
+
+    if masks['cloud_3']:
+        p65 = pd.read_csv(data_dirc.format('p65'), header = None)[0]
+        p86 = pd.read_csv(data_dirc.format('p86'), header = None)[0]
+        t12 = pd.read_csv(data_dirc.format('T12'), header = None)[0]
+
+        brightness[(p65+p86 >0.7) & (t12<300)] = np.nan
+
+    if masks['land_1']:
+        t4 = pd.read_csv(data_dirc.format('T4'), header = None)[0]
+
+        brightness[t4<310] = np.nan
+
+
+    if masks['land_2']:
+        t4 = pd.read_csv(data_dirc.format('T4'), header = None)[0]
+        t11 = pd.read_csv(data_dirc.format('T11'), header = None)[0]
+
+        brightness[t4 - t11 < 10] = np.nan
+
 
     plot = [go.Histogram(
     x = brightness.values.flatten()
