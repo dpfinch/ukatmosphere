@@ -167,6 +167,7 @@ def simple_map(value,masks, fires_on, coastline_data):
         y = temp_df.Lat,
         mode='markers',
         marker = {'color':temp_df.Brightness,
+            'size':3,
             'showscale':True,
             'cmin':cmin,
             'cmax':cmax,
