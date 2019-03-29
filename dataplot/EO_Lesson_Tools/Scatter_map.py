@@ -206,7 +206,7 @@ def simple_map(value,masks, fires_on, coastline_data):
         autosize=True,
         hovermode='closest',
         height = 700,
-        width = 800,
+        # width = 800,
         showlegend = False,
         title = 'Satellite Image of Eastern Austrilia on 1st Nov 2017'
     )
