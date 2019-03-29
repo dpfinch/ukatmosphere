@@ -1080,18 +1080,22 @@ def update_mask_value(value, tab_val):
     return outlabel
 
 
-@app.callback(Output('reveal_fires', 'children'),
+@app.callback([Output('reveal_fires', 'children'),
+    Output('Fire_count_text', 'children')],
     [Input('reveal_fires','n_clicks')])
 def fire_button_label(n_clicks):
     if n_clicks:
         if n_clicks%2:
             label  = 'Hide Fires'
+            fire_count_text = Text_Providers.Fire_Count()
         else:
             label = 'Count Fires'
+            fire_count_text = html.P('')
     else:
         label = 'Count Fires'
+        fire_count_text = html.P('')
 
-    return label
+    return label, fire_count_text
 
 ### ===================================================================
 ### END OF PROGRAM

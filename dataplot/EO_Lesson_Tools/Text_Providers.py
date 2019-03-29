@@ -56,7 +56,7 @@ def Hist_Text():
     ], className = 'text_holder')
     return s
 
-def Fire_Count():
+def More_Fire_Count_Info():
     s = html.Div([
     html.P("""
         Information about fire count over time goes here.
@@ -179,6 +179,31 @@ def land_mask_2():
     """),
     ])
     return s
+
+def Fire_Count():
+    s = html.Div([ html.P("""
+        This analysis revealed that there are 105 pixels in this image that are
+        on fire when the Sentinel satellite took this scan.
+    """),
+    html.P("""
+        That may seem like a lot of fires for one day but this is a big
+        under-estimate. The image above is very low resolution. A higer resolution
+        image will show even more fires. Read below about how many fires the full
+        resolution image can pick up.
+    """)
+    ])
+    return s
+
+def Resolution():
+    s = html.Div([ html.P("""
+        Info about a high res image actually see > 10,000 fires.
+    """),
+    html.P("""
+
+    """)
+    ])
+    return s
+
 
 def test_string2():
     s = html.Div([
