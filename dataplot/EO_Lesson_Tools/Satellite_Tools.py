@@ -23,11 +23,9 @@ def Satellite_Walkthrough():
     html.Div(id = 'Satellite_Images', children =[
     html.Br(),
     html.H2(children = ['Spotting fires over Australia'], style = {'textAlign':'center'}),
-    html.P('Below is some satellite data - explain about it'),
+    Text_Providers.Spotting_Fires_Text(),
     html.H3(children = ['Sentinel 2 Brightness Temperature'], style = {'textAlign':'center'}),
-
-    html.P('Explanation of what this actually means'),
-    html.P('Look at the different wavelengths - what do they highlight?'),
+    Text_Providers.Sentinel_Text(),
     dcc.Tabs(id="img_tabs", value='T4', children=[
         dcc.Tab(label='4\265m Wavelength', value='T4'),
         dcc.Tab(label='11\265m Wavelength', value='T11'),
@@ -91,7 +89,7 @@ def Satellite_Walkthrough():
     html.H2(children  = ['The effect of resolution'], style = {'textAlign':'center'}),
     html.Br(),
     Text_Providers.Resolution(),
-    html.H2(children  = ['Fire Count'], style = {'textAlign':'center'}),
+    html.H2(children  = ['Fire Count & Burned Area'], style = {'textAlign':'center'}),
     Text_Providers.More_Fire_Count_Info(),
     html.Br(),
     html.Hr(),

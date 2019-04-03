@@ -56,14 +56,6 @@ def Hist_Text():
     ], className = 'text_holder')
     return s
 
-def More_Fire_Count_Info():
-    s = html.Div([
-    html.P("""
-        Information about fire count over time goes here.
-    """)
-    ])
-    return s
-
 def TIR_Info():
     s = html.Div([
     html.P("""
@@ -112,6 +104,43 @@ def HistInfo():
         as the frequency. The data is gathered into 'bins' (or groups) of
         temperatures.
     """)
+    ], className = 'text_holder')
+    return s
+
+def Spotting_Fires_Text():
+    s = html.Div([
+    html.P("""
+        Using satellites like Sentinel-2 means we can spot fires from space.
+        Below is a scan taken by the Sentinel-2 satellite on the 1st of November
+        2017 over the east of Australia. November is the beginning of summer for the southern hemisphere and
+        sees a lot of fires in regions without much rainfall. This is real data
+        but has been transfored to a lower resolution to make it easier to analyse.
+    """),
+    html.P("""
+        By following the steps below, we can go from a satellite scan to a count of
+        how many pixels are on fire. This is a simple process of using the 'brightness temperature'
+        data as well the reflectivitiy data from the satellite.
+        """)
+    ], className = 'text_holder')
+    return s
+
+def Sentinel_Text():
+    s = html.Div([
+    html.P("""
+        The satellite data comes in a value of 'Brightness Temperature'. This is
+        similar but not quite the same surface temperature. The brightness temperature
+        can be defined as what the temperature would be of a black body that was emitting
+        the same amount of radiation as a 'target body' (in our case - the surface of
+        the Earth) at a specific wavelength.
+    """),
+    html.A(href = 'https://www.sciencedirect.com/topics/earth-and-planetary-sciences/brightness-temperature',
+        children = [html.P('More information on black bodies can be found here.')]),
+    html.P("""
+        We can use this to highlight different things in our satellite scan. If different
+        surfaces (land, ocean, clouds, tarmac, grass, etc) have a different brightness temperature
+        at different wavelengths we can start to mathmatically pick out features
+    """),
+    html.P('Look at the different wavelengths - what do they highlight?'),
     ], className = 'text_holder')
     return s
 
@@ -195,12 +224,12 @@ def Fire_Count():
     return s
 
 def Resolution():
-    s = html.Div(id = 'Resolution_text', children = [ html.P("""
-        The satellite image aboves has somethingxsomething pixels, thats a total of
-        something pixels it has to process. That may seem like a lot but this is
+    s = html.Div(className = 'text_holder', children = [ html.P("""
+        The satellite image aboves has 308 x 320 pixels, thats a total of
+        93,016 pixels it has to process. That may seem like a lot but this is
         lower resolution version of the orignal image. The original scan from the
-        satellite had somethingxsomething pixels - a total of something. Which is
-        something times more than this image. The more pixels in a scan the higher
+        satellite had 3072 x 3200 pixels - a total of over 9.8 million pixels. Which is
+        100 times more than this image. The more pixels in a scan the higher
         the resolution and therefore the more detail you can see. The problem with
         this is oridinary computers start to struggle to compute all of this. This
         website can only process so much data before it crashes meaning for this
@@ -209,12 +238,76 @@ def Resolution():
     html.P("""
         As a higher resolution scan would show more detail, we could see more smaller
         fires that the lower resolution wouldn't pick up. If we did the same processing
-        as above but for the highest resolution there would be something pixels
-        highlighted as on fire. Thats over 10x as many as we found!
-    """)
+        as above but for the highest resolution there would be over 10,000 pixels
+        highlighted as on fire. Thats over 100x as many as we found!
+    """),
+    html.P("""
+        It is important to remeber that this might not mean 10,000 individual fires.
+        Some of these pixels may be next to each other and are scanning huge fires that
+        cover a large area. If two or more pixels next to each other are both showing
+        the characteristics of fire - they its likely they are one bigger fire.
+    """),
     ])
     return s
 
+
+def More_Fire_Count_Info():
+    s = html.Div(className = 'text_holder', children = [
+    html.P("""
+        This is one snapshot taken on the 1st of November 2017. This satellite can
+        revisit a location over and over again for weeks,months and years and each
+        time it makes a scan it can count the number of fires over a period of time.
+        By doing this we can see if there are more or less fires year to year, or
+        where is particularly prone to fires.
+    """),
+    html.P("""
+        To find out how large a fire is - or the area of land that has been burnt
+         we simply
+        need to know how much land is covered by one pixel then multiply that by
+        the number of pixels on fire.
+    """),
+    html.P([
+        'For example - if each pixel covers 1 km x 1 km of the Earth surface and',
+        'we counted 105 fires in our scan then the burned area in this image is',
+        '105 km squared.']
+    ),
+    ])
+    return s
+
+def More_Analysis_text():
+    s = html.Div(children = [
+    html.P("""
+        Satellites are incredible tools to have at our disposal to observe the
+        natural world. We've looked at fires here but satellites look at a huge
+        range of things such as forests, oceans, population spread, snow cover,
+        air pollution - the list goes on and on!
+    """),
+    html.P("""
+        If you'd like to explore more satellite data or thermal data then below
+        are some links to follow that can be the next steps.
+    """),
+    ])
+    return s
+
+def jupyter_text():
+    s = html.Div(children = [
+    html.Img(id = 'jupyter_logo', src='https://jupyter.org/assets/nav_logo.svg',
+    ),
+    html.Br(),
+    html.P("""
+        A great way to learn how to process data like the data shown here using
+        computer code is the Jupter Notbooks.
+    """),
+    html.P("""
+        Using these requires some knowledge of coding but not a lot - its a great
+        learning tool and really useful for showing your working in code as well
+        as sharing.
+    """),
+    html.A(href ='https://jupyter.org/', children = [html.P('Information about Jupyter can be found here.')]),
+    html.P("If you'd like to download a Jupyter Notebook to process some data similar to whats shown on this website, click below."),
+    html.A(href ='https://drive.google.com/file/d/10M1wbs_mgxrjWF4Yc56bEYfAejQ2ay3Z/view', children = [html.P('Jupyter Notebook')]),
+    ])
+    return s
 
 def test_string2():
     s = html.Div([
