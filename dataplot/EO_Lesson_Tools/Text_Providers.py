@@ -306,6 +306,10 @@ def jupyter_text():
     html.A(href ='https://jupyter.org/', children = [html.P('Information about Jupyter can be found here.')]),
     html.P("If you'd like to download a Jupyter Notebook to process some data similar to whats shown on this website, click below."),
     html.A(href ='https://drive.google.com/file/d/10M1wbs_mgxrjWF4Yc56bEYfAejQ2ay3Z/view', children = [html.P('Jupyter Notebook')]),
+    html.H3('A lesson plan:'),
+    html.P("""A worksheet explaining satellite data in more detail and what it can
+    be used for can be found in the link below:"""),
+    html.A(href = 'https://drive.google.com/open?id=1EtpcpHROfQUI4iUK9059kOsiHluBcI31', children = ['Worksheet'])
     ])
     return s
 
