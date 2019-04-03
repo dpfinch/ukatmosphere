@@ -425,7 +425,10 @@ a:hover{
   width: 60%;
 }
 
-
+#Resolution_text{
+  text-align: left;
+  padding: 20px;
+}
 
 /*TimeSeries*/
 /*#TimeSeriesHolder{

@@ -195,11 +195,22 @@ def Fire_Count():
     return s
 
 def Resolution():
-    s = html.Div([ html.P("""
-        Info about a high res image actually see > 10,000 fires.
+    s = html.Div(id = 'Resolution_text', children = [ html.P("""
+        The satellite image aboves has somethingxsomething pixels, thats a total of
+        something pixels it has to process. That may seem like a lot but this is
+        lower resolution version of the orignal image. The original scan from the
+        satellite had somethingxsomething pixels - a total of something. Which is
+        something times more than this image. The more pixels in a scan the higher
+        the resolution and therefore the more detail you can see. The problem with
+        this is oridinary computers start to struggle to compute all of this. This
+        website can only process so much data before it crashes meaning for this
+        example we're using a lower resolution scan.
     """),
     html.P("""
-
+        As a higher resolution scan would show more detail, we could see more smaller
+        fires that the lower resolution wouldn't pick up. If we did the same processing
+        as above but for the highest resolution there would be something pixels
+        highlighted as on fire. Thats over 10x as many as we found!
     """)
     ])
     return s
