@@ -868,35 +868,86 @@ def render_content(tab):
 ### File uploader callback
 ### ===================================================================
 
-@app.callback(Output('output-data-upload', 'children'),
-              [Input('upload-data', 'contents')],
-              [State('upload-data', 'filename'),
-               State('upload-data', 'last_modified')])
-def update_output(contents, filename, dates):
-    if contents is not None:
-
-        return filename
-
+# @app.callback(Output('stored_data_actual', 'children'),
+#               [Input('upload-data', 'contents')],
+#               [State('upload-data', 'filename'),
+#                State('upload-data', 'last_modified')])
+# def update_output(contents, filename, dates):
+#     if filename is not None:
+#         passed = True
+#         if filename.split('_')[0] != 'Thermal':
+#             passed = False
+#         if contents is None:
+#             passed = False
+#         if not 'csv' in filename:
+#             passed = False
+#
+#         if passed:
+#             json_txt = TIR_Tools.parse_data(contents, filename)
+#             return json_txt
+#         else:
+#             return "This doesn't seem like a file from the Raspberry Pi"
+#     # else:
+#     #     return filename
+#
 
 ### ===================================================================
 ### Load example data
 ### ===================================================================
+
 # Intermediate step to store data in secret div
 @app.callback(Output('stored_data', 'children'),
-              [Input('Example_Data_button', 'n_clicks')],
-              [State('timesteps','value')])
-def load_content(n_clicks,timesteps):
+              [Input('upload-data', 'contents'),
+              Input('Example_Data_button', 'n_clicks')],
+              [State('timesteps','value'),
+              State('upload-data', 'filename'),
+              State('upload-data', 'last_modified'),
+              State('example_switch', 'on')
+              ])
+def load_content(contents,n_clicks, timesteps, filename, modified, example_on):
     if n_clicks:
-        example_data = TIR_Tools.Get_Example_Data(timesteps)
-        # from sys import getsizeof
-        # print(getsizeof(example_data.to_json(orient = 'split')))
-        return example_data.to_json(orient = 'split')
+        if example_on:
+            out_data = TIR_Tools.Get_Example_Data(timesteps)
+            out_data = out_data.to_json(orient = 'split')
+        # elif filename is not None:
+        else:
+            out_data = TIR_Tools.parse_data(contents, filename)
+        return out_data
+
+
+@app.callback(Output('Example_button_holder', 'children'),
+            [Input('example_switch', 'on')])
+def turn_on_example_data(on):
+    if on:
+        return html.Div(children = [html.Br(),
+            daq.NumericInput(
+              id='timesteps',
+              min=1,
+              max=350,
+              value=10,
+              label='Choose number of timesteps',
+              size = 120
+            ),])
+
+@app.callback(Output('upload-data', 'children'),
+              [Input('upload-data', 'contents')],
+              [State('upload-data', 'filename'),
+               State('upload-data', 'last_modified')])
+def update_output(contents, filename, dates):
+    if filename is not None:
+        return filename
+    else:
+        return html.Div([
+            'Drag and Drop or ',
+            html.A('Select Files from the Thermal Sensor')
+        ])
 
 
 ## Callback for TIR Use example data
 @app.callback(Output('output-example-data', 'children'),
               [Input('show_data', 'on'),
-              Input('stored_data', 'children')])
+              Input('stored_data', 'children'),
+              ])
 def create_data_table(on,data_store):
     if on:
         try:
@@ -916,7 +967,7 @@ def create_data_table(on,data_store):
             data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})
     else:
         try:
-            data = TIR_Data_Process.from_stored_json(data_store)
+            data = pd.read_json(data_store,orient = 'split')
             data_table = html.Div(html.H3('Data Hidden'), style = {'textAlign':'center'})
         except (ValueError, AttributeError) as e:
             data_table = html.Div(html.H3('No data loaded'), style = {'textAlign':'center'})

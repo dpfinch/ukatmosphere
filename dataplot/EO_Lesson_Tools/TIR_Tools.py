@@ -9,6 +9,8 @@ import math
 import string
 from dataplot.EO_Lesson_Tools import TIR_Data_Process
 from dataplot.EO_Lesson_Tools import Text_Providers
+import base64
+import io
 
 def Get_Example_Data(timesteps):
 
@@ -25,6 +27,26 @@ def Get_Example_Data(timesteps):
 
     output = TIR_Data_Process.from_3d_numpy_to_pd(np.stack(full_arr))
     return output
+
+def parse_data(contents, filename):
+    content_type, content_string = contents.split(',')
+
+    decoded = base64.b64decode(content_string)
+    try:
+        if 'csv' in filename:
+            # Assume that the user uploaded a CSV file
+            df = pd.read_csv(
+                io.StringIO(decoded.decode('utf-8')), header = None, )
+    except Exception as e:
+        print(e)
+        return html.Div([
+            'There was an error processing this file.'
+        ])
+    # first reshape back into normal shape
+    data_arr = TIR_Data_Process.from_pd_to_3d_numpy(df)
+    df = TIR_Data_Process.from_3d_numpy_to_pd(data_arr)
+
+    return df.to_json(orient = 'split')
 
 def TIR_Walkthrough():
     page_layout = html.Div(id ='full_page_container', children =
@@ -49,20 +71,30 @@ def TIR_Walkthrough():
             },
             # Allow multiple files to be uploaded
             multiple=False),
+    html.H2(id='upload_filename'),
     html.Div(children = [html.H3('OR'),
-    html.Button('Use Example Data', id = 'Example_Data_button',
+    daq.BooleanSwitch(
+        id = 'example_switch',
+        on=False,
+        label="Use Example Data",
+        labelPosition="bottom"
+    ),
+    html.Button('Load Data', id = 'Example_Data_button',
     style = {'width':'200px',
             'height':'50px',
-        'borderRadius':'5px'}),
+        'borderRadius':'5px'}
+        ),
     html.Br(),
-    daq.NumericInput(
-      id='timesteps',
-      min=1,
-      max=350,
-      value=10,
-      label='Choose number of timesteps',
-      size = 120
-    ),
+        daq.NumericInput(
+          id='timesteps',
+          min=1,
+          max=350,
+          value=10,
+          label='Choose number of timesteps',
+          size = 120
+        ),
+    # html.Div(id ='Example_button_holder'),
+
         ], style = {'textAlign':'center'}),
     html.Br(),
     html.Div(id='data-gatherer', children = [], style = {'textAlign':'center'}),

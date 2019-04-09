@@ -32,7 +32,6 @@ def from_pd_to_3d_numpy(df):
     values = df.values
     # Assumes pixel array of 32x32
     new_arr = values.reshape([int(values.shape[0]/32),32,32])
-
     return new_arr
 
 def from_stored_json(stored_data):
