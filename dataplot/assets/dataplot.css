@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css?family=Open+Sans|Barlow|Tinos|Roboto'); */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Oxygen|Tinos|Roboto');
 /* @import url('/static/css/info_pages.css'); */
 /*
 **************************************************************************
@@ -30,13 +30,17 @@ component.
 ––––––––––––––––––––––––––––––––––––––––––––––––––
 */
 
+*{
+  font-family: 'Oxygen';
+}
+
 html{
   height: 100%;
 }
 
 h1 a {
     color: #1D5F75;
-    font-family: 'Tinos';
+    /* font-family: 'Tinos'; */
 }
 
 body {
@@ -44,11 +48,11 @@ body {
     background-color: white;
     height: 100%;
     margin: 0px;
-    font-family: 'Open Sans', sans-serif;
+    /* font-family: 'Open Sans', sans-serif; */
 }
 
 h1, h2, h3, h4 {
-    font-family: 'Open Sans', sans-serif;
+    /* font-family: 'Open Sans', sans-serif; */
 }
 
 ul{
