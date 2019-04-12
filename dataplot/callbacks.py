@@ -759,85 +759,15 @@ def change_datedayheatmap(data, variable_options,site_choice, combine_choice, Da
 ### ===================================================================
 
 ## Create the map
-@app.callback(Output('main_graph_map','figure'),
-              [Input('map_region_choice','value'),
-               Input('map_env_choice', 'value'),
-            #    Input('var_choice', 'value'),
-               Input('map_hour_slider', 'value')],
-              [State('main_graph_map', 'relayoutData')],
+@app.callback(Output('main_map','figure'),
+              [Input('map_env_choice','value'),
+              Input('map_region_choice', 'value')]
+              # [State('main_map', 'relayoutData')]
               )
-def create_map(region, environ, hour_choice, main_graph_layout):
+def create_map(environment, region):
+    from dataplot.DataTools import Map_Renderer
+    return Map_Renderer.main_site_map(environment, region)
 
-    aurn_df = pd.DataFrame(list(site_info.objects.filter(
-    site_type = 'DEFRA AURN').filter(site_open = True).values()))
-
-    if type(region) == str:
-        region = [region]
-    if type(environment) == str:
-        environment = [environment]
-
-    if 'All' in region:
-        regioned_sites = aurn_df
-    else:
-        regioned_sites = aurn_df.loc[aurn_df['region'].isin(region)]
-
-    if 'All' in environment:
-        env_sites = regioned_sites
-    else:
-        env_sites = regioned_sites.loc[regioned_sites['environment_type'].isin(environment)]
-
-
-    var_data = all_recent_data[var_choice]
-    last_day = var_data.loc[var_data.index[-24:][0]:var_data.index[-24:][-1]]
-
-    # This need to be protected somehow... maybe import from elsewhere
-    mapbox_access_token = 'pk.eyJ1IjoiZG91Z2ZpbmNoIiwiYSI6ImNqZHhjYnpqeDBteDAyd3FsZXM4ZGdqdTAifQ.xLS22vmqzVYR0SAEDWdLpQ'
-
-    chosen_hour = last_day.iloc[hour_choice].values.tolist()
-
-    # values =
-
-    final_df = final_df.loc[last_day.columns]
-    marker_text = [x +': '+str(y) for x, y, in zip(env_sites.site_names.tolist(),
-        chosen_hour)]
-
-    data = Data([
-    Scattermapbox(
-        lat=env_sites.latitudes.tolist(),
-        lon=env_sites.longitudes.tolist(),
-        mode='markers',
-        customdata = final_df.index.tolist(),
-        marker=Marker(
-            size=9,
-            opacity = 0.85,
-            color = chosen_hour,
-            cmax = last_day.max(axis = 1).max(),
-            colorbar = {'title':var_choice}
-        ),
-        text=marker_text,
-        )
-    ])
-
-    layout = Layout(
-        autosize=True,
-        height = 750,
-        hovermode='closest',
-        mapbox=dict(
-            accesstoken=mapbox_access_token,
-            bearing=0,
-            center=dict(
-                lat=54,
-                lon=-3
-            ),
-            pitch=0,
-            zoom=4
-        ),
-    )
-
-
-    fig = dict(data=data, layout=layout)
-
-    return fig
 ### ===================================================================
 ### ===================================================================
 ### ALL EO LESSON PLANS GO HERE

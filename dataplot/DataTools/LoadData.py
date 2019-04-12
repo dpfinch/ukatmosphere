@@ -248,6 +248,24 @@ def AURN_site_list_db(region,environment):
     final_site_list = env_sites['site_name']
     return final_site_list
 
+def get_all_site_info(environment, region):
+    filters = {}
+    if region != 'All':
+        filters['region'] = region
+    if environment != 'All':
+        filters['environment_type'] = environment
+
+    # using filters like this means we can have no filter or many
+    all_sites = site_info.objects.filter(**filters)
+
+    if len(all_sites) == 0:
+        final_site_df  = pd.DataFrame({'latitude':[], 'longitude': [], 'site_name':[]})
+    else:
+        final_site_df = pd.DataFrame(list(all_sites.values('site_name', 'latitude', 'longitude')))
+        
+    final_site_df.set_index('site_name', inplace = True)
+    return final_site_df
+
 
 def get_site_info(site_name):
     filename = 'dataplot/InfoFiles/DEFRA_AURN_all_sites_info.csv'
