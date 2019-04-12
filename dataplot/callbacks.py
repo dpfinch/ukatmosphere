@@ -759,14 +759,34 @@ def change_datedayheatmap(data, variable_options,site_choice, combine_choice, Da
 ### ===================================================================
 
 ## Create the map
-@app.callback(Output('main_map','figure'),
+@app.callback([Output('main_map','figure'),
+                Output('site_counter_output', 'children')],
               [Input('map_env_choice','value'),
               Input('map_region_choice', 'value')]
               # [State('main_map', 'relayoutData')]
               )
 def create_map(environment, region):
     from dataplot.DataTools import Map_Renderer
-    return Map_Renderer.main_site_map(environment, region)
+    num_sites, map_fig  = Map_Renderer.main_site_map(environment, region)
+
+    if environment != 'All' and environment[0] in ['A','E','I','O','U']:
+        prefix = 'an'
+    else:
+        prefix = 'a'
+
+    if num_sites == 0:
+        site_count_message = 'There are no sites measuring {} {} environment in the {} region.'.format(prefix, environment.lower(), region)
+    else:
+        if environment == 'All' and region != 'All':
+            site_count_message = 'Showing {} sites in the {} region for all environment types.'.format(num_sites, region)
+        elif environment != 'All' and region == 'All':
+            site_count_message = 'Showing {} sites measuring {} {} environment across the country.'.format(num_sites, prefix, environment.lower())
+        elif environment == 'All' and region == 'All':
+            site_count_message = 'Showing all {} sites across the country measuring all environment types'.format(num_sites)
+        else:
+            site_count_message = 'Showing {} sites measuring {} {} environment in the {} region.'.format(num_sites, prefix,  environment.lower(), region)
+
+    return map_fig, html.P(site_count_message)
 
 ### ===================================================================
 ### ===================================================================

@@ -40,7 +40,7 @@ def main_site_map(environment, region):
 
     fig = dict(data=data, layout=layout)
 
-    return fig
+    return len(site_df),fig
 
 def test_map():
     mapbox_access_token = 'pk.eyJ1IjoiZG91Z2ZpbmNoIiwiYSI6ImNqZHhjYnpqeDBteDAyd3FsZXM4ZGdqdTAifQ.xLS22vmqzVYR0SAEDWdLpQ'
