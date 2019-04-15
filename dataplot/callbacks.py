@@ -782,7 +782,7 @@ def create_map(environment, region):
         elif environment != 'All' and region == 'All':
             site_count_message = 'Showing {} sites measuring {} {} environment across the country.'.format(num_sites, prefix, environment.lower())
         elif environment == 'All' and region == 'All':
-            site_count_message = 'Showing all {} sites across the country measuring all environment types'.format(num_sites)
+            site_count_message = 'Showing all {} sites across the country measuring all environment types.'.format(num_sites)
         else:
             site_count_message = 'Showing {} sites measuring {} {} environment in the {} region.'.format(num_sites, prefix,  environment.lower(), region)
 

@@ -1,10 +1,13 @@
 import plotly.graph_objs as go
 import pandas as pd
 from dataplot.DataTools import LoadData
+import numpy as np
 
 def main_site_map(environment, region):
     mapbox_access_token = 'pk.eyJ1IjoiZG91Z2ZpbmNoIiwiYSI6ImNqZHhjYnpqeDBteDAyd3FsZXM4ZGdqdTAifQ.xLS22vmqzVYR0SAEDWdLpQ'
     site_df = LoadData.get_all_site_info(environment, region)
+
+    random_sizes = np.random.randint(20, size = len(site_df))
 
     data = [go.Scattermapbox(
         lat=site_df.latitude.tolist(),
@@ -12,7 +15,7 @@ def main_site_map(environment, region):
         mode='markers',
         # customdata = final_df.index.tolist(),
         marker=go.scattermapbox.Marker(
-            size=9,
+            size=random_sizes
             # opacity = 0.85,
             # color = chosen_hour,
             # cmax = last_day.max(axis = 1).max(),
@@ -23,6 +26,7 @@ def main_site_map(environment, region):
 
     layout = go.Layout(
         autosize=True,
+        # showlegend = True,
         height = 750,
         hovermode='closest',
         mapbox=dict(
