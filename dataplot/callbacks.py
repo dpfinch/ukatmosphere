@@ -788,6 +788,15 @@ def create_map(environment, region):
 
     return map_fig, html.P(site_count_message)
 
+# A call back to inteact with the map
+@app.callback(Output('Test','children'),
+            [Input('main_map', 'clickData')])
+def Get_point_info(clickdata):
+
+    print(clickdata)
+    return clickdata
+
+
 ### ===================================================================
 ### ===================================================================
 ### ALL EO LESSON PLANS GO HERE

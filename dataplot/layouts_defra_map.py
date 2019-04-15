@@ -39,7 +39,7 @@ def DEFRA_map_page():
     html.Div(id = 'main_map_holder', children = [
         html.Div(id = 'site_counter_output'),
         dcc.Graph(id = 'main_map', config = {'scrollZoom': True})
-    ])
+    ]),
 
     ])
     ])
