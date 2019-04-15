@@ -36,9 +36,9 @@ def Correlation(df,**kwargs):
         return html.P('Choose two variables for a correlation plot.')
 
     else:
-
-        x = variable_dictionary[variable_options[0]]
-        y = variable_dictionary[variable_options[1]]
+        # Need to check this - might have the mixed up
+        x = variable_dictionary[variable_options[1]]
+        y = variable_dictionary[variable_options[0]]
 
         resample_rate = kwargs['DataResample'][0]
         if resample_rate == 'R':
