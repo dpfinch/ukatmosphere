@@ -93,4 +93,4 @@ if __name__ == '__main__':
     all_sites = pd.read_csv(sites_filename)
 
     for s in all_sites['Site Code']:
-        DEFRA_AURN_to_db(s)
+        DEFRA_AURN_sites_to_db(s)

@@ -89,7 +89,7 @@ def Get_Latest_AURN_Data(site_name, year):
     site_code = site_code.values[0]
 
     # Query the site info based on the site code
-    site_id = site_info.objects.filter(site_code = site_code)
+    site_id = site_info.objects.get(site_code = site_code)
     # Get the latest date and time in the database for a given site
     site_measurements = measurement_data.objects.filter(site_id = site_id)
     most_recent_date = site_measurements.latest('date_and_time').date_and_time

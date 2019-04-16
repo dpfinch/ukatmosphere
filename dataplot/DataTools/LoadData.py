@@ -224,9 +224,13 @@ def AURN_site_list(region, environment):
 def AURN_site_list_db(region,environment):
     # Get all the avaible sites in the databse (which are AURN related)
     # Get unique site codes primary keys
-    avail_sites_pks = list(measurement_data.objects.values_list('site_id', flat=True).distinct())
+    # Old method - pretty slow
+    # avail_sites_pks = list(measurement_data.objects.values_list('site_id', flat=True).distinct())
 
-    site_df = pd.DataFrame(list(site_info.objects.filter(id__in = avail_sites_pks).values()))
+    # site_df = pd.DataFrame(list(site_info.objects.filter(id__in = avail_sites_pks).values()))
+    # Now just list the open sites - runs the risk of a site being open but we don't have data for it
+    #  but should be ok
+    site_df = pd.DataFrame(list(site_info.objects.filter(site_open = True).values()))
     aurn_df = site_df.loc[site_df.site_type.isin(['DEFRA AURN'])]
 
     # If one value is submitted it will be a string not a list. Make it a Lists
@@ -262,7 +266,7 @@ def get_all_site_info(environment, region):
         final_site_df  = pd.DataFrame({'latitude':[], 'longitude': [], 'site_name':[]})
     else:
         final_site_df = pd.DataFrame(list(all_sites.values('site_name', 'latitude', 'longitude')))
-        
+
     final_site_df.set_index('site_name', inplace = True)
     return final_site_df
 
@@ -281,9 +285,10 @@ def get_site_info(site_name):
 def get_site_year_range_db(site_name):
     site = site_info.objects.get(site_name = site_name)
 
-    avail_data = measurement_data.objects.filter(site_id = site)
-    start_year = avail_data.earliest('date_and_time').date_and_time.year
-    end_year = avail_data.latest('date_and_time').date_and_time.year
+    start_data = measurement_data.objects.filter(site_id = site).earliest('date_and_time')
+    start_year = start_data.date_and_time.year
+    end_data = measurement_data.objects.filter(site_id = site).latest('date_and_time')
+    end_year = end_data.date_and_time.year
 
     # if site.date_closed:
     #     end_year = site.date_closed.year
