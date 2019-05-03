@@ -8,6 +8,7 @@ import dash_daq as daq
 from dataplot.DataTools import AnalysisDriver
 from dataplot.DataTools import LoadData
 from dataplot.DataTools import TidyData
+from dataplot.DataTools import Map_Plots_Renderer
 import pandas as pd
 from dataplot.EO_Lesson_Tools import Satellite_Tools
 from dataplot.EO_Lesson_Tools import TIR_Tools
@@ -15,6 +16,7 @@ from dataplot.EO_Lesson_Tools import TIR_Data_Process
 from dataplot.EO_Lesson_Tools import Scatter_map
 from dataplot.EO_Lesson_Tools import More_Info_Page
 from dataplot.EO_Lesson_Tools import Text_Providers
+
 
 ### ===================================================================
 ### The first callbacks are for the choices effecting every plot
@@ -762,12 +764,13 @@ def change_datedayheatmap(data, variable_options,site_choice, combine_choice, Da
 @app.callback([Output('main_map','figure'),
                 Output('site_counter_output', 'children')],
               [Input('map_env_choice','value'),
-              Input('map_region_choice', 'value')]
+              Input('map_region_choice', 'value'),
+              Input('map_species_choice','value')]
               # [State('main_map', 'relayoutData')]
               )
-def create_map(environment, region):
+def create_map(environment, region, species):
     from dataplot.DataTools import Map_Renderer
-    num_sites, map_fig  = Map_Renderer.main_site_map(environment, region)
+    num_sites, map_fig  = Map_Renderer.main_site_map(environment, region, species)
 
     if environment != 'All' and environment[0] in ['A','E','I','O','U']:
         prefix = 'an'
@@ -789,12 +792,34 @@ def create_map(environment, region):
     return map_fig, html.P(site_count_message)
 
 # A call back to inteact with the map
-@app.callback(Output('Test','children'),
+@app.callback(Output('site_name_from_map','children'),
             [Input('main_map', 'clickData')])
-def Get_point_info(clickdata):
+def Get_point_info(clickData):
+    if clickData:
+        # print(clickData['points'][0]['text'])
+        return clickData['points'][0]['text']
+    else:
+        return 'Edinburgh St Leonards'
 
-    print(clickdata)
-    return clickdata
+# A callback to register the site chosen and the type of
+#  data wanted and return a div with the data/info
+@app.callback(Output('map_site_info', 'children'),
+        [Input('main_map','clickData'),
+        Input('map_tabs', 'value'),
+        Input('map_species_choice','value')])
+def site_information_from_map(clickData, tab_val, species):
+
+    if not clickData:
+        site_name = 'Edinburgh St Leonards'
+    else:
+        site_name = clickData['points'][0]['text']
+
+    if tab_val == 'site_sum':
+        return Map_Plots_Renderer.Site_Summary(site_name,species)
+    elif tab_val == 'site_week':
+        return Map_Plots_Renderer.Site_Week_Summary(site_name,species)
+    else:
+        return Map_Plots_Renderer.Site_Year_Summary(site_name, species)
 
 
 ### ===================================================================

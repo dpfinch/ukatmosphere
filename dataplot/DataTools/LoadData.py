@@ -11,6 +11,7 @@ import numpy as np
 import pickle
 from dataplot.models import *
 from datetime import datetime as dt
+from datetime import timedelta
 #==============================================================================
 
 def FromCSV(filename = None, parameters = []):
@@ -186,6 +187,50 @@ def Get_One_Site_Data(site,years, variables):
     final_df = pd.concat(all_var_dfs,axis = 0)
     return final_df
 
+def get_recent_site_data(site_name, species, days_ago = 7):
+    #  Will do last week or something simmilar
+    #  currently (Since we don't have up to date data)
+    #  we'll just show the last 7 days of what we've got.
+
+    # Get latest date
+    latest_date = measurement_data.objects.filter(
+        site_id__site_name = site_name).filter(
+            measurement_id__variable_name = species).latest('date_and_time').date_and_time
+
+    first_date = latest_date - timedelta(days = days_ago)
+
+    site_obs = measurement_data.objects.filter(site_id__site_name = site_name).filter(
+        measurement_id__variable_name = species).filter(
+            date_and_time__range = (first_date, latest_date)
+        )
+
+    site_df = pd.DataFrame(site_obs.values_list('date_and_time', 'value'),
+        columns = ['Date and Time', 'Concentration'])
+    site_df.set_index('Date and Time', inplace = True)
+    return site_df
+
+def all_sites_one_var_data(date,variable, region, environment):
+
+    filters = {}
+    filters['date_and_time__year'] = date.year
+    filters['date_and_time__month'] = date.month
+    filters['date_and_time__day'] = date.day
+    filters['date_and_time__hour'] = date.hour
+    filters['measurement_id__variable_name'] = variable
+    if region != 'All':
+        filters['site_id__region'] = region
+    if environment != 'All':
+        filters['site_id__environment_type'] = environment
+
+    vals = measurement_data.objects.filter(**filters)
+
+    final_df = pd.DataFrame(vals.values_list('site_id__site_name','site_id__latitude', 'site_id__longitude','value'),
+        columns = ['site_name','latitude','longitude','value'])
+
+    final_df.set_index('site_name', inplace = True)
+
+    return final_df
+
 def AURN_environment_types():
     filename = 'dataplot/InfoFiles/DEFRA_AURN_sites_info.csv'
     sites = pd.read_csv(filename)
@@ -271,16 +316,11 @@ def get_all_site_info(environment, region):
     return final_site_df
 
 
-def get_site_info(site_name):
-    filename = 'dataplot/InfoFiles/DEFRA_AURN_all_sites_info.csv'
-    all_sites = pd.read_csv(filename)
-    site = all_sites.loc[all_sites['Site Name'] == site_name]
+def get_site_info_object(site_name):
 
-    site_dict = {}
-    for c in all_sites.columns:
-        site_dict[c] = site[c].values[0]
+    site = site_info.objects.get(site_name = site_name)
 
-    return site_dict
+    return site
 
 def get_site_year_range_db(site_name):
     site = site_info.objects.get(site_name = site_name)
@@ -332,6 +372,18 @@ def Get_Site_Variables_db(site):
         id__in = measurement_ids).values_list('variable_name', flat = True))
 
     return variable_list
+
+def get_all_aurn_species():
+    species_query = measurement_info.objects.filter(measurement_name__contains='AURN')
+    species_list = list(species_query.values_list('variable_name', flat = True))
+
+    return species_list
+
+def Get_Unit(site_type, species):
+    unit = measurement_info.objects.filter(measurement_name__contains = site_type).get(
+    variable_name = species).unit
+    return unit
+
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the
