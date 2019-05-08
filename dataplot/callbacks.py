@@ -797,7 +797,7 @@ def create_map(environment, region, species):
 def Get_point_info(clickData):
     if clickData:
         # print(clickData['points'][0]['text'])
-        return clickData['points'][0]['text']
+        return clickData['points'][0]['text'].split(':')[0]
     else:
         return 'Edinburgh St Leonards'
 
@@ -812,7 +812,7 @@ def site_information_from_map(clickData, tab_val, species):
     if not clickData:
         site_name = 'Edinburgh St Leonards'
     else:
-        site_name = clickData['points'][0]['text']
+        site_name = clickData['points'][0]['text'].split(':')[0]
 
     if tab_val == 'site_sum':
         return Map_Plots_Renderer.Site_Summary(site_name,species)

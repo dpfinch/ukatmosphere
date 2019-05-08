@@ -14,9 +14,12 @@ def main_site_map(environment, region, species):
     variable = species
 
     vals_df = LoadData.all_sites_one_var_data(date, variable, region, environment)
+    unit = LoadData.Get_Unit('AURN', species)
 
-    size_scale = 0.4
+    size_scale = 1
     variable_vals = vals_df.value * size_scale
+
+    hover_text = ['%s: %.3f %s' % (vals_df.index.tolist()[x],variable_vals[x], unit) for x in range(len(variable_vals))]
 
     data = [go.Scattermapbox(
         lat=vals_df.latitude.tolist(),
@@ -24,16 +27,24 @@ def main_site_map(environment, region, species):
         mode='markers',
         # customdata = final_df.index.tolist(),
         marker=go.scattermapbox.Marker(
-            size=variable_vals.tolist()
+            color=variable_vals.tolist(),
+            colorscale='Viridis',
+            showscale=True,
+            size = 14,
+            colorbar=dict(
+                title= species + ' ' + unit,
+                titleside = 'right'
+            ),
             # opacity = 0.85,
             # color = chosen_hour,
             # cmax = last_day.max(axis = 1).max(),
             # colorbar = {'title':var_choice}
         ),
-        text=vals_df.index.tolist(),
+        text=hover_text,
         )]
 
     layout = go.Layout(
+        showlegend = False,
         autosize=True,
         # showlegend = True,
         height = 750,
