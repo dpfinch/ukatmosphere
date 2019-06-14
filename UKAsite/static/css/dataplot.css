@@ -31,7 +31,7 @@ component.
 */
 
 *{
-  font-family: 'Oxygen', sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 html{
@@ -71,8 +71,8 @@ a:hover{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: relative;
-  background-color: #000a1a;
+  position: absolute;
+  background-color: rgb(255, 251, 247,0.4);
   margin: 0px;
   height: 110px;
   width: 100%;
@@ -107,6 +107,7 @@ a:hover{
   height: 90px;
   width: 90px;
   margin-left: 20px;
+  margin-top: 5px;
   /*border: 2px solid white;*/
 }
 
@@ -114,12 +115,13 @@ a:hover{
   display: inline-block;
   position: absolute;
   margin-left: 140px;
+  margin-top: 4px;
   /*border: 2px solid white;*/
 
 }
 
 #page-header-text{
-  color: #FCFCFC;
+  color: #545352;
   text-decoration: none;
   font-family: 'Open Sans', sans-serif;
   font-size: 38pt;
@@ -138,6 +140,7 @@ a:hover{
   /*overflow: hidden;*/
   /*padding-top: 115px;*/
 }
+
 
 .home_page{
   /*align-items: center;*/
@@ -163,27 +166,30 @@ a:hover{
   align-items: center;
   text-align: center;
   margin: 0 auto;
+  margin-top: 10%;
 }
 
 .home_buttons{
   display: block;
   background-color: #333333;
   text-align: center;
-  width: 350px;
-  height: 250px;
+  width: 700px;
+  height: 110px;
   border-radius: 10px;
   margin: 10px;
+  opacity: 0.8;
 }
 
 .home_button_text{
-  font-size: 30pt;
+  font-size: 24pt;
+  color: #abbbd8;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .home_button_text p{
-  font-size: 15pt;
+  font-size: 13pt;
   /*font-family: 'Tinos';*/
 }
 
@@ -197,6 +203,7 @@ a:hover{
   position: absolute;
   height: auto;
   width: auto;
+  margin: 10%;
 }
 
 .about_sections{
@@ -205,22 +212,22 @@ a:hover{
   text-align: left;
   border-radius: 10px;
   height: auto;
-  width: 82%;
+  width: 100%;
   margin: 10px;
-  background: rgba(51,51, 51, 09);
+  background: rgb(217, 217, 219,0.8);
   margin: auto;
 }
 
 .about_header{
   padding: 10px;
   color: black;
-  color: rgb(138,144,145);
+  color: rgb(53,53,53);
   font-weight: 600;
 }
 
 .about_text{
-  font-size: 14pt;
-  color: rgb(138,144,145);
+  font-size: 12pt;
+  color: rgb(53,53,53);
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 10px;

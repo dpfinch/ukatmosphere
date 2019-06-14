@@ -371,6 +371,11 @@ def Get_Site_Variables_db(site):
     variable_list = list(measurement_info.objects.filter(
         id__in = measurement_ids).values_list('variable_name', flat = True))
 
+    for s in range(len(variable_list)):
+        if '<sub>' in variable_list[s]:
+            variable_list[s] = variable_list[s].replace('<sub>','').replace('</sub>','')
+
+
     return variable_list
 
 def get_all_aurn_species():

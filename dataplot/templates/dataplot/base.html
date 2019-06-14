@@ -5,11 +5,12 @@
       <link rel="shortcut icon" type = "image/png" href = "/static/cloud_analysis_logo.png"/>
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
       <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-      <link href="https://fonts.googleapis.com/css?family=Barlow|Tinos" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Barlow|Montserrat" rel="stylesheet">
       <link rel="stylesheet" href="{% static 'css/dataplot.css' %}">
   </head>
 
   <body>
+  <div class = "main_page">
 
     <div class="page-header">
 
@@ -23,15 +24,17 @@
 
     </div>
 
-    <div class = "main_page">
+
      {% block content %}
      {% endblock %}
+
+
    </div>
   </body>
 
   <footer>
     <div class ="footer-container">
-      <p> UK Atmosphere - Douglas Finch - University of Edinburgh, School of Geosciences <p>
+      <p> UK Atmosphere - School of Geosciences, University of Edinburgh <p>
     </div>
   </footer>
 
