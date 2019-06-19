@@ -86,10 +86,10 @@ def site_info_message(site_info_string):
     info = site_info_string.split(',')
     site_type, sites, min_year, max_year = info[0],info[1],str(info[2]), str(info[3])
 
-    site_dict = LoadData.get_site_info(sites)
+    site_info = LoadData.get_site_info_object(sites)
 
-    env_type = site_dict['Environment Type']
-    gov_region = site_dict['Government Region']
+    env_type = site_info.environment_type
+    gov_region = site_info.region
 
     message = "Plotting data for the %s site %s between %s and %s, which is a %s site in %s.\n" % (site_type, sites, min_year, max_year, env_type, gov_region)
     return message
