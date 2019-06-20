@@ -20,6 +20,7 @@ external_stylesheets = [
     'https://codepen.io/chriddyp/pen/bWLwgP.css'
 ]
 
+external_scripts = ['https://www.googletagmanager.com/gtag/js?id=UA-142478083-1']
 
 app = Dash(
     __name__,
@@ -27,7 +28,8 @@ app = Dash(
     url_base_pathname=URL_BASE_PATHNAME,
     # assets_folder = 'assets',
     # static_folder = 'static',
-    external_stylesheets=external_stylesheets
+    external_stylesheets=external_stylesheets,
+    external_scripts = external_scripts
 )
 
 STATIC_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
