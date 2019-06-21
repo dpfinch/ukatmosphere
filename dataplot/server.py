@@ -20,7 +20,10 @@ external_stylesheets = [
     'https://codepen.io/chriddyp/pen/bWLwgP.css'
 ]
 
-external_scripts = ['https://www.googletagmanager.com/gtag/js?id=UA-142478083-1']
+external_scripts = [
+    'https://www.googletagmanager.com/gtag/js?id=UA-142478083-1',
+    'http://www.ukatmosphere.org/static/js/gtag.js'
+    ]
 
 app = Dash(
     __name__,
