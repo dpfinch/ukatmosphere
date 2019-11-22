@@ -27,7 +27,7 @@ from dataplot.EO_Lesson_Tools import Text_Providers
 @app.callback(Output('site_choice', 'options'),
     [Input('site_region_choice', 'value'),
     Input('site_env_choice', 'values'),])
-def list_available_sites(site_region, env_choice):
+def list_available_sites(site_region, env_choice, open_sites_only = True):
     sites = LoadData.AURN_site_list_db(site_region, env_choice)
     sites = list(sites)
     sites.sort()

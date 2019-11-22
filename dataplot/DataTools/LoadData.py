@@ -266,7 +266,7 @@ def AURN_site_list(region, environment):
     final_site_list = env_sites['Site Name']
     return final_site_list
 
-def AURN_site_list_db(region,environment):
+def AURN_site_list_db(region,environment, open_sites_only = True):
     # Get all the avaible sites in the databse (which are AURN related)
     # Get unique site codes primary keys
     # Old method - pretty slow
@@ -275,7 +275,10 @@ def AURN_site_list_db(region,environment):
     # site_df = pd.DataFrame(list(site_info.objects.filter(id__in = avail_sites_pks).values()))
     # Now just list the open sites - runs the risk of a site being open but we don't have data for it
     #  but should be ok
-    site_df = pd.DataFrame(list(site_info.objects.filter(site_open = True).values()))
+    if open_sites_only:
+        site_df = pd.DataFrame(list(site_info.objects.filter(site_open = True).values()))
+    else:
+        site_df = pd.DataFrame(list(site_info.objects.all().values()))
     aurn_df = site_df.loc[site_df.site_type.isin(['DEFRA AURN'])]
 
     # If one value is submitted it will be a string not a list. Make it a Lists
