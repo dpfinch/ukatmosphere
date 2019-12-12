@@ -71,5 +71,8 @@ class measurement_data(models.Model):
     # Measurement identifer
     measurement_id = models.ForeignKey(measurement_info, on_delete = models.CASCADE)
 
+    class Meta:
+        indexes = [models.Index(fields = ['site_id', 'date_and_time','measurement_id'])]
+
     def __str__(self):
         return 'Measurement no: %s' % str(self.id)

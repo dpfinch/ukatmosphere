@@ -56,8 +56,10 @@ def DEFRA_map_page():
     html.Div(id = 'map_output_holder', children = [
     html.Div(id = 'main_map_holder', children = [
         html.Div(id = 'site_counter_output'),
+        dcc.Loading(id="loading-main-map", children=[
         dcc.Graph(id = 'main_map', config = {'scrollZoom': True},
-        )
+    )],type="dot"),
+
     ]),
     html.Div(id = 'site_plot_from_map', children = [
     html.H4(id = 'site_name_from_map'),

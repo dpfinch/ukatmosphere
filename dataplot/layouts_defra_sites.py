@@ -68,30 +68,33 @@ def DEFRA_individual_sites():
     dcc.Dropdown(
         id = 'minimum_year',
         placeholder = 'Select start year...',
-        # value = 2017
     ),
     html.P('To'),
     dcc.Dropdown(
         id = 'maximum_year',
         placeholder = 'Select end year...',
-        # value = 2018
     ),
     html.Br(),
     ### Have a submit button to load in the choices and then load the relevant
     ### data
+    dcc.Loading(id="loading-variables", children=[
     html.Label('Select a variable:'),
     dcc.Dropdown(id = 'variable_options',
     multi = True,
     placeholder = 'Select variables'),
+    ],type="dot"),
     html.Br(),
 
+    html.Div(children = [
     html.Label('Combine or separate the variables?'),
     dcc.RadioItems(id = 'combine_choice',
     options = [{'label': i, 'value': i} for i in ['Combine', 'Separate']],
     value = 'Combine'),
-    html.Br(),
+    html.Br(),], style = {'display': 'none'}),
 
     html.Button('Submit', id = 'site_choice_button'),
+    dcc.Loading(id="loading-main", children=[html.Div(id = 'dataframe-holder', style = {'display': 'none'})],
+        type="graph", fullscreen = True),
     html.Br(),
     html.Br(),
     html.Div(id = 'submit_counter', style= {'display':'none'}),
@@ -100,7 +103,7 @@ def DEFRA_individual_sites():
     html.Hr(),
     ###  Create a div to place the dataframe while its being used but not
     ### viewable by the user. Make data Json - very slow when being read
-    html.Div(id = 'dataframe-holder', style = {'display': 'none'}),
+    # html.Div(id = 'dataframe-holder', style = {'display': 'none'}),
 
 
 
@@ -123,7 +126,9 @@ def DEFRA_individual_sites():
     ### Each placeholder for plots and their individual controls go below
     ### **************************  TimeSeries  ***************************
     html.Div(id = 'TimeSeriesHolder', className = 'plot_holder', children = [
-        html.Div(id = 'TimeSeries', className = 'main_plot'),
+        dcc.Loading(id="loading-timeseries", children=[html.Div(id = 'TimeSeries')],
+            type="dot", className = 'main_plot'),
+        # html.Div(id = 'TimeSeries', className = 'main_plot'),
         html.Div(id = 'TimeSeriesTools', className = 'plot_tools', children = [
             html.H3('Time Series Tools:'),
             html.Br(),
@@ -160,7 +165,9 @@ def DEFRA_individual_sites():
     html.Hr(),
     ### *********************  Histogram  *********************************
     html.Div(id = 'HistogramHolder', className = 'plot_holder', children = [
-        html.Div(id = 'Histogram', className = 'main_plot'),
+    dcc.Loading(id="loading-histogram", children=[html.Div(id = 'Histogram')],
+        type="dot", className = 'main_plot'),
+        # html.Div(id = 'Histogram', className = 'main_plot'),
         html.Div(id = 'HistogramTools', className = 'plot_tools', children = [
             html.H3('Histogram Tools:'),
             html.Br(),
@@ -194,7 +201,9 @@ def DEFRA_individual_sites():
 
     ### *********************  Correlation  *********************************
     html.Div(id = 'CorrelationHolder', className = 'plot_holder', children = [
-        html.Div(id = 'Correlation', className = 'main_plot'),
+    dcc.Loading(id="loading-correlation", children=[html.Div(id = 'Correlation')],
+        type="dot", className = 'main_plot'),
+        # html.Div(id = 'Correlation', className = 'main_plot'),
         html.Div(id = 'CorrelationTools', className = 'plot_tools', children = [
             html.H3('Correlation Tools:'),
             html.Br(),
@@ -240,7 +249,9 @@ def DEFRA_individual_sites():
 
 ### *********************  Dirunal Cycle  *********************************
 html.Div(id = 'DiurnalCycleHolder', className = 'plot_holder', children = [
-    html.Div(id = 'DiurnalCycle', className = 'main_plot'),
+dcc.Loading(id="loading-diurnalcycle", children=[html.Div(id = 'DiurnalCycle')],
+    type="dot", className = 'main_plot'),
+    # html.Div(id = 'DiurnalCycle', className = 'main_plot'),
     html.Div(id = 'DiurnalCycleTools', className = 'plot_tools', children = [
         html.H3('Diurnal Cycle Tools:'),
         html.Br(),
@@ -290,7 +301,9 @@ html.Div(id = 'DiurnalCycleHolder', className = 'plot_holder', children = [
 
     ### *******************  Hourly boxplots  ***************************
     html.Div(id = 'HourlyBoxHolder', className = 'plot_holder', children = [
-        html.Div(id = 'HourlyBoxplots', className = 'main_plot'),
+    dcc.Loading(id="loading-hourlybox", children=[html.Div(id = 'HourlyBoxplots')],
+        type="dot", className = 'main_plot'),
+        # html.Div(id = 'HourlyBoxplots', className = 'main_plot'),
         html.Div(id = 'HourlyBoxTools', className = 'plot_tools', children = [
             html.H3('Hourly Box Plot Tools:'),
             html.Br(),
@@ -319,7 +332,9 @@ html.Div(id = 'DiurnalCycleHolder', className = 'plot_holder', children = [
 
 ### *********************  Weekly Cycle  *********************************
 html.Div(id = 'WeeklyCycleHolder', className = 'plot_holder', children = [
-    html.Div(id = 'WeeklyCycle', className = 'main_plot'),
+dcc.Loading(id="loading-weeklycycle", children=[html.Div(id = 'WeeklyCycle')],
+    type="dot", className = 'main_plot'),
+    # html.Div(id = 'WeeklyCycle', className = 'main_plot'),
     html.Div(id = 'WeeklyCycleTools', className = 'plot_tools', children = [
         html.H3('Weekly Cycle Tools:'),
         html.Br(),
@@ -363,7 +378,9 @@ html.Div(id = 'WeeklyCycleHolder', className = 'plot_holder', children = [
 
     ### *******************  Weekly boxplots  ***************************
     html.Div(id = 'WeeklyBoxHolder', className = 'plot_holder', children = [
-        html.Div(id = 'WeeklyBoxplots', className = 'main_plot'),
+    dcc.Loading(id="loading-weeklybox", children=[html.Div(id = 'WeeklyBoxplots')],
+        type="dot", className = 'main_plot'),
+        # html.Div(id = 'WeeklyBoxplots', className = 'main_plot'),
         html.Div(id = 'WeeklyBoxTools', className = 'plot_tools', children = [
             html.H3('Weekly Box Plot Tools:'),
             html.Br(),
@@ -393,7 +410,9 @@ html.Div(id = 'WeeklyCycleHolder', className = 'plot_holder', children = [
 
 ### *********************  Annual Cycle  *********************************
 html.Div(id = 'AnnualCycleHolder', className = 'plot_holder', children = [
-    html.Div(id = 'AnnualCycle', className = 'main_plot'),
+dcc.Loading(id="loading-annualcycle", children=[html.Div(id = 'AnnualCycle')],
+    type="dot", className = 'main_plot'),
+    # html.Div(id = 'AnnualCycle', className = 'main_plot'),
     html.Div(id = 'AnnualCycleTools', className = 'plot_tools', children = [
         html.H3('Annual Cycle Tools:'),
         html.Br(),
@@ -442,7 +461,9 @@ html.Div(id = 'AnnualCycleHolder', className = 'plot_holder', children = [
 
     ### Date and Day heatmaps
     html.Div( id = 'DateDayHeatmapHolder', className = 'plot_holder', children =[
-        html.Div(id = 'DateDayHeatmap', className = 'main_plot'),
+    dcc.Loading(id="loading-datedatheat", children=[html.Div(id = 'DateDayHeatmap')],
+        type="dot", className = 'main_plot'),
+        # html.Div(id = 'DateDayHeatmap', className = 'main_plot'),
         html.Div(id = 'DateDayHeatmapTools', className = 'plot_tools', children = [
         html.H3('Date & Day Heatmap Tools:'),
             html.Br(),

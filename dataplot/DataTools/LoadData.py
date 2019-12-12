@@ -156,14 +156,10 @@ def Get_One_Site_Data(site,years, variables):
         variables = [variables]
 
     queried_measurements = measurement_data.objects.filter(
-        site_id = site_info.objects.get(
-            site_name = site
-        )
-    )
+        site_id__site_name = site)
 
     queried_variables = queried_measurements.filter(measurement_id__in = measurement_info.objects.filter(
-        variable_name__in = variables
-    ))
+        variable_name__in = variables))
 
     # Get the range of years chosen
     year_range = range(years[0],years[1] + 1)
@@ -208,6 +204,31 @@ def get_recent_site_data(site_name, species, days_ago = 7):
         columns = ['Date and Time', 'Concentration'])
     site_df.set_index('Date and Time', inplace = True)
     return site_df
+
+def get_all_species_obvs(species, environment, region, year_start, year_end):
+    start_date = dt(year_start, 1, 1)
+    end_date = dt(year_end, 12,31)
+
+    filters = {}
+    filters['date_and_time__range'] = (start_date, end_date)
+    filters['measurement_id__variable_name'] = species
+    if region != 'All':
+        filters['site_id__region'] = region
+    if environment != 'All':
+        filters['site_id__environment_type'] = environment
+
+    obvs = measurement_data.objects.filter(**filters)
+    site_series = []
+    for site in obvs.values('site_id__site_name').distinct():
+        site_obvs = obvs.filter(**site)
+        temp_series = pd.Series(site_obvs.values_list('value', flat = True), index=
+            site_obvs.values_list('date_and_time'))
+        temp_series.name = site['site_id__site_name']
+        site_series.append(temp_series)
+
+    final_df = pd.concat(site_series, axis = 1)
+
+    return final_df
 
 def all_sites_one_var_data(date,variable, region, environment):
 
@@ -352,6 +373,23 @@ def get_site_year_range(site_name):
 
     return start_year, end_year
 
+def get_species_year_range(species, environment, region):
+
+    filters = {}
+    filters['measurement_id__variable_name'] = species
+    if region != 'All':
+        filters['site_id__region'] = region
+    if environment != 'All':
+        filters['site_id__environment_type'] = environment
+
+
+    obvs =  measurement_data.objects.filter(
+        **filters)
+
+    start_year = obvs.earliest('date_and_time').date_and_time.year
+    end_year = obvs.latest('date_and_time').date_and_time.year
+    return start_year,end_year
+
 def Get_Site_Variables(site):
     site = site_info.objects.get(site_name = site)
     site_variables = list(pollutants_details.objects.filter(relevant_site = site).values_list('pollutant_name'))
@@ -366,18 +404,16 @@ def Get_Site_Variables(site):
     return variable_list
 
 def Get_Site_Variables_db(site):
-    site_query = site_info.objects.get(site_name = site)
     # Get the availble measured info from the site
-    avail_measurements = measurement_data.objects.filter(site_id = site_query)
+    avail_measurements = measurement_data.objects.filter(site_id__site_name = site)
     measurement_ids = list(avail_measurements.values_list('measurement_id', flat = True).distinct())
 
     variable_list = list(measurement_info.objects.filter(
         id__in = measurement_ids).values_list('variable_name', flat = True))
 
-    for s in range(len(variable_list)):
-        if '<sub>' in variable_list[s]:
-            variable_list[s] = variable_list[s].replace('<sub>','').replace('</sub>','')
-
+    # for s in range(len(variable_list)):
+    #     if '<sub>' in variable_list[s]:
+    #         variable_list[s] = variable_list[s].replace('<sub>','').replace('</sub>','')
 
     return variable_list
 

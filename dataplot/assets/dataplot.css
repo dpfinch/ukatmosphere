@@ -281,7 +281,7 @@ li{
     }
 }
 
-._dash-loading-callback {
+/* ._dash-loading-callback {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
   border-top: 16px solid #3498db;
@@ -299,7 +299,7 @@ li{
   animation: fadein 1s linear forwards, spin 2s infinite linear;
   animation-delay: 1s;
   -webkit-animation-delay: 1s;
-}
+} */
 
 
 @keyframes fadein {
