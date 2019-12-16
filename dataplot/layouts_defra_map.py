@@ -17,7 +17,7 @@ def DEFRA_map_page():
     env_options = [{'label': i.strip(), 'value': i.strip()} for i in env_choices]
 
     all_species = LoadData.get_all_aurn_species()
-    species_options = [{'label': i.strip(), 'value': i.strip()} for i in all_species]
+    species_options = [{'label': i.replace('<sub>','').replace('</sub>',''), 'value': i} for i in all_species]
 
     page_layout = html.Div(id ='full_page_container', children =
     [

@@ -421,9 +421,9 @@ def get_all_aurn_species():
     species_query = measurement_info.objects.filter(measurement_name__contains='AURN')
     species_list = list(species_query.values_list('variable_name', flat = True))
 
-    for s in range(len(species_list)):
-        if '<sub>' in species_list[s]:
-            species_list[s] = species_list[s].replace('<sub>','').replace('</sub>','')
+    # for s in range(len(species_list)):
+    #     if '<sub>' in species_list[s]:
+    #         species_list[s] = species_list[s].replace('<sub>','').replace('</sub>','')
 
     return species_list
 
