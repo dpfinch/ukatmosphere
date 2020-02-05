@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "be77b64df46ece76eada797774a38ff7d48a5f1d034341a0f308609ec3aadb81"
+            "sha256": "1bc2098e6226d136a1e1284814b322947b5cf75512f598b152d7aaa074e0ba33"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -43,6 +43,13 @@
                 "sha256:fc323ffcaeaed0e0a02bf4d117757b98aed530d9ed4531e3e15460124c106691"
             ],
             "version": "==3.0.4"
+        },
+        "chart-studio": {
+            "hashes": [
+                "sha256:1293776553a552bb3ff918c33d70f3b0794103b8cb0ac08aad8bde1c94ee65e3",
+                "sha256:7dcd66ccdba81ca54025cfcb76e0e68ed9922f474adc45848542f186567f60da"
+            ],
+            "version": "==1.0.0"
         },
         "click": {
             "hashes": [
