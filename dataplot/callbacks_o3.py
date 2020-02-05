@@ -116,7 +116,8 @@ def load_data_via_worker(n_clicks,o3_table_text,year_start,year_end):
 
         id_ = uuid.uuid4()
         species = 'Ozone'
-        queue.enqueue(LoadData.multi_site_loop,sites,year_start,year_end,species, job_id = str(id_))
+        queue.enqueue(LoadData.multi_site_loop,sites,year_start,year_end,species,
+            job_id = str(id_),, timeout=500)
         return {"id": str(id_),'site_list':sites},len(sites)
     else:
         return {},100
