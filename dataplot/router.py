@@ -15,7 +15,7 @@ pages = (
     ('Site_Comparison', layouts_site_compare.Site_Comparison_Table),
     )
 
-routes = {f"{app.url_base_pathname}{path}": layout for path, layout in pages}
+routes = {f"{app.config.url_base_pathname}{path}": layout for path, layout in pages}
 
 @app.callback(Output('content', 'children'),
     [Input('url', 'pathname')])

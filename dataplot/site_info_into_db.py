@@ -61,7 +61,7 @@ def DEFRA_AURN_sites_to_db(site_code):
     for obvs in all_site_obvs.keys():
         start_date_raw = all_site_obvs[obvs]['start_date']
         start_date = dt.strptime(start_date_raw, '%d/%m/%Y').date()
-        end_date_raw = all_site_obvs[obvs]['start_date']
+        end_date_raw = all_site_obvs[obvs]['end_date']
         if end_date_raw == '-':
             end_date = None
         else:

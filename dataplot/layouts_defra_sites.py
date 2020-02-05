@@ -53,7 +53,7 @@ def DEFRA_individual_sites():
     html.Label('Select an environment type:'),
     dcc.Checklist(id = 'site_env_choice',
         options = env_options,
-        values = ['All']),
+        value = ['All']),
     html.Br(),
 
     html.Label('Select a site:'),
@@ -153,7 +153,7 @@ def DEFRA_individual_sites():
             html.Br(),
             html.Label('Add a rolling mean'),
             dcc.Checklist(id = 'TimeSeriesRollingMean',
-                values = [],
+                value = [],
             ),
             html.Br(),
             dcc.RadioItems(id = 'TimeSeriesLineOrScatter',
@@ -193,7 +193,7 @@ def DEFRA_individual_sites():
             html.Br(),
             dcc.Checklist( id = 'HistogramProbability',
                 options = [{'label':'Probability', 'value': 'Probability'}],
-                values = []),
+                value = []),
 
         ]),
     ]),
@@ -324,7 +324,7 @@ dcc.Loading(id="loading-diurnalcycle", children=[html.Div(id = 'DiurnalCycle')],
             html.Br(),
             dcc.Checklist(id = 'HourlyBoxMean',
                 options = [{'label': 'Show Mean', 'value': True}],
-                    values = [])
+                    value = [])
         ]),
     ]),
     html.Br(),
@@ -401,7 +401,7 @@ dcc.Loading(id="loading-weeklycycle", children=[html.Div(id = 'WeeklyCycle')],
             html.Br(),
             dcc.Checklist(id = 'WeeklyBoxMean',
                 options = [{'label': 'Show Mean', 'value': True}],
-                    values = [])
+                    value = [])
         ]),
     ]),
     html.Br(),

@@ -70,7 +70,6 @@ for site in all_avail_sites[:]:
 
         for i, col in enumerate(pollutant_cols):
 
-
             all_entries = []
             # Check to see if I've got info on the variable.
             # Only have info on standard AURN variables so far

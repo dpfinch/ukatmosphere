@@ -1,7 +1,7 @@
 
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.plotly as py
+import chart_studio.plotly as py
 import plotly.graph_objs as go
 import pandas as pd
 import numpy as np

@@ -3,6 +3,7 @@ from dash import Dash
 import os
 import redis
 from flask_caching import Cache
+from rq import Queue
 
 # from flask.helpers import get_root_path
 # print('Helllllooo')
@@ -44,7 +45,9 @@ def serve_static(resource):
 app.config['suppress_callback_exceptions'] = True
 
 app.title = "UK Atmosphere"
-
+# app.config.update({
+#     'routes_pathname_prefix': URL_BASE_PATHNAME
+# })
 # r = redis.from_url(os.environ.get("REDIS_URL"))
 # print(r)
 CACHE_CONFIG = {
@@ -54,7 +57,8 @@ CACHE_CONFIG = {
 }
 cache = Cache()
 cache.init_app(app.server, config=CACHE_CONFIG)
-
+conn = redis.from_url(CACHE_CONFIG['CACHE_REDIS_URL'])
+queue = Queue(connection = conn)
 # @server.route('/favicon.ico')
 # def favicon():
 #     return send_from_directory(os.path.join(server.root_path, 'static'),

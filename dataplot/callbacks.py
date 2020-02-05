@@ -26,7 +26,7 @@ from dataplot.EO_Lesson_Tools import Text_Providers
 ### Callback to list the available sites with above selection
 @app.callback(Output('site_choice', 'options'),
     [Input('site_region_choice', 'value'),
-    Input('site_env_choice', 'values'),])
+    Input('site_env_choice', 'value'),])
 def list_available_sites(site_region, env_choice, open_sites_only = True):
     sites = LoadData.AURN_site_list_db(site_region, env_choice)
     sites = list(sites)
@@ -268,7 +268,7 @@ def get_timeseries_ytitle(data_info, format):
     Input('TimeSeriesTitle','value'),
     Input('TimeSeriesXTitle', 'value'),
     Input('TimeSeriesYTitle', 'value'),
-    Input('TimeSeriesRollingMean', 'values'),
+    Input('TimeSeriesRollingMean', 'value'),
     Input('TimeSeriesLineOrScatter', 'value'),
     Input('TimeSeriesLabelFormat', 'value')
     ])
@@ -318,7 +318,7 @@ def get_histo_xtitle(data_info, format):
     Input('HistogramTitle', 'value'),
     Input('HistogramXTitle', 'value'),
     Input('HistogramBins','value'),
-    Input('HistogramProbability','values'),
+    Input('HistogramProbability','value'),
     Input('HistogramLabelFormat', 'value')
     ])
 def change_histogram(data, variable_options,site_choice, combine_choice, DataResample,
@@ -531,7 +531,7 @@ def get_hourly_ytitle(data_info, format):
     Input('date-slider', 'value'),
     Input('HourlyBoxTitle', 'value'),
     Input('HourlyBoxYTitle', 'value'),
-    Input('HourlyBoxMean', 'values'),
+    Input('HourlyBoxMean', 'value'),
     Input('HourlyBoxLabelFormat', 'value'),
     ])
 def change_hourlybox(data, variable_options,site_choice, combine_choice, DataResample,
@@ -625,7 +625,7 @@ def get_weeklybox_ytitle(data_info, format):
     Input('date-slider', 'value'),
     Input('WeeklyBoxTitle', 'value'),
     Input('WeeklyBoxYTitle', 'value'),
-    Input('WeeklyBoxMean', 'values'),
+    Input('WeeklyBoxMean', 'value'),
     Input('WeeklyBoxLabelFormat', 'value'),
     ])
 def change_weeklybox(data, variable_options,site_choice, combine_choice, DataResample,

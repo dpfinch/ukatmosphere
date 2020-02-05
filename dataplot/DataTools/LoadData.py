@@ -12,6 +12,9 @@ import pickle
 from dataplot.models import *
 from datetime import datetime as dt
 from datetime import timedelta
+from django.db.models import Q, Count
+from rq import get_current_job
+from scipy.stats import gamma
 #==============================================================================
 
 def FromCSV(filename = None, parameters = []):
@@ -183,6 +186,87 @@ def Get_One_Site_Data(site,years, variables):
     final_df = pd.concat(all_var_dfs,axis = 0)
     return final_df
 
+def o3_exceedence_count(df):
+    # Maybe shouldn't be in LoadData module...
+    roll8_mean = df.rolling(8).mean()
+    day_exceed = roll8_mean.resample('D').max()
+    day_exceed= day_exceed > 100
+    # year_count = day_exceed.groupby(day_exceed.index.year).sum()
+    return day_exceed
+
+def multi_site_loop(site_list,year_start,year_end,species):
+    start_date = dt(year_start, 1, 1)
+    end_date = dt(year_end, 12,31)
+
+    job = get_current_job()
+    job.meta['progress'] = 0
+    job.meta['current_site'] = ''
+    job.save_meta()
+
+    result_dict = {}
+    env_dict = {}
+    yearly_exceed_dict = {}
+    env_gamma = {}
+    site_dfs = []
+    for i,site_name in enumerate(site_list):
+        job.meta['current_site'] = site_name
+        job.save_meta()
+        site_data = measurement_data.objects.filter(
+            site_id__site_name = site_name).filter(
+                measurement_id__variable_name = species).filter(
+                    date_and_time__range = (start_date, end_date)
+                )
+
+        if site_data.count() == 0:
+            job.meta['progress'] = i
+            job.save_meta()
+            continue
+        temp_df = pd.DataFrame(site_data.values_list('date_and_time','value'),
+        columns = ['date_and_time',site_name])
+        temp_df.set_index('date_and_time', inplace = True)
+        resampled = temp_df.resample('Y').mean()
+        exceedance_df = o3_exceedence_count(temp_df)
+        yearly_exceed = exceedance_df.resample('Y').sum()
+        above_limit = yearly_exceed > 10
+        env_type = site_info.objects.get(site_name = site_name).environment_type
+        if env_type not in env_dict.keys():
+            env_dict[env_type] = []
+            yearly_exceed_dict[env_type] = []
+            env_gamma[env_type] = []
+        env_dict[env_type].append(exceedance_df)
+        yearly_exceed_dict[env_type].append(above_limit)
+        site_dfs.append(resampled)
+        job.meta['progress'] = i
+        job.save_meta()
+
+    final_exceed_dfs = {}
+    yearly_sites_above = {}
+    for env_type in env_dict.keys():
+        env_exceed_df = pd.concat(env_dict[env_type], axis = 1)
+        # gamma_df = gamma_df = pd.DataFrame(columns = ['Alpha','Beta'])
+        # for year in env_exceed_df.index.year.unique():
+        #     year_df = env_exceed_df[env_exceed_df.index.year == year]
+        #     year_list = year_df.values.flatten()
+        #     print(year_list[:10])
+        #     year_list = year_list[~np.isnan(year_list)]
+        #     alpha,fit, beta = gamma.fit(year_list, floc = 0)
+        #     gamma_df.loc[year] = [alpha,beta]
+        # env_gamma[env_type] = gamma_df
+        total_env_exceed = env_exceed_df.sum(axis = 1)
+        total_env_exceed.name = env_type
+        final_exceed_dfs[env_type] = total_env_exceed
+        env_above_limit = pd.concat(yearly_exceed_dict[env_type], axis = 1)
+        total_above_limit = env_above_limit.sum(axis = 1)
+        total_above_limit.name = env_type
+        yearly_sites_above[env_type]  = total_above_limit
+    final_exceed_df = pd.DataFrame.from_dict(final_exceed_dfs)
+    final_df = pd.concat(site_dfs,axis = 1)
+    final_above_limit_df = pd.DataFrame.from_dict(yearly_sites_above)
+    result_dict = {'conc':final_df, 'exceedance':final_exceed_df,
+    'sitesabove':final_above_limit_df, 'gamma': env_gamma}
+    return result_dict
+
+
 def get_recent_site_data(site_name, species, days_ago = 7):
     #  Will do last week or something simmilar
     #  currently (Since we don't have up to date data)
@@ -229,6 +313,116 @@ def get_all_species_obvs(species, environment, region, year_start, year_end):
     final_df = pd.concat(site_series, axis = 1)
 
     return final_df
+
+def Get_Data_Count(region,environment, year_start,year_end, species):
+    start_date = dt(year_start, 1, 1)
+    end_date = dt(year_end, 12,31)
+
+    filters = {}
+    filters['date_and_time__range'] = (start_date, end_date)
+    filters['measurement_id__variable_name'] = species
+    if region != 'All':
+        filters['site_id__region'] = region
+    if environment != 'All':
+        filters['site_id__environment_type'] = environment
+
+    obvs = measurement_data.objects.filter(**filters)
+    return obvs.count()
+
+def Get_Species_Sites(species, environment,region, currently_open,year_start,year_end):
+    start_date = dt(year_start, 1, 1)
+    end_date = dt(year_end, 12,31)
+
+    filters = {}
+    if currently_open:
+        filters['relevant_site__site_open'] = True
+    if region != 'All':
+        filters['relevant_site__region'] = region
+    if environment != 'All':
+        filters['relevant_site__environment_type'] = environment
+
+    site_query = pollutants_details.objects.filter(pollutant_name = species).filter(
+        **filters)
+
+    date_query = site_query.filter(Q(end_date__gte = start_date)|Q(
+        relevant_site__site_open = True)).filter(start_date__lte = end_date)
+
+    species_sites = pd.DataFrame(date_query.values_list('relevant_site__site_name', 'relevant_site__region', 'relevant_site__environment_type'),
+        columns = ['Site Name', 'Region', 'Environment'])
+
+    # HUUUUUUGE BODGE - Need to address
+    # For some reason London Cromwell Road is in the database but has no data
+    if 'London Cromwell Road' in species_sites['Site Name'].values:
+        species_sites = species_sites[species_sites['Site Name'] != 'London Cromwell Road']
+
+    return species_sites
+
+def Estimate_data_count(species, sites_df, year_min, year_max):
+    end_date = dt(year_max,12,31).date()
+    start_date = dt(year_min,1,1).date()
+
+    count_estimate = 0
+    for site in sites_df['Site Name']:
+        site_obj = site_info.objects.get(site_name = site)
+        if site_obj.site_open:
+            if site_obj.date_open > start_date:
+                day_diff = end_date - site_obj.date_open
+            else:
+                day_diff =  end_date - start_date
+        else:
+            if site_obj.date_open > start_date:
+                day_diff = site_obj.date_closed - site_obj.date_open
+            else:
+                day_diff =  site_obj.date_closed - start_date
+
+        count_estimate += day_diff.days * 24
+    return count_estimate
+
+def Yearly_Site_Count(species,split_by = None):
+    years = []
+
+    if split_by and split_by.lower() == 'region':
+        regions = site_info.objects.all().values_list(
+            'region', flat = True).distinct().order_by('region')
+        out_df = pd.DataFrame(columns = regions)
+    elif split_by and split_by.lower() == 'environment':
+        envs = site_info.objects.all().values_list(
+            'environment_type', flat = True).distinct().order_by('environment_type')
+        out_df = pd.DataFrame(columns = envs)
+    else:
+        yearly_site_count = []
+
+    for year in range(1979,dt.now().year + 1):
+        years.append(year)
+        opensites = pollutants_details.objects.filter(
+            pollutant_name = species,relevant_site__date_open__year__lte = year)
+        site_count = opensites.filter(
+            Q(relevant_site__date_closed__year__gte = year)|Q(relevant_site__site_open = True))
+
+        if split_by and split_by.lower() == 'region':
+            region_count = site_count.values('relevant_site__region').annotate(
+                total = Count('relevant_site__region')).order_by('relevant_site__region')
+            out_df = out_df.append(pd.Series(name = year))
+
+            for region in region_count:
+                out_df.loc[year][region['relevant_site__region']] = region['total']
+
+
+        elif split_by and split_by.lower() == 'environment':
+            env_count = site_count.values('relevant_site__environment_type').annotate(
+                total = Count('relevant_site__environment_type')).order_by('relevant_site__environment_type')
+            out_df = out_df.append(pd.Series(name = year))
+            for env in env_count:
+                out_df.loc[year][env['relevant_site__environment_type']] = env['total']
+
+        else:
+            yearly_site_count.append(site_count.count())
+    if not split_by:
+        out_df = pd.DataFrame(yearly_site_count, index = years, columns = ['Site Count'])
+    else:
+        out_df['Total'] = out_df.sum(axis =1).astype(int)
+    out_df.fillna(0,inplace = True)
+    return out_df
 
 def all_sites_one_var_data(date,variable, region, environment):
 
@@ -301,7 +495,6 @@ def AURN_site_list_db(region,environment, open_sites_only = True):
     else:
         site_df = pd.DataFrame(list(site_info.objects.all().values()))
     aurn_df = site_df.loc[site_df.site_type.isin(['DEFRA AURN'])]
-
     # If one value is submitted it will be a string not a list. Make it a Lists
     if type(region) == str:
         region = [region]
@@ -435,7 +628,6 @@ def Get_Unit(site_type, species):
         unit =  unit[:-2] + '<sup>-%s</sup>' % unit[-1]
 
     return unit
-
 
 if __name__ == '__main__':
     # If the module needs testing as a stand alone, use this to set the
