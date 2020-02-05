@@ -8,6 +8,7 @@ verify_ssl = true
 
 dj-database-url = "*"
 django = "*"
+django_rq = "*"
 rq = "*"
 gunicorn = "*"
 "psycopg2" = "*"
