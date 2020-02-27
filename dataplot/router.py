@@ -11,7 +11,6 @@ pages = (
     ('Data_Upload', layouts_data_upload.data_upload_page),
     ('UK_Ozone', layouts_uk_o3.uk_ozone),
     ('EO_Lessons', layouts_EO_lessons.EO_Lessons),
-    ('EO_lessons',layouts_EO_lessons.EO_Lessons),
     ('Site_Comparison', layouts_site_compare.Site_Comparison_Table),
     )
 

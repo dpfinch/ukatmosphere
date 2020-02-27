@@ -33,8 +33,10 @@ app = Dash(
     # assets_folder = 'assets',
     # static_folder = 'static',
     external_stylesheets=external_stylesheets,
-    external_scripts = external_scripts
+    external_scripts = external_scripts,
+    serve_locally = False,
 )
+
 
 STATIC_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
 
@@ -45,6 +47,7 @@ def serve_static(resource):
 app.config['suppress_callback_exceptions'] = True
 
 app.title = "UK Atmosphere"
+
 # app.config.update({
 #     'routes_pathname_prefix': URL_BASE_PATHNAME
 # })
