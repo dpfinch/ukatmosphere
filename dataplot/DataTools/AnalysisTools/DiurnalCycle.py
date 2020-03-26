@@ -40,7 +40,7 @@ def DiurnalCycle(df,**kwargs):
         if var.split(' ')[0][:2] == 'PM':
             var_name = var.split(' ')[0]
         else:
-            var_name = name
+            var_name = var
     # Create dictionary with each month as a key containing all monthly data
         hourly_dict = {}
         for n,hour in enumerate(hour_names):
