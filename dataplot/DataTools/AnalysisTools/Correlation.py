@@ -91,11 +91,38 @@ def Correlation(df,**kwargs):
 
         plot_title = kwargs['title']
 
-        plot_layout = {'title':plot_title,
-            'xaxis' : {'title':xtitle},
-            'yaxis' : {'title':ytitle},
-            }
+        # plot_layout = {'title':plot_title,
+        #     'xaxis' : {'title':xtitle},
+        #     'yaxis' : {'title':ytitle},
+        #     }
 
+        plot_layout = go.Layout(
+        title = plot_title,
+        xaxis = dict(title = xtitle),
+        yaxis = dict(title = ytitle),
+        images=[dict(
+            source="assets/UoE_Geosciences_2_colour.jpg",
+            xref="paper", yref="paper",
+            x=.66, y=0.95,
+            sizex=0.25, sizey=0.25,
+            xanchor="right", yanchor="bottom"
+          ),
+          dict(
+              source="assets/ukri-nerc-logo-600x160.png",
+              xref="paper", yref="paper",
+              x=0.88, y=0.95,
+              sizex=0.2, sizey=0.2,
+              xanchor="right", yanchor="bottom"
+            ),
+            dict(
+                source="assets/DEFRA-logo.png",
+                xref="paper", yref="paper",
+                x=1, y=0.95,
+                sizex=0.18, sizey=0.18,
+                xanchor="right", yanchor="bottom"
+              ),
+            ],
+        )
 
         figure = dcc.Graph(
             id='CorrelationMainPlot',

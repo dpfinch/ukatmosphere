@@ -134,7 +134,7 @@ def TimeSeries(df, **kwargs):
             source="assets/DEFRA-logo.png",
             xref="paper", yref="paper",
             x=1, y=0.95,
-            sizex=0.2, sizey=0.2,
+            sizex=0.18, sizey=0.18,
             xanchor="right", yanchor="bottom"
           ),
         ],

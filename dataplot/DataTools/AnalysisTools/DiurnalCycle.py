@@ -8,7 +8,7 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objs as go
-from plotly import tools
+from plotly.subplots import make_subplots
 #==============================================================================
 
 
@@ -129,9 +129,31 @@ def DiurnalCycle(df,**kwargs):
     plot_title = kwargs['title']
 
     layout = go.Layout(
-        yaxis = dict( title = ytitle),
-        xaxis = dict( title = xtitle),
         title = plot_title,
+        xaxis = dict(title = xtitle),
+        yaxis = dict(title = ytitle),
+        images=[dict(
+            source="assets/UoE_Geosciences_2_colour.jpg",
+            xref="paper", yref="paper",
+            x=.66, y=0.95,
+            sizex=0.25, sizey=0.25,
+            xanchor="right", yanchor="bottom"
+          ),
+          dict(
+              source="assets/ukri-nerc-logo-600x160.png",
+              xref="paper", yref="paper",
+              x=0.88, y=0.95,
+              sizex=0.2, sizey=0.2,
+              xanchor="right", yanchor="bottom"
+            ),
+            dict(
+                source="assets/DEFRA-logo.png",
+                xref="paper", yref="paper",
+                x=1, y=0.95,
+                sizex=0.18, sizey=0.18,
+                xanchor="right", yanchor="bottom"
+              ),
+            ],
         )
 
     plot = dcc.Graph(
@@ -162,7 +184,7 @@ def DiurnalCycleSplit(df, **kwargs):
     days_of_week = ('Monday', 'Tuesday', 'Wednesday', 'Thursday',
         'Friday', 'Saturday', 'Sunday')
 
-    fig = tools.make_subplots(rows = 1, cols = 7, shared_yaxes=True,
+    fig = make_subplots(rows = 1, cols = 7, shared_yaxes=True,
         subplot_titles = days_of_week)
 
     for var_num, var in enumerate(variable_dictionary.keys()):
@@ -186,19 +208,19 @@ def DiurnalCycleSplit(df, **kwargs):
                     mean_data.append(hourly_dict[h].mean())
                     median_data.append(hourly_dict[h].median())
 
-                fig.append_trace( go.Scatter(
+                fig.add_trace(go.Scatter(
                     y = mean_data,
                     x = hour_names,
                     name = 'Mean ' + var,
                     mode = 'lines',
-                    ),1,n + 1)
-                fig.append_trace( go.Scatter(
+                    ),row = 1,col = n + 1)
+                fig.add_trace(go.Scatter(
                     y = median_data,
                     x = hour_names,
                     name = 'Median ' + var,
                     mode = 'lines',
                     line = {'dash' : 'dash'}
-                    ),1,n + 1)
+                    ),row = 1,col = n + 1)
 
             else:
                 plot_data = []
@@ -208,13 +230,13 @@ def DiurnalCycleSplit(df, **kwargs):
                     if sample_type == 'Median':
                         plot_data.append(hourly_dict[h].median())
 
-                fig.append_trace( go.Scatter(
+                fig.add_trace(go.Scatter(
                     y = plot_data,
                     x = hour_names,
                     name = var,
                     mode = 'lines',
                     showlegend = False,
-                    ),1,n+1)
+                    ),row = 1,col = n+1)
 
             error_type = kwargs['errors']
             # Don't add error to just median
@@ -231,7 +253,7 @@ def DiurnalCycleSplit(df, **kwargs):
                         # Need to do some jiggery pokery to create a shaded area
                     x = hour_names + hour_names[::-1]
                     y = y_upper + y_lower[::-1]
-                    fig.append_trace( go.Scatter(
+                    fig.add_trace(go.Scatter(
                         y = y,
                         x = x,
                         fill = 'tozerox',
@@ -239,7 +261,7 @@ def DiurnalCycleSplit(df, **kwargs):
                         fillcolor='rgba(0,100,80,0.2)',
                         name = var,
                         showlegend = False,
-                        ),1,n+1)
+                        ),row = 1,col = n+1)
                 elif error_type == '95% Confidence':
                     for h in hour_names:
 
@@ -249,7 +271,7 @@ def DiurnalCycleSplit(df, **kwargs):
                     x = hour_names + hour_names[::-1]
                     y = y_upper + y_lower[::-1]
 
-                    fig.append_trace( go.Scatter(
+                    fig.add_trace(go.Scatter(
                         y = y,
                         x = x,
                         fill = 'tozerox',
@@ -257,7 +279,7 @@ def DiurnalCycleSplit(df, **kwargs):
                         fillcolor='rgba(0,100,80,0.2)',
                         name = var,
                         showlegend = False,
-                        ),1,n+1)
+                        ),row = 1,col = n+1)
 
         ytitle = kwargs['ytitle']
         xtitle = kwargs['xtitle']
@@ -266,9 +288,31 @@ def DiurnalCycleSplit(df, **kwargs):
         fig['layout']['yaxis1'].update(title = ytitle)
         fig['layout'].update(title = plot_title)
         layout = go.Layout(
-            yaxis = dict( title = ytitle),
-            xaxis = dict( title = xtitle),
-            title = plot_title,
+            # title = plot_title,s
+            xaxis = dict(title = xtitle),
+            yaxis = dict(title = ytitle),
+            images=[dict(
+                source="assets/UoE_Geosciences_2_colour.jpg",
+                xref="paper", yref="paper",
+                x=.66, y=0.95,
+                sizex=0.25, sizey=0.25,
+                xanchor="right", yanchor="bottom"
+              ),
+              dict(
+                  source="assets/ukri-nerc-logo-600x160.png",
+                  xref="paper", yref="paper",
+                  x=0.88, y=0.95,
+                  sizex=0.2, sizey=0.2,
+                  xanchor="right", yanchor="bottom"
+                ),
+                dict(
+                    source="assets/DEFRA-logo.png",
+                    xref="paper", yref="paper",
+                    x=1, y=0.95,
+                    sizex=0.18, sizey=0.18,
+                    xanchor="right", yanchor="bottom"
+                  ),
+                ],
             )
 
         plot = dcc.Graph(

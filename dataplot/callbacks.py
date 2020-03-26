@@ -462,6 +462,8 @@ def get_dirunal_ytitle(data_info, format):
         return ''
     variable_options = data_info.split(',')[4:]
     ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    if ytitle.split(' ')[0][:2] == 'PM':
+        ytitle = ytitle.split(' ')[0]
     return ytitle
 
 ### Callback for the diurnal cycle plot

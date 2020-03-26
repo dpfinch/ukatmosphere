@@ -61,11 +61,33 @@ def HourlyBoxplots(df,**kwargs):
     plot_title = kwargs['title']
 
     layout = go.Layout(
-        yaxis = dict( title = ytitle),
-        xaxis = dict( title = 'Hour of the Day'),
-        showlegend = False,
         title = plot_title,
-        boxmode='group'
+        xaxis = dict(title = 'Hour of the Day'),
+        yaxis = dict(title = ytitle),
+        showlegend = False,
+        boxmode = 'group',
+        images=[dict(
+            source="assets/UoE_Geosciences_2_colour.jpg",
+            xref="paper", yref="paper",
+            x=.66, y=0.95,
+            sizex=0.25, sizey=0.25,
+            xanchor="right", yanchor="bottom"
+          ),
+          dict(
+              source="assets/ukri-nerc-logo-600x160.png",
+              xref="paper", yref="paper",
+              x=0.88, y=0.95,
+              sizex=0.2, sizey=0.2,
+              xanchor="right", yanchor="bottom"
+            ),
+            dict(
+                source="assets/DEFRA-logo.png",
+                xref="paper", yref="paper",
+                x=1, y=0.95,
+                sizex=0.18, sizey=0.18,
+                xanchor="right", yanchor="bottom"
+              ),
+            ],
         )
 
     plot = dcc.Graph(
