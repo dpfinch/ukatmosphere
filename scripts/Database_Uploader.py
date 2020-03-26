@@ -48,7 +48,8 @@ for site in all_avail_sites[:]:
     else:
         site_year_closed = dt.now().year
 
-
+    site_year_open = 2018
+    
     for year in range(site_year_open,site_year_closed + 1):
         print('Processing {} data for site {}'.format(year, site.site_name))
         try:

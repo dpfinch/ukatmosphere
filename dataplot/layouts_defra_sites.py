@@ -1,6 +1,7 @@
 from random import randint
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_daq as daq
 from .server import app
 from dash.dependencies import Output, Input
 from dataplot.DataTools import LoadData
@@ -26,16 +27,13 @@ def DEFRA_individual_sites():
         html.Div(id = 'page-header-holder', children = [html.A('UK Atmosphere',id = "page-header-text", href = "/")]),
     ]),
     html.Div(className = 'page-body',children = [
-    html.Div(className = 'tool_explainer', children = [
-    html.P('This is the development page for the data plotting tool. Choose a DEFRA site and a variable or two to plot and click the submit button to produce a number of plots for the given data.'),
-    html.P('** Please Note **'),
-    html.P('This page is still in the development stage.'),
-    html.P('Currently only limited data is available and therefore the data shown is not up to date')
-    ]),
     html.Div(className = 'DataSelectionArea', children = [
     #### **** THIS IS WHERE THE DATA SELECTION STARTS *****
 
-    html.H3('Analysis for individual DEFRA sites.'),
+    html.H3('Analysis for individual DEFRA sites'),
+    html.Div(className = 'tool_explainer', children = [
+    html.P('Choose a DEFRA site and a variable or two to plot and click the submit button to produce plots for the chosen data.'),
+    ]),
     # dcc.RadioItems(
     #     id = 'site_type_choice',
     #     options = [{'label': i, 'value': i} for i in ['DEFRA AURN', 'GAUGE (Currenlty Unavailable)']],
@@ -55,6 +53,11 @@ def DEFRA_individual_sites():
         options = env_options,
         value = ['All']),
     html.Br(),
+
+    # daq.BooleanSwitch(id = 'site_open_bool', on = False,
+    #     label = 'Only use sites currently open',
+    #     labelPosition = 'top'),
+    # html.Br(),
 
     html.Label('Select a site:'),
     dcc.Dropdown(

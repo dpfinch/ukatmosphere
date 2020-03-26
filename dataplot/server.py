@@ -61,7 +61,7 @@ CACHE_CONFIG = {
 cache = Cache()
 cache.init_app(app.server, config=CACHE_CONFIG)
 conn = redis.from_url(CACHE_CONFIG['CACHE_REDIS_URL'])
-queue = Queue(connection = conn)
+queue = Queue(connection = conn, default_timeout = 500)
 # @server.route('/favicon.ico')
 # def favicon():
 #     return send_from_directory(os.path.join(server.root_path, 'static'),

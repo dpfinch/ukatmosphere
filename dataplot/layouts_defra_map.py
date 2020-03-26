@@ -26,11 +26,9 @@ def DEFRA_map_page():
         html.Div(id = 'page-header-holder', children = [html.A('UK Atmosphere',id = "page-header-text", href = "/")]),
     ]),
     html.Div(className = 'page-body',children = [
+    html.H3('Map of DEFRA AURN sites'),
     html.Div(className = 'tool_explainer', children = [
-    html.P('This is the map selection tool. Clicking on the DEFRA site locations on the map will produce a summary of the site as well as a plot of the last week.'),
-    html.P('** Please Note **'),
-    html.P('This page is still in the development stage.'),
-    html.P('Currently only limited data is available and therefore the data shown is not up to date')
+    html.P('Select a pollutant and location on the map to see recent measurements'),
     ]),
     html.Div(className = 'map_data_selection', children = [
     html.Label('Select an environment:'),
