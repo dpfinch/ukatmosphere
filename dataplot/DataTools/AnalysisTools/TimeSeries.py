@@ -96,13 +96,49 @@ def TimeSeries(df, **kwargs):
 
     plot_title = kwargs['title']
 
-    plot_layout = {'title':plot_title,
-        'xaxis' : {'title':xtitle,
-            # 'rangeslider':{},
-            # 'type':'date'
-            },
-        'yaxis' : {'title':ytitle},
-        }
+    # plot_layout = {'title':plot_title,
+    #     'xaxis' : {'title':xtitle,
+    #         # 'rangeslider':{},
+    #         # 'type':'date'
+    #         },
+    #     'yaxis' : {'title':ytitle},
+    #     'images':{
+    #         'source':'https://raw.githubusercontent.com/cldougl/plot_images/add_r_img/vox.png',
+    #         'xref':'paper',
+    #         'yref':'paper',
+    #         'x':1,'y':1.05,
+    #         'sizex':0.2,'sizey':0.2,
+    #         'xanchor':'right','yanchor':'bottom'
+    #     }
+    #     }
+
+    plot_layout = go.Layout(
+    title = plot_title,
+    xaxis = dict(title = xtitle),
+    yaxis = dict(title = ytitle),
+    images=[dict(
+        source="assets/UoE_Geosciences_2_colour.jpg",
+        xref="paper", yref="paper",
+        x=.66, y=0.95,
+        sizex=0.25, sizey=0.25,
+        xanchor="right", yanchor="bottom"
+      ),
+      dict(
+          source="assets/ukri-nerc-logo-600x160.png",
+          xref="paper", yref="paper",
+          x=0.88, y=0.95,
+          sizex=0.2, sizey=0.2,
+          xanchor="right", yanchor="bottom"
+        ),
+        dict(
+            source="assets/DEFRA-logo.png",
+            xref="paper", yref="paper",
+            x=1, y=0.95,
+            sizex=0.2, sizey=0.2,
+            xanchor="right", yanchor="bottom"
+          ),
+        ],
+    )
 
     plot = dcc.Graph(
         id='TimeSeriesPlot',
