@@ -36,7 +36,7 @@ def HourlyBoxplots(df,**kwargs):
         'rgb(255, 65, 54)', 'rgb(207, 114, 255)', 'rgb(127, 96, 0)']
 
     for var_num, var in enumerate(variable_dictionary.keys()):
-
+        
     # Create dictionary with each month as a key containing all monthly data
         hourly_dict = {}
         for n,hour in enumerate(hour_names):

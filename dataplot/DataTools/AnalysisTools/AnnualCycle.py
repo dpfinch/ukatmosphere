@@ -39,7 +39,10 @@ def AnnualCycle(df,**kwargs):
         'rgb(255, 65, 54)', 'rgb(207, 114, 255)', 'rgb(127, 96, 0)']
 
     for var_num, var in enumerate(variable_dictionary.keys()):
-
+        if var.split(' ')[0][:2] == 'PM':
+            var_name = var.split(' ')[0]
+        else:
+            var_name = var
     # Create dictionary with each month as a key containing all monthly data
         monthly_dict = {}
         for n,mon in enumerate(months):
@@ -57,13 +60,13 @@ def AnnualCycle(df,**kwargs):
             all_plots.append( go.Scatter(
                 y = mean_data,
                 x = months,
-                name = 'Mean ' + var,
+                name = 'Mean ' + var_name,
                 mode = 'lines',
                 ))
             all_plots.append( go.Scatter(
                 y = median_data,
                 x = months,
-                name = 'Median ' + var,
+                name = 'Median ' + var_name,
                 mode = 'lines',
                 line = {'dash' : 'dash'}
                 ))
@@ -79,7 +82,7 @@ def AnnualCycle(df,**kwargs):
             all_plots.append( go.Scatter(
                 y = plot_data,
                 x = months,
-                name = var,
+                name = var_name,
                 mode = 'lines',
                 ))
 

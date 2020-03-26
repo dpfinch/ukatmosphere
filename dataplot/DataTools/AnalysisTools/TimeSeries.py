@@ -43,6 +43,8 @@ def TimeSeries(df, **kwargs):
 
     for n,var in enumerate(variable_dictionary.keys()):
         df_col = variable_dictionary[var]
+        if df_col.name.split(' ')[0][:2] == 'PM':
+            df_col.name = df_col.name.split(' ')[0]
 
         resample_rate = kwargs['DataResample'][0]
 
@@ -70,7 +72,7 @@ def TimeSeries(df, **kwargs):
             mode = line_mode,
             # marker = {'size': 5,
             #     'color':colour_choice},
-            name = var
+            name = df_col.name
         ))
 
         rollingMean = kwargs['rollingMean']
@@ -139,13 +141,14 @@ def TimeSeries(df, **kwargs):
           ),
         ],
     )
-
+    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
     plot = dcc.Graph(
         id='TimeSeriesPlot',
         figure={
             'data': all_plots,
             'layout': plot_layout
-        }
+            },
+        config = config
     )
     return plot
 

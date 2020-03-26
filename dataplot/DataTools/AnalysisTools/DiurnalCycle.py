@@ -37,7 +37,10 @@ def DiurnalCycle(df,**kwargs):
         'rgb(255, 65, 54)', 'rgb(207, 114, 255)', 'rgb(127, 96, 0)']
 
     for var_num, var in enumerate(variable_dictionary.keys()):
-
+        if var.split(' ')[0][:2] == 'PM':
+            var_name = var.split(' ')[0]
+        else:
+            var_name = name
     # Create dictionary with each month as a key containing all monthly data
         hourly_dict = {}
         for n,hour in enumerate(hour_names):
@@ -55,13 +58,13 @@ def DiurnalCycle(df,**kwargs):
             all_plots.append( go.Scatter(
                 y = mean_data,
                 x = hour_names,
-                name = 'Mean ' + var,
+                name = 'Mean ' + var_name,
                 mode = 'lines',
                 ))
             all_plots.append( go.Scatter(
                 y = median_data,
                 x = hour_names,
-                name = 'Median ' + var,
+                name = 'Median ' + var_name,
                 mode = 'lines',
                 line = {'dash' : 'dash'}
                 ))
@@ -77,7 +80,7 @@ def DiurnalCycle(df,**kwargs):
             all_plots.append( go.Scatter(
                 y = plot_data,
                 x = hour_names,
-                name = var,
+                name = var_name,
                 mode = 'lines',
                 ))
 
@@ -102,7 +105,7 @@ def DiurnalCycle(df,**kwargs):
                     fill = 'tozerox',
                     line = {'color':'rgba(0,100,80,0.2)'},
                     fillcolor='rgba(0,100,80,0.2)',
-                    name = var,
+                    name = var_name,
                     showlegend = False,
                     ))
             elif error_type == '95% Confidence':
@@ -120,7 +123,7 @@ def DiurnalCycle(df,**kwargs):
                     fill = 'tozerox',
                     line = {'color':'rgba(0,100,80,0.2)'},
                     fillcolor='rgba(0,100,80,0.2)',
-                    name = var,
+                    name = var_name,
                     showlegend = False,
                     ))
 

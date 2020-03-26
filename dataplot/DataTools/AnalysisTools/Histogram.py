@@ -29,6 +29,8 @@ def Histogram(df, **kwargs):
 
     for var in variable_dictionary.keys():
         df_column = variable_dictionary[var]
+        if df_column.name.split(' ')[0][:2] == 'PM':
+            df_column.name = df_column.name.split(' ')[0]
 
         resample_rate = kwargs['DataResample'][0]
         if resample_rate == 'R':
@@ -57,7 +59,7 @@ def Histogram(df, **kwargs):
                 x = x,
                 histnorm = 'probability',
                 nbinsx = num_bins,
-                name = var
+                name = df_column.name
             ))
             yaxisTitle = 'Probability'
         else:
@@ -110,12 +112,14 @@ def Histogram(df, **kwargs):
         ],
     )
 
+    config = {"toImageButtonOptions": {"width": None, "height": None}}
     figure = dcc.Graph(
         id='HistogramPlot',
         figure={
             'data': all_plots,
             'layout': plot_layout
-        }
+            },
+        config = config
     )
 
 
