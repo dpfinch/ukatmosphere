@@ -109,13 +109,15 @@ def Correlation(df,**kwargs):
           ),
             ],
         )
+        config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
 
         figure = dcc.Graph(
             id='CorrelationMainPlot',
             figure={
                 'data': plot_list,
                 'layout': plot_layout
-            }
+            },
+            config = config
         )
 
     return figure

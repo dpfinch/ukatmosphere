@@ -81,13 +81,15 @@ def WeeklyBoxplots(df,**kwargs):
           ),
             ],
         )
+    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
 
     plot = dcc.Graph(
         id='WeeklyBoxplotsPlot',
         figure={
             'data': all_plots,
             'layout': layout
-        }
+        },
+        config = config
     )
     return plot
 ## ============================================================================

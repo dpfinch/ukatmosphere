@@ -97,8 +97,10 @@ def DiurnalCycle(df,**kwargs):
                     y_upper.append(hourly_dict[h].mean() + hourly_dict[h].std())
                     y_lower.append(hourly_dict[h].mean() - hourly_dict[h].std())
                     # Need to do some jiggery pokery to create a shaded area
+
                 x = hour_names + hour_names[::-1]
                 y = y_upper + y_lower[::-1]
+
                 all_plots.append( go.Scatter(
                     y = y,
                     x = x,
@@ -144,13 +146,15 @@ def DiurnalCycle(df,**kwargs):
           ),
             ],
         )
+    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
 
     plot = dcc.Graph(
         id='DiurnalCyclePlot',
         figure={
             'data': all_plots,
             'layout': layout
-        }
+        },
+        config = config
     )
     return plot
 
@@ -289,13 +293,15 @@ def DiurnalCycleSplit(df, **kwargs):
               ),
                 ],
             )
+        config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
 
         plot = dcc.Graph(
             id='DiurnalCyclePlot',
             figure={
                 'data': fig,
                 'layout': layout
-            }
+            },
+            config = config
         )
 
     return plot

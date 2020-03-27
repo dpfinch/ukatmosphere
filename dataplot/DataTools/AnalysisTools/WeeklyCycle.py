@@ -146,13 +146,15 @@ def WeeklyCycle(df,**kwargs):
           ),
             ],
         )
+    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
 
     plot = dcc.Graph(
         id='WeeklyCyclePlot',
         figure={
             'data': all_plots,
             'layout': layout
-        }
+        },
+        config = config
     )
     return plot
 

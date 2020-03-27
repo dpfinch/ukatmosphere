@@ -6,6 +6,7 @@ from .server import app
 from dash.dependencies import Output, Input
 from dataplot.DataTools import LoadData
 from dataplot.DataTools import TidyData
+from datetime import datetime as dt
 
 
 def DEFRA_individual_sites():
@@ -163,6 +164,54 @@ def DEFRA_individual_sites():
             options = [{'label': i, 'value': i} for i in ['Scatter', 'Line', 'Line & Scatter']],
             value = 'Scatter',
             ),
+        ])
+    ]),
+    html.Hr(),
+
+    ### **************************  Comparisons  ***************************
+    html.Div(id = 'ComparisonHolder', className = 'plot_holder', children = [
+        html.Div(className = 'main_plot',children = [
+        dcc.Tabs(id="comparison_tabs", value='week_comp', children=[
+            dcc.Tab(label='Compare Weeks', value='week_comp'),
+            dcc.Tab(label='Compare Months', value='month_comp'),
+            dcc.Tab(label='Compare Years', value='yearly_comp'),
+        ]),
+        dcc.Loading(id="loading-comparisons", children=[html.Div(id = 'Comparisons')],
+            type="dot",)]),
+        html.Div(id = 'ComparisonTools', className = 'plot_tools', children = [
+            html.H3('Comparison Tools:'),
+            html.Br(),
+            html.Label('Week Number To Compare'),
+            dcc.Input( id = 'ComparisonWeekNum',
+                placeholder = 'Enter Week Number',
+                value = dt.now().isocalendar()[1]-1),
+            html.Label('Month To Compare'),
+            dcc.Input( id = 'ComparisonMonthNum',
+                placeholder = 'Enter Month Number',
+                value = dt.now().month),
+            html.Label('Year To Compare'),
+            dcc.Input( id = 'ComparisonYearNum',
+                placeholder = 'Enter Year',
+                value = dt.now().year),
+            html.Label('Plot Title'),
+            dcc.Input( id = 'ComparisonTitle',
+                placeholder = 'Enter Title',
+                value = ''),
+            html.Br(),
+            html.Label('X Axis Label'),
+            dcc.Input( id = 'ComparisonXTitle',
+                placeholder = 'Enter X axis label',
+                value = 'Date'),
+            html.Br(),
+            html.Label('Y Axis Label'),
+            dcc.Input( id = 'ComparisonYTitle',
+                placeholder = 'Enter Y axis label',
+                value = ''),
+            html.Br(),
+            dcc.RadioItems(id = 'ComparisonLabelFormat',
+                options = [{'label': i, 'value': i} for i in ['Variable Name', 'Chemical Formula',]],
+                value = 'Variable Name'),
+            html.Br(),
         ])
     ]),
     html.Hr(),

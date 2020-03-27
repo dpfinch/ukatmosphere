@@ -289,6 +289,54 @@ def change_timeseries(data, variable_options,site_choice, combine_choice, DataRe
         rollingMean = rollingMean, xtitle = xtitle, ytitle = ytitle,
         lineorscatter = lineorscatter, label_format = label_format )
 
+#### *********** COMPARISON PLOT *******************
+### Callback for the COMPARISON interaction
+
+@app.callback(Output('Comparisons', 'children'),
+        [Input('dataframe-holder', 'children'),
+        Input('variable_options','value'),
+        Input('site_choice', 'value'),
+        Input('DataResample', 'value'),
+        Input('comparison_tabs', 'value'),
+        Input('ComparisonWeekNum','value'),
+        Input('ComparisonMonthNum','value'),
+        Input('ComparisonYearNum','value'),
+        Input('ComparisonTitle','value'),
+        Input('ComparisonXTitle', 'value'),
+        Input('ComparisonYTitle', 'value'),
+        Input('ComparisonLabelFormat', 'value')])
+def comparison_plot_renderer(data, variable_options,site_choice, DataResample,
+    comparison_tabs, comp_week,comp_month,comp_year, title, xtitle, ytitle,
+    label_format):
+    if not data:
+        return ''
+    data = data.split(',')
+
+    # Find min year for site
+    start_year, end_year = LoadData.get_site_year_range_db(data[1])
+
+    df  = load_station_data(data[0],data[1],[start_year,int(data[3])], data[4:])
+    if not isinstance(df, pd.DataFrame):
+        return ''
+    variable_options = data[4:]
+    from dataplot.DataTools.AnalysisTools import ComparisonPlots
+    if comparison_tabs == 'week_comp':
+        return ComparisonPlots.CompareWeeks(df,variable_options = variable_options,
+            site_choice = site_choice, DataResample = DataResample, title = title,
+            xtitle = xtitle, ytitle = ytitle, label_format = label_format,
+            comp_week = comp_week, comp_year = comp_year)
+    if comparison_tabs == 'month_comp':
+        return ComparisonPlots.CompareMonths(df,variable_options = variable_options,
+            site_choice = site_choice, DataResample = DataResample, title = title,
+            xtitle = xtitle, ytitle = ytitle, label_format = label_format,
+            comp_month = comp_month,comp_year = comp_year)
+    if comparison_tabs == 'yearly_comp':
+        return ComparisonPlots.CompareYears(df,variable_options = variable_options,
+            site_choice = site_choice, DataResample = DataResample, title = title,
+            xtitle = xtitle, ytitle = ytitle, label_format = label_format,
+            comp_year = comp_year)
+
+
 #### *********** HISTOGRAM PLOT *******************
 ### Callback for the Histogram interaction
 @app.callback(Output('HistogramXTitle', 'value'),

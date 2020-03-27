@@ -64,13 +64,14 @@ def DateDayHeatmap(df, **kwargs):
           ),
             ],
         )
+    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
 
     figure = dcc.Graph(
         id='DateDayHeatmapPlot',
         figure={
             'data': plot,
             'layout': plot_layout
-    })
+    }, config = config)
 
     return figure
 ## ============================================================================
