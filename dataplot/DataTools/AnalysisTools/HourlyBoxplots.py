@@ -36,7 +36,7 @@ def HourlyBoxplots(df,**kwargs):
         'rgb(255, 65, 54)', 'rgb(207, 114, 255)', 'rgb(127, 96, 0)']
 
     for var_num, var in enumerate(variable_dictionary.keys()):
-        
+
     # Create dictionary with each month as a key containing all monthly data
         hourly_dict = {}
         for n,hour in enumerate(hour_names):
@@ -67,26 +67,12 @@ def HourlyBoxplots(df,**kwargs):
         showlegend = False,
         boxmode = 'group',
         images=[dict(
-            source="assets/UoE_Geosciences_2_colour.jpg",
+            source="assets/all_logos.jpeg",
             xref="paper", yref="paper",
-            x=.66, y=0.95,
-            sizex=0.25, sizey=0.25,
+            x=1, y=1,
+            sizex=0.42, sizey=0.42,
             xanchor="right", yanchor="bottom"
           ),
-          dict(
-              source="assets/ukri-nerc-logo-600x160.png",
-              xref="paper", yref="paper",
-              x=0.88, y=0.95,
-              sizex=0.2, sizey=0.2,
-              xanchor="right", yanchor="bottom"
-            ),
-            dict(
-                source="assets/DEFRA-logo.png",
-                xref="paper", yref="paper",
-                x=1, y=0.95,
-                sizex=0.18, sizey=0.18,
-                xanchor="right", yanchor="bottom"
-              ),
             ],
         )
 
