@@ -85,7 +85,7 @@ def CompareWeeks(df, **kwargs):
         fill = 'tozerox',
         line = {'color':'rgba(0,100,80,0.2)'},
         fillcolor='rgba(0,100,80,0.15)',
-        name = 'Five year range',
+        name = '5 year range',
         # mode = 'lines',
     ))
     all_plots.append(go.Scatter(
@@ -124,6 +124,8 @@ def CompareWeeks(df, **kwargs):
     title = dict(text = plot_title, x = 0.1, y = 0.9),
     xaxis = dict(title = xtitle, range = [current_week.index[0],current_week.index[-1]]),
     yaxis = dict(title = ytitle),
+    legend_orientation="h",
+    # legend = dict(x = 1, y = 1,bordercolor="Black", borderwidth=2),
     images=[dict(
         source="assets/all_logos.jpeg",
         xref="paper", yref="paper",
@@ -132,7 +134,7 @@ def CompareWeeks(df, **kwargs):
         xanchor="right", yanchor="bottom"
       ),])
 
-    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
+    config = {"toImageButtonOptions": {"width": None, "height": None}, "scale":2}
 
     plot = dcc.Graph(
         id ='WeekComparePlot',
