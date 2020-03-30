@@ -36,12 +36,12 @@ def CompareWeeks(df, **kwargs):
         return 'Comparison dates cannot stradle different years'
     comp_year = start_date.year
 
-    if df_col.index.year.min() + 5 > dt.now().year:
+    if df_col.index.year.min() + 6 > dt.now().year:
         return "Not enough data at this site to make a comparison"
-    if start_date.year < df_col.index.year.min() + 5:
+    if start_date.year < df_col.index.year.min() + 6:
         return "Not enough data with this date selection to make a comparison"
 
-    df_col = df_col[(df_col.index.year > start_date.year - 5) & (df_col.index.year <= end_date.year)]
+    df_col = df_col[(df_col.index.year > start_date.year - 6) & (df_col.index.year <= end_date.year)]
 
     start_doy = start_date.timetuple().tm_yday
     end_doy = end_date.timetuple().tm_yday
@@ -62,6 +62,8 @@ def CompareWeeks(df, **kwargs):
 
     transformed_weeks = pd.concat(other_year_weeks, axis = 1)
     current_week = current_week.resample('H').mean()
+    print(current_week.shape)
+    print(transformed_weeks.shape)
 
     mean_weeks = transformed_weeks.mean(axis = 1)
     median_weeks = transformed_weeks.median(axis = 1)

@@ -186,6 +186,7 @@ def DEFRA_individual_sites():
             html.P('This compares day of the year and not dates, to account for shifting weekend and weekday dates'),
             dcc.DatePickerRange(
                 id='date-picker-range',
+                display_format = 'DD/MM/YYYY',
                 min_date_allowed=dt(2010, 1, 1),
                 max_date_allowed=dt.now(),
                 initial_visible_month=dt.now(),
