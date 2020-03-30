@@ -91,7 +91,7 @@ def CompareWeeks(df, **kwargs):
     all_plots.append(go.Scatter(
         y = mean_weeks.values,
         x = mean_weeks.index,
-        name = 'Previous five year mean',
+        name = 'Previous 5 year mean',
         mode = 'lines',
         line = {'color':'rgba(0,100,80,1)'},
     ))
@@ -100,7 +100,7 @@ def CompareWeeks(df, **kwargs):
         all_plots.append(go.Scatter(
             y = median_weeks.values,
             x = median_weeks.index,
-            name = 'Previous five year median',
+            name = 'Previous 5 year median',
             mode = 'lines',
             line = {'color':'rgba(0,100,80,1)','dash' : 'dash'},
         ))
