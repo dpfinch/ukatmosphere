@@ -62,8 +62,8 @@ def CompareWeeks(df, **kwargs):
 
     transformed_weeks = pd.concat(other_year_weeks, axis = 1)
     current_week = current_week.resample('H').mean()
-    print(current_week.shape)
-    print(transformed_weeks.shape)
+    # print(current_week.shape)
+    # print(transformed_weeks.shape)
 
     mean_weeks = transformed_weeks.mean(axis = 1)
     median_weeks = transformed_weeks.median(axis = 1)
@@ -105,10 +105,13 @@ def CompareWeeks(df, **kwargs):
             line = {'color':'rgba(0,100,80,1)','dash' : 'dash'},
         ))
 
+    actual_end = end_date - timedelta(days = 1)
+    date_labels = '{} to {}'.format(start_date.strftime('%d/%m/%y'),actual_end.strftime('%d/%m/%y') )
+
     all_plots.append(go.Scatter(
         y = current_week.values,
         x = current_week.index,
-        name = '{} to {}'.format(kwargs['start_date'],kwargs['end_date']),
+        name = date_labels,
         mode = 'lines',
         line = {'color':'rgba(214,108,43,1)'},
     ))
@@ -118,7 +121,7 @@ def CompareWeeks(df, **kwargs):
     plot_title = kwargs['title']
 
     plot_layout = go.Layout(
-    title = plot_title,
+    title = dict(text = plot_title, x = 0.1, y = 0.9),
     xaxis = dict(title = xtitle, range = [current_week.index[0],current_week.index[-1]]),
     yaxis = dict(title = ytitle),
     images=[dict(

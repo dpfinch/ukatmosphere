@@ -110,7 +110,7 @@ def return_user_choice_info(data_info):
     if not data_info:
         return ''
     else:
-        return html.P(TidyData.site_info_message(data_info))
+        return html.H4(TidyData.site_info_message(data_info))
 
 #
 # @app.callback(Output('submit_counter', 'children'),
