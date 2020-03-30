@@ -292,22 +292,40 @@ def change_timeseries(data, variable_options,site_choice, combine_choice, DataRe
 #### *********** COMPARISON PLOT *******************
 ### Callback for the COMPARISON interaction
 
+@app.callback(Output('ComparisonYTitle', 'value'),
+    [Input('dataframe-holder', 'children'),
+    Input('ComparisonLabelFormat', 'value')])
+def get_comparison_ytitle(data_info, format):
+    if format == 'Variable Name':
+        chemical_formula = False
+    else:
+        chemical_formula = True
+    if not data_info:
+        return ''
+    variable_options = data_info.split(',')[4:]
+    ytitle = TidyData.Axis_Title(variable_options, chemical_formula)
+    return ytitle
+
 @app.callback(Output('Comparisons', 'children'),
         [Input('dataframe-holder', 'children'),
         Input('variable_options','value'),
         Input('site_choice', 'value'),
         Input('DataResample', 'value'),
-        Input('comparison_tabs', 'value'),
-        Input('ComparisonWeekNum','value'),
-        Input('ComparisonMonthNum','value'),
-        Input('ComparisonYearNum','value'),
+        # Input('comparison_tabs', 'value'),
+        # Input('ComparisonWeekNum','value'),
+        # Input('ComparisonMonthNum','value'),
+        # Input('ComparisonYearNum','value'),
+        Input('date-picker-range','start_date'),
+        Input('date-picker-range','end_date'),
+        Input('medianswitch','on'),
         Input('ComparisonTitle','value'),
         Input('ComparisonXTitle', 'value'),
         Input('ComparisonYTitle', 'value'),
         Input('ComparisonLabelFormat', 'value')])
 def comparison_plot_renderer(data, variable_options,site_choice, DataResample,
-    comparison_tabs, comp_week,comp_month,comp_year, title, xtitle, ytitle,
+    start_date,end_date,medianswitch, title, xtitle, ytitle,
     label_format):
+
     if not data:
         return ''
     data = data.split(',')
@@ -319,22 +337,23 @@ def comparison_plot_renderer(data, variable_options,site_choice, DataResample,
     if not isinstance(df, pd.DataFrame):
         return ''
     variable_options = data[4:]
+
     from dataplot.DataTools.AnalysisTools import ComparisonPlots
-    if comparison_tabs == 'week_comp':
-        return ComparisonPlots.CompareWeeks(df,variable_options = variable_options,
-            site_choice = site_choice, DataResample = DataResample, title = title,
-            xtitle = xtitle, ytitle = ytitle, label_format = label_format,
-            comp_week = comp_week, comp_year = comp_year)
-    if comparison_tabs == 'month_comp':
-        return ComparisonPlots.CompareMonths(df,variable_options = variable_options,
-            site_choice = site_choice, DataResample = DataResample, title = title,
-            xtitle = xtitle, ytitle = ytitle, label_format = label_format,
-            comp_month = comp_month,comp_year = comp_year)
-    if comparison_tabs == 'yearly_comp':
-        return ComparisonPlots.CompareYears(df,variable_options = variable_options,
-            site_choice = site_choice, DataResample = DataResample, title = title,
-            xtitle = xtitle, ytitle = ytitle, label_format = label_format,
-            comp_year = comp_year)
+    # if comparison_tabs == 'week_comp':
+    return ComparisonPlots.CompareWeeks(df,variable_options = variable_options,
+        site_choice = site_choice, DataResample = DataResample,
+        start_date = start_date, end_date = end_date, show_median = medianswitch,
+        title = title,xtitle = xtitle, ytitle = ytitle, label_format = label_format)
+    # if comparison_tabs == 'month_comp':
+    #     return ComparisonPlots.CompareMonths(df,variable_options = variable_options,
+    #         site_choice = site_choice, DataResample = DataResample, title = title,
+    #         xtitle = xtitle, ytitle = ytitle, label_format = label_format,
+    #         comp_month = comp_month,comp_year = comp_year)
+    # if comparison_tabs == 'yearly_comp':
+    #     return ComparisonPlots.CompareYears(df,variable_options = variable_options,
+    #         site_choice = site_choice, DataResample = DataResample, title = title,
+    #         xtitle = xtitle, ytitle = ytitle, label_format = label_format,
+    #         comp_year = comp_year)
 
 
 #### *********** HISTOGRAM PLOT *******************

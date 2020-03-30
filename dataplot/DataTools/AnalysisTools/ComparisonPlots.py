@@ -11,6 +11,7 @@ import plotly.graph_objs as go
 from dataplot.models import measurement_info
 import numpy as np
 from datetime import datetime as dt
+from datetime import timedelta
 import pandas as pd
 from calendar import monthrange
 #==============================================================================
@@ -20,6 +21,7 @@ from calendar import monthrange
     Info about Comparison plots will go here
 '''
 def CompareWeeks(df, **kwargs):
+
     if type(kwargs['variable_options']) == str:
         df_col = df[kwargs['variable_options']]
     else:
@@ -28,27 +30,27 @@ def CompareWeeks(df, **kwargs):
     if df_col.name.split(' ')[0][:2] == 'PM':
         df_col.name = df_col.name.split(' ')[0]
 
-    # Processing week comparison starts here:
-    try:
-        week_to_compare = int(kwargs['comp_week'])
-    except ValueError:
-        return 'Week not a valid number'
-    if week_to_compare > 53 or week_to_compare < 1:
-        return "{} is not valid week number (it should be between 1-52)".format(week_to_compare)
+    start_date = dt.strptime(kwargs['start_date'],'%Y-%m-%d')
+    end_date = dt.strptime(kwargs['end_date'],'%Y-%m-%d')
+    if start_date.year != end_date.year:
+        return 'Comparison dates cannot stradle different years'
+    comp_year = start_date.year
 
-    df_week = df_col[df_col.index.weekofyear == week_to_compare]
+    if df_col.index.year.min() + 5 > dt.now().year:
+        return "Not enough data at this site to make a comparison"
+    if start_date.year < df_col.index.year.min() + 5:
+        return "Not enough data with this date selection to make a comparison"
 
-    try:
-        year_to_compare = int(kwargs['comp_year'])
-    except ValueError:
-        return 'Year not a valid number'
-    if year_to_compare > max(df_week.index.year):
-        return "No data for that date yet."
-    if year_to_compare < min(df_week.index.year):
-        return "This site doesn't have data going back that far"
+    df_col = df_col[(df_col.index.year > start_date.year - 5) & (df_col.index.year <= end_date.year)]
 
-    current_week = df_week[df_week.index.year == year_to_compare]
-    other_weeks = df_week[df_week.index.year != year_to_compare]
+    start_doy = start_date.timetuple().tm_yday
+    end_doy = end_date.timetuple().tm_yday
+    comp_dates = df_col[(df_col.index.dayofyear >= start_doy) & (df_col.index.dayofyear < end_doy)]
+
+    comp_year = start_date.year
+    current_week = comp_dates[comp_dates.index.year == comp_year]
+
+    other_weeks = comp_dates[comp_dates.index.year != comp_year]
 
     if pd.Timestamp(current_week.index.year[0],2,29) in current_week.index:
         return "We can't currently process weeks with leap days in them - we're working on it!"
@@ -62,38 +64,51 @@ def CompareWeeks(df, **kwargs):
     current_week = current_week.resample('H').mean()
 
     mean_weeks = transformed_weeks.mean(axis = 1)
+    median_weeks = transformed_weeks.median(axis = 1)
     mean_weeks.index = current_week.index
-    std_weeks = transformed_weeks.std(axis = 1)
-    std_weeks.index = current_week.index
-
-    week_name = 'Weeks' # Need to address this
+    median_weeks.index = current_week.index
+    min_weeks = transformed_weeks.min(axis = 1)#.rolling(24,min_periods = 1).mean()
+    max_weeks = transformed_weeks.max(axis = 1)#.rolling(24,min_periods = 1).mean()
 
     all_plots = []
-    all_plots.append(go.Scatter(
-        y = mean_weeks.values,
-        x = mean_weeks.index,
-        name = week_name,
-        mode = 'lines',
-    ))
-    y_upper = mean_weeks.values + std_weeks.values
-    y_lower = mean_weeks.values - std_weeks.values
+    # y_upper = mean_weeks.values + std_weeks.values
+    # y_lower = mean_weeks.values - std_weeks.values
 
     x = mean_weeks.index.append(mean_weeks.index[::-1])
-    y = np.concatenate([y_upper,y_lower[::-1]])
+    y = np.concatenate([min_weeks.values,max_weeks.values[::-1]])
 
     all_plots.append(go.Scatter(
         y = y,
         x = x,
         fill = 'tozerox',
-        name = week_name + 'std',
+        line = {'color':'rgba(0,100,80,0.2)'},
+        fillcolor='rgba(0,100,80,0.15)',
+        name = 'Five year range',
         # mode = 'lines',
     ))
+    all_plots.append(go.Scatter(
+        y = mean_weeks.values,
+        x = mean_weeks.index,
+        name = 'Previous five year mean',
+        mode = 'lines',
+        line = {'color':'rgba(0,100,80,1)'},
+    ))
+
+    if kwargs['show_median']:
+        all_plots.append(go.Scatter(
+            y = median_weeks.values,
+            x = median_weeks.index,
+            name = 'Previous five year median',
+            mode = 'lines',
+            line = {'color':'rgba(0,100,80,1)','dash' : 'dash'},
+        ))
 
     all_plots.append(go.Scatter(
         y = current_week.values,
         x = current_week.index,
-        name = week_name,
+        name = '{} to {}'.format(kwargs['start_date'],kwargs['end_date']),
         mode = 'lines',
+        line = {'color':'rgba(214,108,43,1)'},
     ))
 
     xtitle = kwargs['xtitle']
@@ -102,7 +117,7 @@ def CompareWeeks(df, **kwargs):
 
     plot_layout = go.Layout(
     title = plot_title,
-    xaxis = dict(title = xtitle),
+    xaxis = dict(title = xtitle, range = [current_week.index[0],current_week.index[-1]]),
     yaxis = dict(title = ytitle),
     images=[dict(
         source="assets/all_logos.jpeg",
@@ -161,7 +176,7 @@ def CompareMonths(df, **kwargs):
     # Need a lot of crap to fill in any days that havent happened yet!
     full_month = pd.DataFrame(np.zeros(len(all_month_days)),index = all_month_days)
     current_month = month_df[month_df.index.year == year_to_compare]
-    
+
     current_month = pd.concat([full_month, current_month], axis = 1)
     current_month = current_month[df_col.name]
 

@@ -110,7 +110,10 @@ def Axis_Title(chosen_vars, chemical_formula = False):
     if type(var_units) != str:
         unit_suffix = ''
     else:
-        unit_suffix = "(%s)" % var_units
+        unit_suffix = "({})".format(var_units)
+
+    if unit_suffix == '(ugm-3)':
+        unit_suffix =  '(&#181;gm<sup>-3</sup>)'
 
     if len(chosen_vars) > 1:
         prefix = 'Concentration '
@@ -121,6 +124,9 @@ def Axis_Title(chosen_vars, chemical_formula = False):
         else:
             prefix = chosen_vars[0]
 
+    if prefix.split(' ')[0][:2] == 'PM':
+        # prefix = prefix.split(' ')[0][:2] + '<sub>{}</sub>'.format(prefix.split(' ')[0][2:])
+        prefix = prefix.split(' ')[0]
     title = prefix + ' ' + unit_suffix
 
     return title

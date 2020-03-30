@@ -7,6 +7,7 @@ from dash.dependencies import Output, Input
 from dataplot.DataTools import LoadData
 from dataplot.DataTools import TidyData
 from datetime import datetime as dt
+from datetime import timedelta
 
 
 def DEFRA_individual_sites():
@@ -171,28 +172,47 @@ def DEFRA_individual_sites():
     ### **************************  Comparisons  ***************************
     html.Div(id = 'ComparisonHolder', className = 'plot_holder', children = [
         html.Div(className = 'main_plot',children = [
-        dcc.Tabs(id="comparison_tabs", value='week_comp', children=[
-            dcc.Tab(label='Compare Weeks', value='week_comp'),
-            dcc.Tab(label='Compare Months', value='month_comp'),
-            dcc.Tab(label='Compare Years', value='yearly_comp'),
-        ]),
+        # dcc.Tabs(id="comparison_tabs", value='week_comp', children=[
+        #     dcc.Tab(label='Compare Weeks', value='week_comp'),
+        #     dcc.Tab(label='Compare Months', value='month_comp'),
+        #     dcc.Tab(label='Compare Years', value='yearly_comp'),
+        # ]),
         dcc.Loading(id="loading-comparisons", children=[html.Div(id = 'Comparisons')],
             type="dot",)]),
         html.Div(id = 'ComparisonTools', className = 'plot_tools', children = [
             html.H3('Comparison Tools:'),
             html.Br(),
-            html.Label('Week Number To Compare'),
-            dcc.Input( id = 'ComparisonWeekNum',
-                placeholder = 'Enter Week Number',
-                value = dt.now().isocalendar()[1]-1),
-            html.Label('Month To Compare'),
-            dcc.Input( id = 'ComparisonMonthNum',
-                placeholder = 'Enter Month Number',
-                value = dt.now().month),
-            html.Label('Year To Compare'),
-            dcc.Input( id = 'ComparisonYearNum',
-                placeholder = 'Enter Year',
-                value = dt.now().year),
+            html.P('Pick a date range to compare to the preceeding 5 years'),
+            html.P('This compares day of the year and not dates, to account for shifting weekend and weekday dates'),
+            dcc.DatePickerRange(
+                id='date-picker-range',
+                min_date_allowed=dt(2010, 1, 1),
+                max_date_allowed=dt.now(),
+                initial_visible_month=dt.now(),
+                start_date =dt.now().date() - timedelta(days =7),
+                end_date=dt.now().date(),
+                first_day_of_week = 1
+                ),
+            html.Br(),
+            html.Br(),
+            # html.Label('Week Number To Compare'),
+            # dcc.Input( id = 'ComparisonWeekNum',
+            #     placeholder = 'Enter Week Number',
+            #     value = dt.now().isocalendar()[1]),
+            # html.Label('Month To Compare'),
+            # dcc.Input( id = 'ComparisonMonthNum',
+            #     placeholder = 'Enter Month Number',
+            #     value = dt.now().month),
+            # html.Label('Year To Compare'),
+            # dcc.Input( id = 'ComparisonYearNum',
+            #     placeholder = 'Enter Year',
+            #     value = dt.now().year),
+            daq.BooleanSwitch(
+                id = 'medianswitch',
+                on=False,
+                label="Show median",
+                labelPosition="top"
+                ),
             html.Label('Plot Title'),
             dcc.Input( id = 'ComparisonTitle',
                 placeholder = 'Enter Title',
