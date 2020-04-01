@@ -97,7 +97,7 @@ def DEFRA_individual_sites():
     value = 'Combine'),
     html.Br(),], style = {'display': 'none'}),
 
-    html.Button('Submit', id = 'site_choice_button'),
+    html.Button('Submit', id = 'site_choice_button', disabled = True),
     dcc.Loading(id="loading-main", children=[html.Div(id = 'dataframe-holder', style = {'display': 'none'})],
         type="graph", fullscreen = True),
     html.Br(),

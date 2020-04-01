@@ -57,7 +57,8 @@ def fill_maximum_year(site):
     return end_year
 
 ### Callback to list the variable options
-@app.callback(Output('variable_options', 'options'),
+@app.callback([Output('variable_options', 'options'),
+    Output('site_choice_button','disabled')],
     [Input('site_choice', 'value')],
     )
 def varaible_list(site):
@@ -65,7 +66,7 @@ def varaible_list(site):
 
     var_options = [{'label': i.replace('<sub>','').replace('</sub>',''), 'value': i} for i in site_vars]
 
-    return var_options
+    return var_options, False
 
 ### Callback to prevent the end year being before the start year
 @app.callback(Output('maximum_year', 'options'),
@@ -311,10 +312,6 @@ def get_comparison_ytitle(data_info, format):
         Input('variable_options','value'),
         Input('site_choice', 'value'),
         Input('DataResample', 'value'),
-        # Input('comparison_tabs', 'value'),
-        # Input('ComparisonWeekNum','value'),
-        # Input('ComparisonMonthNum','value'),
-        # Input('ComparisonYearNum','value'),
         Input('date-picker-range','start_date'),
         Input('date-picker-range','end_date'),
         Input('medianswitch','on'),
