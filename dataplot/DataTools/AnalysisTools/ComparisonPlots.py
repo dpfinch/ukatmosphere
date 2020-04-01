@@ -85,13 +85,13 @@ def CompareWeeks(df, **kwargs):
         fill = 'tozerox',
         line = {'color':'rgba(0,100,80,0.2)'},
         fillcolor='rgba(0,100,80,0.15)',
-        name = '5 year range',
+        name = '5 Year Range',
         # mode = 'lines',
     ))
     all_plots.append(go.Scatter(
         y = mean_weeks.values,
         x = mean_weeks.index,
-        name = 'Previous 5 year mean',
+        name = '5 Year Mean',
         mode = 'lines',
         line = {'color':'rgba(0,100,80,1)'},
     ))
@@ -111,7 +111,8 @@ def CompareWeeks(df, **kwargs):
     all_plots.append(go.Scatter(
         y = current_week.values,
         x = current_week.index,
-        name = date_labels,
+        # name = date_labels,
+        name = 'This Year',
         mode = 'lines',
         line = {'color':'rgba(214,108,43,1)'},
     ))
@@ -124,7 +125,7 @@ def CompareWeeks(df, **kwargs):
     title = dict(text = plot_title, x = 0.1, y = 0.9),
     xaxis = dict(title = xtitle, range = [current_week.index[0],current_week.index[-1]]),
     yaxis = dict(title = ytitle),
-    legend_orientation="h",
+    # legend_orientation="h",
     # legend = dict(x = 1, y = 1,bordercolor="Black", borderwidth=2),
     images=[dict(
         source="assets/all_logos.jpeg",
