@@ -135,7 +135,7 @@ def CompareWeeks(df, **kwargs):
         xanchor="right", yanchor="bottom"
       ),])
 
-    config = {"toImageButtonOptions": {"width": None, "height": None}, "scale":2}
+    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":4}}
 
     plot = dcc.Graph(
         id ='WeekComparePlot',
