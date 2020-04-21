@@ -617,11 +617,13 @@ def Get_Site_Variables(site):
     variable_list = [x[0] for x in site_variables]
     variable_list.sort()
 
+    new_variable_list = []
     for v in variable_list:
-        if 'modelled' in v.lower().split():
-            variable_list.remove(v)
+        if 'modelled' not in v.lower().split():
+            # variable_list.remove(v)
+            new_variable_list.append(v)
 
-    return variable_list
+    return new_variable_list
 
 def Get_Site_Variables_db(site):
     # Get the availble measured info from the site
@@ -631,16 +633,13 @@ def Get_Site_Variables_db(site):
     variable_list = list(measurement_info.objects.filter(
         id__in = measurement_ids).values_list('variable_name', flat = True))
 
-    # for s in range(len(variable_list)):
-    #     if '<sub>' in variable_list[s]:
-    #         variable_list[s] = variable_list[s].replace('<sub>','').replace('</sub>','')
-
-    # Don't get modelled data (yet)
+    new_variable_list =[]
     for v in variable_list:
-        if 'modelled' in v.lower().split():
-            variable_list.remove(v)
+        if 'modelled' not in v.lower().split():
+            # variable_list.remove(v)
+            new_variable_list.append(v)
 
-    return variable_list
+    return new_variable_list
 
 def get_all_aurn_species():
     species_query = measurement_info.objects.filter(measurement_name__contains='AURN')

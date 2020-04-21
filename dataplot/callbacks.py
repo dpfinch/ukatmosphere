@@ -63,7 +63,6 @@ def fill_maximum_year(site):
     )
 def varaible_list(site):
     site_vars = LoadData.Get_Site_Variables_db(site)
-
     var_options = [{'label': i.replace('<sub>','').replace('</sub>',''), 'value': i} for i in site_vars]
 
     return var_options, False
