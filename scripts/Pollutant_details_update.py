@@ -21,9 +21,9 @@ for poll in all_pollutants:
     if poll.start_date != poll.end_date:
         continue
 
-    # Have already processed Auchencorth Moss but should skip still checking it
-    if poll.relevant_site.site_name[0].lower() < 'y' :
-        continue
+    # # Have already processed Auchencorth Moss but should skip still checking it
+    # if poll.relevant_site.site_name[0].lower() < 'y' :
+    #     continue
     # in ['Brighton Roadside PM10','Auchencorth Moss',
     #     'Bournemouth', 'Brighton Preston Park','Chilbolton Observatory']:
     #     continue

@@ -31,6 +31,9 @@ def update_AURN_verified():
         db.Update_DEFRA_Data(site)
 
 
+def met_data_uploader():
+    pass
+
 ### TO RUN AS A SCRIPT
 print("Committing stuff to database")
 
@@ -49,7 +52,7 @@ for site in all_avail_sites[:]:
         site_year_closed = dt.now().year
 
     site_year_open = 2020
-    
+
     for year in range(site_year_open,site_year_closed + 1):
         print('Processing {} data for site {}'.format(year, site.site_name))
         try:

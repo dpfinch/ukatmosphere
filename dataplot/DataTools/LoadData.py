@@ -5,7 +5,7 @@
 # Uses modules:
 # pandas, os
 import pandas as pd
-import os.path
+import os,os.path
 from dataplot.DataTools import TidyData
 import numpy as np
 import pickle
@@ -15,6 +15,9 @@ from datetime import timedelta
 from django.db.models import Q, Count
 from rq import get_current_job
 from scipy.stats import gamma
+import wget
+import pyreadr
+from urllib.error import HTTPError,URLError
 #==============================================================================
 
 def FromCSV(filename = None, parameters = []):
@@ -152,6 +155,26 @@ def Get_AURN_data(site_names, years, drop_status_and_units = True):
         all_dataframes.append(df)
     final_df = pd.concat(all_dataframes)
     return final_df
+
+def Get_AURN_Met_Data(site_code, year):
+    base_url = 'https://uk-air.defra.gov.uk/openair/R_data/'
+    outdir = 'temp_Rdata/'
+
+    site_data_url = '{}_{}.RData'.format(site_code,year)
+    in_url = base_url + site_data_url
+    out_url = outdir + site_data_url
+
+    try:
+        wget.download(in_url,out_url)
+        open_rdata = pyreadr.read_r(out_url)
+        site_df = open_rdata[site_data_url.split('.')[0]]
+        site_df.index = site_df.date
+        site_df.drop('date',axis = 1, inplace = True)
+        met_df = site_df[['wd','ws','temp']]
+        os.remove(out_url)
+    except (HTTPError, URLError, KeyError) as e:
+        return None
+    return met_df
 
 def Get_One_Site_Data(site,years, variables):
 
@@ -607,6 +630,11 @@ def Get_Site_Variables_db(site):
     # for s in range(len(variable_list)):
     #     if '<sub>' in variable_list[s]:
     #         variable_list[s] = variable_list[s].replace('<sub>','').replace('</sub>','')
+
+    # Don't get modelled data (yet)
+    for v in variable_list:
+        if 'modelled' in v.lower().split():
+            variable_list.remove(v)
 
     return variable_list
 
