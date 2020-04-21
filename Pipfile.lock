@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2da0fa242abf352df3d4c59ce81551a7cf20da067ad16a1cb35e3388e3f73062"
+            "sha256": "109bef2ace635ca51f44a519643e80e3a57390a973ab09ba0f7e636fe9430293"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -334,6 +334,28 @@
             ],
             "version": "==2.8.5"
         },
+        "pyreadr": {
+            "hashes": [
+                "sha256:00762d7422bdfaa8113071611183961c5fd09ab9b04efdcd71007e754aeec818",
+                "sha256:07ca8a44cc08c39b77c61f69f800542aaf734f2b974738500bf52db2a9ac69f9",
+                "sha256:280733727bde9b494c09c2e99884b959ab7e5734659c4b43613c9cdf88f4dcd3",
+                "sha256:3ea3b2f86b9b42a9ea4113aacf6a72aadd14b9bf1ff6e2b0637e82c100db9925",
+                "sha256:4b59b8ea8e015d4d7ab019ebbfbea30838cbad1331cc846e44886b5d9a776fe4",
+                "sha256:4f191df9ebfae1bf52ece98f16495d997f4c2d5350d9a51a3da8b5481ce23361",
+                "sha256:59f86137fc26b26025467ede1b3808efcb4d3308caeb3caff8c7a895aa43c00e",
+                "sha256:5ca88adaa2ed1ff8a89dddbfb5b098ba857f01760da7acc2424a38e65f6d866f",
+                "sha256:67bcecd61e3c7679326237aa61e6aae16b6b39ae26392402f5e1c641e8442b4d",
+                "sha256:69d7434d4088151288f77c16abbb643607c402759909b83cc65bedd6b8c72ba9",
+                "sha256:75c240dfdb3da655665921e12cb947fe2f3d7a4953341ff54aa960b9ea693844",
+                "sha256:82ce7b57848da1cba40226fd8d374d080194ac8e86dbb0598ef3ecadda7132c9",
+                "sha256:9d0a00cd3238ddbaca72cea0d58d40c5696d671fa7c287e15f6b235d5bd20497",
+                "sha256:a1eb7e3a01255389aa2a914a9d79a4b02e60e7492d35c8fa9f732a2d2d3c1835",
+                "sha256:e0c57ee4d4fd18fe56b262b7831dfac9f95c93959c00e04ab0ab504b9461e1cc",
+                "sha256:e69aa820ec4c2a453b3748f56408d59f43d9c5d7fab4e7d683a8854b5dc77d88",
+                "sha256:fadfe00403480e8feddfc6305620b3243d7b3e9b96ecd1ed6ba09cf0bb8cb013"
+            ],
+            "version": "==0.2.7"
+        },
         "python-dateutil": {
             "hashes": [
                 "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c",
@@ -465,6 +487,12 @@
                 "sha256:6c80b1e5ad3665290ea39320b91e1be1e0d5f60652b964a3070216de83d2e47c"
             ],
             "version": "==1.0.1"
+        },
+        "wget": {
+            "hashes": [
+                "sha256:35e630eca2aa50ce998b9b1a127bb26b30dfee573702782aa982f875e3f16061"
+            ],
+            "version": "==3.2"
         },
         "whitenoise": {
             "hashes": [
