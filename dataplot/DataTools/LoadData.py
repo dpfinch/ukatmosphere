@@ -170,9 +170,13 @@ def Get_AURN_Met_Data(site_code, year):
         site_df = open_rdata[site_data_url.split('.')[0]]
         site_df.index = site_df.date
         site_df.drop('date',axis = 1, inplace = True)
-        met_df = site_df[['wd','ws','temp']]
+        try:
+            met_df = site_df[['wd','ws','temp']]
+        except KeyError:
+            os.remove(out_url)
+            return None
         os.remove(out_url)
-    except (HTTPError, URLError, KeyError) as e:
+    except (HTTPError, URLError) as e:
         return None
     return met_df
 
