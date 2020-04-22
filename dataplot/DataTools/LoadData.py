@@ -625,7 +625,7 @@ def Get_Site_Variables(site):
 
     return new_variable_list
 
-def Get_Site_Variables_db(site):
+def get_site_variables_db(site):
     # Get the availble measured info from the site
     avail_measurements = measurement_data.objects.filter(site_id__site_name = site)
     measurement_ids = list(avail_measurements.values_list('measurement_id', flat = True).distinct())

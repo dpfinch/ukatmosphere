@@ -62,7 +62,7 @@ def fill_maximum_year(site):
     [Input('site_choice', 'value')],
     )
 def varaible_list(site):
-    site_vars = LoadData.Get_Site_Variables_db(site)
+    site_vars = LoadData.get_site_variables_db(site)
     var_options = [{'label': i.replace('<sub>','').replace('</sub>',''), 'value': i} for i in site_vars]
 
     return var_options, False
@@ -415,7 +415,7 @@ def get_colourbychoices(data,value):
     if not isinstance(df, pd.DataFrame):
         return ''
 
-    variable_list = LoadData.Get_Site_Variables_db(data[1])
+    variable_list = LoadData.get_site_variables_db(data[1])
     var_options = [{'label': i, 'value': i} for i in variable_list]
     return var_options
 
