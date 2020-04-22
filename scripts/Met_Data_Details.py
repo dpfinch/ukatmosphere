@@ -42,6 +42,8 @@ if update_met_data:
         if site_year_open < 2010:
             site_year_open = 2010 # This is when modelled met started
 
+        site_year_open = 2020
+
         if site_year_closed:
             site_year_closed = site_year_closed.year
         else:
