@@ -334,11 +334,12 @@ dcc.Loading(id="loading-diurnalcycle", children=[html.Div(id = 'DiurnalCycle')],
             value = ''),
         html.Br(),
 
+        html.Div(children = [
         html.Label('X Axis Label'),
         dcc.Input( id = 'DiurnalCycleXTitle',
             placeholder = 'Enter X axis label',
             value = 'Hour of the Day'),
-        html.Br(),
+        html.Br(),],style= {'display':'none'}),
 
         html.Label('Y Axis Label'),
         dcc.Input( id = 'DiurnalCycleYTitle',
@@ -559,7 +560,7 @@ dcc.Loading(id="loading-annualcycle", children=[html.Div(id = 'AnnualCycle')],
             #     value = ''),
             # html.Br(),
         ])
-    ]),
+    ],style= {'display':'none'}),
 
     html.Br(),
     html.Hr(),
