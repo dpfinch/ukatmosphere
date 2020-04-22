@@ -135,7 +135,7 @@ def DiurnalCycle(df,**kwargs):
 
     layout = go.Layout(
         title = plot_title,
-        xaxis = dict(title = xtitle),
+        xaxis = dict(title = xtitle, tickmode = 'array',tickvals=[0,3,6,9,12,15,18,21,24]),
         yaxis = dict(title = ytitle),
         images=[dict(
             source="assets/all_logos.jpeg",
@@ -163,13 +163,12 @@ def DiurnalCycleSplit(df, **kwargs):
 
     variable_dictionary = {}
     variable_options = kwargs['variable_options']
-
+    xtitle = kwargs['xtitle']
     if type(variable_options) == str:
         variable_dictionary[variable_options] = df[variable_options]
     else:
         for var in variable_options:
             variable_dictionary[var] = df[var]
-
 
     # Get a list of hours
     hour_names = [x for x in range(24)]
@@ -177,8 +176,8 @@ def DiurnalCycleSplit(df, **kwargs):
     days_of_week = ('Monday', 'Tuesday', 'Wednesday', 'Thursday',
         'Friday', 'Saturday', 'Sunday')
 
-    fig = make_subplots(rows = 1, cols = 7, shared_yaxes=True,
-        subplot_titles = days_of_week)
+    fig = make_subplots(rows = 1, cols = 7, shared_yaxes=True)
+        # subplot_titles = days_of_week)
 
     for var_num, var in enumerate(variable_dictionary.keys()):
         day_names = [x for x in range(7)]
@@ -214,6 +213,7 @@ def DiurnalCycleSplit(df, **kwargs):
                     mode = 'lines',
                     line = {'dash' : 'dash'}
                     ),row = 1,col = n + 1)
+                fig.update_xaxes(title_text=days_of_week[n],row = 1,col = n+1)
 
             else:
                 plot_data = []
@@ -230,6 +230,8 @@ def DiurnalCycleSplit(df, **kwargs):
                     mode = 'lines',
                     showlegend = False,
                     ),row = 1,col = n+1)
+
+                fig.update_xaxes(title_text=days_of_week[n],row = 1,col = n+1)
 
             error_type = kwargs['errors']
             # Don't add error to just median
@@ -274,35 +276,36 @@ def DiurnalCycleSplit(df, **kwargs):
                         showlegend = False,
                         ),row = 1,col = n+1)
 
-        ytitle = kwargs['ytitle']
-        xtitle = kwargs['xtitle']
-        plot_title = kwargs['title']
+    ytitle = kwargs['ytitle']
 
-        fig['layout']['yaxis1'].update(title = ytitle)
-        fig['layout'].update(title = plot_title)
-        layout = go.Layout(
-            # title = plot_title,s
-            xaxis = dict(title = xtitle),
-            yaxis = dict(title = ytitle),
-            images=[dict(
-                source="assets/all_logos.jpeg",
-                xref="paper", yref="paper",
-                x=1, y=1,
-                sizex=0.42, sizey=0.42,
-                xanchor="right", yanchor="bottom"
-              ),
-                ],
-            )
-        config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
+    plot_title = kwargs['title']
 
-        plot = dcc.Graph(
-            id='DiurnalCyclePlot',
-            figure={
-                'data': fig,
-                'layout': layout
-            },
-            config = config
-        )
+    fig['layout']['yaxis1'].update(title = ytitle)
+    fig['layout'].update(title = plot_title)
+    # fig['layout']['xaxis4'].update(title = xtitle)
+    fig['layout'].update(images=[dict(
+        source="assets/all_logos.jpeg",
+        xref="paper", yref="paper",
+        x=1, y=1,
+        sizex=0.42, sizey=0.42,
+        xanchor="right", yanchor="bottom",
+      )])
+    for ax in range(1,8):
+        ax_name = 'xaxis{}'.format(str(ax))
+        fig['layout'][ax_name].update(tickmode = 'array',tickvals = [0,12,24])
+
+    config = {"toImageButtonOptions": {"width": None, "height": None, "scale":2}}
+
+    plot = dcc.Graph(
+        id='DiurnalCyclePlot',
+        figure = fig,
+        # layout = layout,
+        # figure={
+        #     'data': fig,
+        #     'layout': layout
+        # },
+        config = config
+    )
 
     return plot
 ## ============================================================================
