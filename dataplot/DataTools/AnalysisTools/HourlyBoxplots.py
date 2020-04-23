@@ -38,9 +38,12 @@ def HourlyBoxplots(df,**kwargs):
     for var_num, var in enumerate(variable_dictionary.keys()):
 
     # Create dictionary with each month as a key containing all monthly data
-        hourly_dict = {}
+        hourly_vals = []
+        hourly_names = []
         for n,hour in enumerate(hour_names):
-            hourly_dict[hour] = variable_dictionary[var].loc[variable_dictionary[var].index.hour == (n)]
+            conc_vals = variable_dictionary[var].loc[variable_dictionary[var].index.hour == (n)].values
+            hourly_vals.extend(conc_vals)
+            hourly_names.extend([ str(hour).zfill(2)+':00']*len(conc_vals))
 
         # Create list to put in the plot.ly traces and combine them
         # to send to plot.ly
@@ -50,12 +53,16 @@ def HourlyBoxplots(df,**kwargs):
         else:
             showmean = False
 
-        for x, hour in enumerate(hour_names):
-            all_plots.append( go.Box(
-                y = hourly_dict[hour].values,
-                name = str(hour).zfill(2)+':00',
-                marker = {'color':colours[var_num]},
-                boxmean = showmean))
+        # for x, hour in enumerate(hour_names):
+        all_plots.append( go.Box(
+            # y = hourly_dict[hour].values,
+            y = hourly_vals,
+            x = hourly_names,
+            # name = str(hour).zfill(2)+':00',
+            marker = {'color':colours[var_num],'size':2},
+            boxmean = showmean,
+            # width = 0.8
+            ))
 
     ytitle = kwargs['ytitle']
     plot_title = kwargs['title']

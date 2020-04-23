@@ -37,29 +37,33 @@ def WeeklyBoxplots(df,**kwargs):
     for var_num, var in enumerate(variable_dictionary.keys()):
 
         # Create dictionary with each month as a key containing all monthly data
-        daily_dict = {}
-        for n,day in enumerate(day_names):
-            daily_dict[day] = variable_dictionary[var].loc[variable_dictionary[var].index.dayofweek == (n)]
-
-        # Create list to put in the plot.ly traces and combine them
-        # to send to plot.ly
         days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday',
             'Friday', 'Saturday', 'Sunday']
+        daily_vals = []
+        daily_names = []
+        for n,day in enumerate(day_names):
+            day_concs = variable_dictionary[var].loc[variable_dictionary[var].index.dayofweek == (n)].values
+            daily_vals.extend(day_concs)
+            daily_names.extend([days_of_week[n]]*len(day_concs))
+        # Create list to put in the plot.ly traces and combine them
+        # to send to plot.ly
 
         if kwargs['showmean']:# == True:
             showmean = True
         else:
             showmean = False
 
-
-        for x, day in enumerate(day_names):
-            all_plots.append( go.Box(
-                y = daily_dict[day].values,
-                name = days_of_week[x],
-                marker = {'color':colours[var_num],
-                    'size':5},
-                boxmean = showmean
-            ))
+        # for x, day in enumerate(day_names):
+        all_plots.append( go.Box(
+            # y = daily_dict[day].values,
+            y = daily_vals,
+            x = daily_names,
+            # name = days_of_week[x],
+            marker = {'color':colours[var_num],
+                'size':3},
+            boxmean = showmean,
+            # width = 0.5
+        ))
 
     ytitle = kwargs['ytitle']
     plot_title = kwargs['title']
@@ -70,8 +74,8 @@ def WeeklyBoxplots(df,**kwargs):
         yaxis = dict(title = ytitle),
         showlegend = False,
         boxmode = 'group',
-        boxgap = 0.1,
-        boxgroupgap = 0,
+        # boxgap = 0.1,
+        # boxgroupgap = 0,
         images=[dict(
             source="assets/all_logos.jpeg",
             xref="paper", yref="paper",
