@@ -42,35 +42,57 @@ def CompareWeeks(df, **kwargs):
         return "Not enough data with this date selection to make a comparison"
 
     df_col = df_col[(df_col.index.year > start_date.year - 6) & (df_col.index.year <= end_date.year)]
-
+    df_col = df_col.resample('H').mean()
+    df_col = df_col[~((df_col.index.month == 2) & (df_col.index.day == 29))]
     start_doy = start_date.timetuple().tm_yday
     end_doy = end_date.timetuple().tm_yday
-    comp_dates = df_col[(df_col.index.dayofyear >= start_doy) & (df_col.index.dayofyear < end_doy)]
 
-    comp_year = start_date.year
-    current_week = comp_dates[comp_dates.index.year == comp_year]
+    current_year = df_col[df_col.index.year == comp_year]
+    other_years = df_col[df_col.index.year != comp_year]
 
-    other_weeks = comp_dates[comp_dates.index.year != comp_year]
+    date_range = pd.date_range('2020-1-1','2020-12-31 23:00:00', freq = 'H')
+    date_range = date_range[~((date_range.month == 2) & (date_range.day == 29))]
+
+    clim = []
+    for year in other_years.index.year.unique():
+        clim.append(other_years[other_years.index.year == year].reset_index(drop = True))
+    clim = pd.concat(clim,axis = 1)
+    clim.index = date_range
+    clim = clim[(clim.index >= start_date) & (clim.index <= end_date)]
+    mean_weeks = clim.mean(axis = 1)
+    median_weeks = clim.median(axis = 1)
+
+    # comp_dates = df_col[(df_col.index.dayofyear >= start_doy) & (df_col.index.dayofyear < end_doy)]
+    # comp_dates = df_col[(df_col.index.dayofyear >= start_doy) & (df_col.index.day >= start_date.day)]
+    # comp_dates = comp_dates_temp[(comp_dates_temp.index.month <= end_date.month) & (comp_dates_temp.index.day <= end_date.day)]
+
+    current_week = current_year[(current_year.index >= start_date) & (current_year.index <= end_date)]
+
+    # mean_weeks = clim_mean[(clim_mean.index >= start_date) & (clim_mean.index <= end_date)]
+    # median_weeks = clim_median[(clim_median.index >= start_date) & (clim_median.index <= end_date)]
+
+    median_weeks.loc[current_week.index]
+    median_weeks.loc[current_week.index]
 
     if pd.Timestamp(current_week.index.year[0],2,29) in current_week.index:
         return "We can't currently process weeks with leap days in them - we're working on it!"
 
-    other_year_weeks = []
-    for year in other_weeks.index.year.unique():
-        other_year_weeks.append(
-            other_weeks[other_weeks.index.year == year].reset_index(drop = True))
-
-    transformed_weeks = pd.concat(other_year_weeks, axis = 1)
-    current_week = current_week.resample('H').mean()
-    # print(current_week.shape)
-    # print(transformed_weeks.shape)
-
-    mean_weeks = transformed_weeks.mean(axis = 1)
-    median_weeks = transformed_weeks.median(axis = 1)
-    mean_weeks.index = current_week.index
-    median_weeks.index = current_week.index
-    min_weeks = transformed_weeks.min(axis = 1)#.rolling(24,min_periods = 1).mean()
-    max_weeks = transformed_weeks.max(axis = 1)#.rolling(24,min_periods = 1).mean()
+    # other_year_weeks = []
+    # for year in other_weeks.index.year.unique():
+    #     other_year_weeks.append(
+    #         other_weeks[other_weeks.index.year == year].reset_index(drop = True))
+    #
+    # transformed_weeks = pd.concat(other_year_weeks, axis = 1)
+    # current_week = current_week.resample('H').mean()
+    # # print(current_week.shape)
+    # # print(transformed_weeks.shape)
+    #
+    # mean_weeks = transformed_weeks.mean(axis = 1)
+    # median_weeks = transformed_weeks.median(axis = 1)
+    # mean_weeks.index = current_week.index
+    # median_weeks.index = current_week.index
+    min_weeks = clim.min(axis = 1)#.rolling(24,min_periods = 1).mean()
+    max_weeks = clim.max(axis = 1)#.rolling(24,min_periods = 1).mean()
 
     all_plots = []
     # y_upper = mean_weeks.values + std_weeks.values
