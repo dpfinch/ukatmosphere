@@ -88,7 +88,7 @@ def plume_map():
         dcc.Markdown('''
         We are showing the results from analysing two years of satellite observations. We have attempted
         to remove the influence of biomass burning using thermal anomaly data collected by the
-        [VIIRS](https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/viirs-i-band-active-fire-data) satellite, 
+        [VIIRS](https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/viirs-i-band-active-fire-data) satellite,
         although some fires may have slipped through the filter. The remaining plumes we attribute
         to specific combustion sources using other information: locations of power stations are also
         shown in red (data from [Global Power Plant Database](https://datasets.wri.org/dataset/globalpowerplantdatabase))
@@ -101,11 +101,11 @@ def plume_map():
         As you scroll inwards you’ll see the plumes have difference shapes - this is a result of overlapping plumes.
         '''),
         dcc.Markdown('''
-         It is also important to note that the NO2 data are sensitive to cloud cover and therefore the
+         It is also important to note that the NO<sub>2</sub> data are sensitive to cloud cover and therefore the
          cloudier a place is (e.g. tropical regions) the less likely there it is for there to be clear
          observations and therefore the fewer plumes can be observed. Nevertheless, there is no shortage
          of plumes over the tropics.
-        '''),
+        ''',dangerously_allow_html = True),
         dcc.Markdown('''
         More information, including methods and analysis can be found in our paper (link coming soon).
         '''),
