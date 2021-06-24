@@ -77,28 +77,34 @@ def plume_map():
         html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/plume_assets/plume_0330.png?raw=true', style={'height':'60px', 'width':'60px','padding':'1px','display': 'inline-block'}),
         html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/plume_assets/plume_0367.png?raw=true', style={'height':'60px', 'width':'60px','padding':'1px','display': 'inline-block'}),
         ], style={'margin': 'auto', 'width':'372px'}),
-        html.H2('Nitrogen Dioxide Plumes Over the Globe', style={'textAlign': 'center'}),
+        html.H2('Satellites reveal combustion hotspots across the globe', style={'textAlign': 'center'}),
         dcc.Markdown('''
-        The map belows shows the location of plumes of nitrogen dioxide (NO<sub>2</sub>) automatically
-        detected by a deep learning model from observations made by the TROPOMI
-        instrument on board the Sentinel 5P satellite. The location of these plumes can
-        inform us as to where emission from combustion are coming from (e.g. urban centres, power stations etc.).
-        Two years of global satellite observations were fed into the model and the sources of
-        emission plumes were identified and are shown here in blue. The different shapes are where
-        there are areas of overlapping plumes.
+        The map shows the location of nitrogen dioxide (NO<sub>2</sub>) plumes that have been detected automatically
+         by a deep learning model from observations collected by the [TROPOMI](http://www.tropomi.eu)
+         instrument on board the Sentinel 5P satellite.
+         Nitrogen dioxide is a proxy for combustion so the location of the plumes tell us about combustion hotspots,
+         e.g. urban centres, power stations, biomass burning.
         ''',dangerously_allow_html = True),
         dcc.Markdown('''
-        Locations of power stations are also shown in red (data from
-        [Global Power Plant Database](https://datasets.wri.org/dataset/globalpowerplantdatabase))
-        and areas of nighttime oil and gas flaring are shown in orange
-        (data from [SkyTruth](https://skytruth.org/flaring/)).
+        We are showing the results from analysing two years of satellite observations. We have attempted
+        to remove the influence of biomass burning using thermal anomaly data collected by the
+        [VIIRS](https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/viirs-i-band-active-fire-data) satellite, 
+        although some fires may have slipped through the filter. The remaining plumes we attribute
+        to specific combustion sources using other information: locations of power stations are also
+        shown in red (data from [Global Power Plant Database](https://datasets.wri.org/dataset/globalpowerplantdatabase))
+         and areas of nighttime oil and gas flaring are
+        shown in orange (data from [SkyTruth](https://skytruth.org/flaring/)). Check out the ship tracks,
+        especially around Spain, across the
+        Mediterranean, and along the Suez Canal.
         '''),
         dcc.Markdown('''
-         We have attempted to remove the influence of biomass burning, however some fires
-         may have slipped through the filter. It is also important to note that this
-         satellite data is sensitive to cloud cover and therefore the cloudier a place is
-         (e.g. tropical regions) the less likely there it is for there to be clear observations and
-         therefore less likely to be able to spot an emission plume.
+        As you scroll inwards you’ll see the plumes have difference shapes - this is a result of overlapping plumes.
+        '''),
+        dcc.Markdown('''
+         It is also important to note that the NO2 data are sensitive to cloud cover and therefore the
+         cloudier a place is (e.g. tropical regions) the less likely there it is for there to be clear
+         observations and therefore the fewer plumes can be observed. Nevertheless, there is no shortage
+         of plumes over the tropics.
         '''),
         dcc.Markdown('''
         More information, including methods and analysis can be found in our paper (link coming soon).
