@@ -2,6 +2,7 @@ from dash.dependencies import Output, Input
 from .server import app#, server
 from . import layouts_defra_sites, layouts_defra_map, layouts_data_upload
 from . import layouts_EO_lessons, layouts_site_compare, layouts_uk_o3
+from . import layouts_plume_map
 
 
 
@@ -12,6 +13,7 @@ pages = (
     ('UK_Ozone', layouts_uk_o3.uk_ozone),
     ('EO_Lessons', layouts_EO_lessons.EO_Lessons),
     ('Site_Comparison', layouts_site_compare.Site_Comparison_Table),
+    ('plume_map',layouts_plume_map.plume_map),
     )
 
 routes = {f"{app.config.url_base_pathname}{path}": layout for path, layout in pages}
