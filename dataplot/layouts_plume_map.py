@@ -81,10 +81,12 @@ def plume_map():
         ], style={'margin-left': '33%', 'width':'372px','display': 'inline-block'}),
 
         html.Div(id = 'logos',children = [
+        html.A(href = 'http://www.tropomi.eu', children = [
+            html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/TROPOMI_logo.jpg?raw=true', style={'height':'50px','margin':'10px',})]),
         html.A(href = 'https://nerc.ukri.org', children = [
             html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/nerc_logo.png?raw=true', style={'height':'40px','margin':'10px',})]),
         html.A(href = 'https://www.nceo.ac.uk', children = [
-        html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/nceo_logo.png?raw=true', style={'height':'40px','margin':'10px'})]),
+            html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/nceo_logo.png?raw=true', style={'height':'40px','margin':'10px'})]),
         ], style={'float': 'right','margin-right':'5px','display': 'inline-block'}),
 
         ],style={'width':'100%', 'height':'70px', 'justify-content': 'center', 'positon':'relative'}),
@@ -121,6 +123,10 @@ def plume_map():
         dcc.Markdown('''
         More information, including methods and analysis can be found in our paper (link coming soon).
         '''),
+        dcc.Markdown('''
+        Contact: Doug Finch [email](d.finch@ed.ac.uk) & [Twitter](https://twitter.com/douglasfinch)
+        [<img src="https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/twitter_logo.png?raw=true" width="20px"/>](https://twitter.com/douglasfinch)''',
+        dangerously_allow_html = True),
         html.Hr(),
         dcc.Graph(figure=fig, style={'width': '100%', 'height': '90vh'}),
         html.Hr(),
