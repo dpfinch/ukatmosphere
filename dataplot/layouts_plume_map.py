@@ -67,8 +67,10 @@ def plume_map():
     ))
 
     page_layout = html.Div(id ='full_page_container', children = [
-    dcc.Loading(id='loading_1',type = 'circle',
-        children = html.Div([
+        html.Div([
+        html.Div(className = 'plume-header', children = [
+            html.Div(id = 'home-logo-holder', children = [html.A(id = 'home-logo', href="/")]),
+
         html.Div(id = 'imgs',children = [
         html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/plume_assets/plume_0008.png?raw=true', style={'height':'60px', 'width':'60px','padding':'1px','display': 'inline-block'}),
         html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/plume_assets/plume_0141.png?raw=true', style={'height':'60px', 'width':'60px','padding':'1px','display': 'inline-block'}),
@@ -76,8 +78,18 @@ def plume_map():
         html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/plume_assets/plume_0299.png?raw=true', style={'height':'60px', 'width':'60px','padding':'1px','display': 'inline-block'}),
         html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/plume_assets/plume_0330.png?raw=true', style={'height':'60px', 'width':'60px','padding':'1px','display': 'inline-block'}),
         html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/plume_assets/plume_0367.png?raw=true', style={'height':'60px', 'width':'60px','padding':'1px','display': 'inline-block'}),
-        ], style={'margin': 'auto', 'width':'372px'}),
-        html.H2('Satellites reveal combustion hotspots across the globe', style={'textAlign': 'center'}),
+        ], style={'margin-left': '33%', 'width':'372px','display': 'inline-block'}),
+
+        html.Div(id = 'logos',children = [
+        html.A(href = 'https://nerc.ukri.org', children = [
+            html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/nerc_logo.png?raw=true', style={'height':'40px','margin':'10px',})]),
+        html.A(href = 'https://www.nceo.ac.uk', children = [
+        html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/nceo_logo.png?raw=true', style={'height':'40px','margin':'10px'})]),
+        ], style={'float': 'right','margin-right':'5px','display': 'inline-block'}),
+
+        ],style={'width':'100%', 'height':'70px', 'justify-content': 'center', 'positon':'relative'}),
+
+        html.H2('Satellites reveal anthropogenic combustion hotspots across the globe', style={'textAlign': 'center'}),
         dcc.Markdown('''
         The map shows the location of nitrogen dioxide (NO<sub>2</sub>) plumes that have been detected automatically
          by a deep learning model from observations collected by the [TROPOMI](http://www.tropomi.eu)
@@ -114,6 +126,6 @@ def plume_map():
         html.Hr(),
         # html.Button('Map View',id = 'map_view'),
     ],style={'display': 'inline-block','padding':'8px','width': '100%', 'height': '100hv'})
-    )])
+    ])
 
     return page_layout
