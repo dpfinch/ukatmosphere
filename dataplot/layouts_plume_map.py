@@ -3,91 +3,15 @@ import pandas as pd
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_daq as daq
 import numpy as np
 import plotly.graph_objects as go
 from .server import app, queue
 
-def load_plume_data():
-
-    plume_vertexs = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/plume_assets/plume_vertex_list_merged.csv')
-    # plume_vertexs = plume_vertexs.replace({np.nan:None})
-    plume_lons = plume_vertexs.Lons.values
-    plume_lats = plume_vertexs.Lats.values
-    return plume_lons,plume_lats
-
-def load_ps_data():
-
-    pwr_f = 'https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/plume_assets/global_power_plant_database.csv'
-
-    ps_df = pd.read_csv(pwr_f, usecols = ['longitude','latitude','primary_fuel'])
-    ps_df = ps_df[ps_df.primary_fuel.isin(['Gas','Oil','Coal'])]
-
-    ps_lons = ps_df.longitude.values
-    ps_lats = ps_df.latitude.values
-
-    return ps_lons, ps_lats
-
-def load_flare_data():
-
-    flare_df = pd.read_csv('https://raw.githubusercontent.com/dpfinch/ukatmosphere/master/dataplot/assets/plume_assets/flare_list_merged.csv')
-    # flare_df = flare_df.replace({np.nan:None})
-    flare_lons = flare_df.Lons.values
-    flare_lats = flare_df.Lats.values
-
-    return flare_lons,flare_lats
-
-def render_map(plume_lons,plume_lats,ps_lons,ps_lats,flare_lons,flare_lats):
-    token = 'pk.eyJ1IjoiZG91Z2ZpbmNoIiwiYSI6ImNqZHhjYnpqeDBteDAyd3FsZXM4ZGdqdTAifQ.xLS22vmqzVYR0SAEDWdLpQ'
-    fig = go.Figure()
-
-    fig.add_trace(go.Scattermapbox(
-        mode = "markers",
-        name = 'Power Stations',
-        lon = ps_lons,
-        lat = ps_lats,
-        hoverinfo = 'none',
-        marker = {'color':'red', 'opacity':0.8,
-            'size':5}))
-
-    fig.add_trace(go.Scattermapbox(
-        mode = "lines", fill = "toself",
-        name = 'Nighttime Flaring',
-        lon = flare_lons,
-        lat = flare_lats,
-        hoverinfo = 'none',
-        marker = {'color':'#e07509'}))
-
-    fig.add_trace(go.Scattermapbox(
-        mode = "lines", fill = "toself",
-        name = 'NO<sub>2</sub> Plumes',
-        lon = plume_lons,
-        lat = plume_lats,
-        hoverinfo = 'none',
-        marker = {'color':'#006391'}))
-
-
-    fig.update_layout(mapbox = {'style': "stamen-terrain", 'center': {'lon': 0, 'lat': 30}, 'zoom': 2})
-    fig.update_layout(mapbox_style="satellite-streets",mapbox_accesstoken=token)
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, autosize = True)
-    fig.update_layout(legend=dict(
-        title = 'Click to show/hide',
-        yanchor="top",
-        y=0.99,
-        xanchor="left",
-        x=0.01
-    ))
-
-    return fig
 
 def plume_map():
 
     external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
-    plume_lons,plume_lats = load_plume_data()
-    ps_lons,ps_lats = load_ps_data()
-    flare_lons,flare_lats = load_flare_data()
-
-    fig = render_map(plume_lons,plume_lats,ps_lons,ps_lats,flare_lons,flare_lats)
 
     page_layout = html.Div(id ='full_page_container', children = [
         html.Div([
@@ -112,8 +36,8 @@ def plume_map():
             html.Img(src = 'https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/nceo_logo.png?raw=true', style={'height':'40px','margin':'10px'})]),
         ], style={'float': 'right','margin-right':'5px','display': 'inline-block'}),
 
-        ],style={'width':'100%', 'height':'70px', 'justify-content': 'center', 'positon':'relative'}),
-
+        ],style={'width':'100%', 'height':'70px', 'justify-content': 'center', 'positon':'relative'}),]),
+        html.Div(className = 'page-body',children = [
         html.H2('Satellites reveal anthropogenic combustion hotspots across the globe', style={'textAlign': 'center'}),
         dcc.Markdown('''
         The map shows the location of nitrogen dioxide (NO<sub>2</sub>) plumes that have been detected automatically
@@ -151,7 +75,12 @@ def plume_map():
         [<img src="https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/twitter_logo.png?raw=true" width="20px"/>](https://twitter.com/douglasfinch)''',
         dangerously_allow_html = True),
         html.Hr(),
-        dcc.Graph(figure=fig, style={'width': '100%', 'height': '90vh'}),
+        dcc.Loading(id='loading_plume_map',children=[
+        html.Div(id = 'plume_map_holder',style={'width': '100%', 'height': '90vh'})],
+        type="graph"),
+        html.Br(),
+        daq.ToggleSwitch(id = 'map_toggle', value = True,
+            label='Switch to map view',labelPosition='bottom'),
         html.Hr(),
         # html.Button('Map View',id = 'map_view'),
     ],style={'display': 'inline-block','padding':'8px','width': '100%', 'height': '100hv'})

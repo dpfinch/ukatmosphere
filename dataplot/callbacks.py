@@ -9,6 +9,7 @@ from dataplot.DataTools import AnalysisDriver
 from dataplot.DataTools import LoadData
 from dataplot.DataTools import TidyData
 from dataplot.DataTools import Map_Plots_Renderer
+from dataplot.DataTools import Plume_Map_Renderer
 import pandas as pd
 from dataplot.EO_Lesson_Tools import Satellite_Tools
 from dataplot.EO_Lesson_Tools import TIR_Tools
@@ -887,6 +888,33 @@ def site_information_from_map(clickData, tab_val, species):
     else:
         return Map_Plots_Renderer.Site_Year_Summary(site_name, species)
 
+
+############# Callbacks for plume map
+###### Worth putting this in sepearete file at some points
+
+@app.callback(Output('plume_map_holder', 'children'),
+        [Input('map_toggle','value')],)
+def plume_map_maker(toggle_value):
+    if toggle_value:
+        map_style = 'satellite-streets'
+        map_name = 'Switch for map view'
+    else:
+        map_style = 'open-street-map'
+        map_name = 'Switch for satellite view'
+
+    fig = Plume_Map_Renderer.render_map(map_style)
+    graph = dcc.Graph(figure=fig, style={'width': '100%', 'height': '90vh'})
+    return graph
+
+@app.callback(Output('map_toggle','label'),
+        [Input('map_toggle','value')],)
+def plume_map_toggle(toggle_value):
+    if toggle_value:
+        map_name = 'Switch to map view'
+    else:
+        map_name = 'Switch to satellite view'
+
+    return map_name
 
 ### ===================================================================
 ### END OF PROGRAM
