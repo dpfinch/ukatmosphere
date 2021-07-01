@@ -124,7 +124,7 @@ def plume_map():
         More information, including methods and analysis can be found in our paper (link coming soon).
         '''),
         dcc.Markdown('''
-        Contact: Doug Finch [email](d.finch@ed.ac.uk) & [Twitter](https://twitter.com/douglasfinch)
+        Contact: Doug Finch [email](mailto:d.finch@ed.ac.uk) & [Twitter](https://twitter.com/douglasfinch)
         [<img src="https://github.com/dpfinch/ukatmosphere/blob/master/dataplot/assets/twitter_logo.png?raw=true" width="20px"/>](https://twitter.com/douglasfinch)''',
         dangerously_allow_html = True),
         html.Hr(),
