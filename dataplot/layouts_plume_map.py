@@ -68,7 +68,7 @@ def plume_map():
          of plumes over the tropics.
         ''',dangerously_allow_html = True),
         dcc.Markdown('''
-        More information, including methods and analysis can be found in our paper (link coming soon).
+        More information, including methods and analysis can be found in our [paper](https://amt.copernicus.org/preprints/amt-2021-177/) (Currently in the discussion phase).
         '''),
         dcc.Markdown('''
         Contact: Doug Finch [email](mailto:d.finch@ed.ac.uk) & [Twitter](https://twitter.com/douglasfinch)
