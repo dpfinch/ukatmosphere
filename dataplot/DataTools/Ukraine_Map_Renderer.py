@@ -14,7 +14,8 @@ def load_fire_data(app):
     firms_df = pd.concat([modis_df,viirs_snpp,viirs_noaa])
 
     firms_df = firms_df[(firms_df.latitude > 44) & (firms_df.latitude < 52.5) & (firms_df.longitude > 21.5) & (firms_df.longitude < 40.5)]
-
+    firms_df.index = = pd.to_datetime(ukr_fires.acq_date,format = '%Y-%m-%d')
+    firms_df = firms_df.loc['2022-02-24':]
 
     return  firms_df.longitude, firms_df.latitude
 
