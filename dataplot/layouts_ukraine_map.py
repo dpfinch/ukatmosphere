@@ -20,7 +20,7 @@ def fire_map():
         html.Div(className = 'page-body',children = [
         html.H2('Fires Spotted over Ukraine', style={'textAlign': 'center'}),
         dcc.Markdown('''
-         Fires spotted within the last seven days over Ukraine from the [FIMRS satellite products](https://firms.modaps.eosdis.nasa.gov).
+         Fires spotted since the 24th of Feb over Ukraine from the [FIMRS satellite products](https://firms.modaps.eosdis.nasa.gov).
          These fires could be related to recent military activity in the area.
         ''',dangerously_allow_html = True),
         dcc.Markdown('''
