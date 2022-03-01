@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 from .server import app, queue
 
 
-def plume_map():
+def fire_map():
 
     external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -38,29 +38,7 @@ def plume_map():
 
         ],style={'width':'100%', 'height':'70px', 'justify-content': 'center', 'positon':'relative'}),]),
         html.Div(className = 'page-body',children = [
-        html.H2('Satellites reveal anthropogenic combustion hotspots across the globe', style={'textAlign': 'center'}),
-        dcc.Markdown('''
-        The map shows the location of nitrogen dioxide (NO<sub>2</sub>) plumes that have been detected automatically
-         by a deep learning model from observations collected by the [TROPOMI](http://www.tropomi.eu)
-         instrument on board the Sentinel 5P satellite.
-         Nitrogen dioxide is a proxy for combustion so the location of the plumes tell us about combustion hotspots,
-         e.g. urban centres, power stations, biomass burning.
-        ''',dangerously_allow_html = True),
-        dcc.Markdown('''
-        We are showing the results from analysing two years of satellite observations. We have attempted
-        to remove the influence of biomass burning using thermal anomaly data collected by the
-        [VIIRS](https://earthdata.nasa.gov/earth-observation-data/near-real-time/firms/viirs-i-band-active-fire-data) satellite,
-        although some fires may have slipped through the filter. The remaining plumes we attribute
-        to specific combustion sources using other information: locations of power stations are also
-        shown in red (data from [Global Power Plant Database](https://datasets.wri.org/dataset/globalpowerplantdatabase))
-         and areas of nighttime oil and gas flaring are
-        shown in orange (data from [SkyTruth](https://skytruth.org/flaring/)). Check out the ship tracks,
-        especially around Spain, across the
-        Mediterranean, and along the Suez Canal.
-        '''),
-        dcc.Markdown('''
-        As you scroll inwards you’ll see the plumes have difference shapes - this is a result of overlapping plumes.
-        '''),
+        html.H2('Fires Spotted over Ukraine', style={'textAlign': 'center'}),
         dcc.Markdown('''
          It is also important to note that the NO<sub>2</sub> data are sensitive to cloud cover and therefore the
          cloudier a place is (e.g. tropical regions) the less likely there it is for there to be clear
@@ -76,10 +54,10 @@ def plume_map():
         dangerously_allow_html = True),
         html.Hr(),
         dcc.Loading(id='loading_plume_map',children=[
-        html.Div(id = 'plume_map_holder',style={'width': '100%', 'height': '90vh'})],
+        html.Div(id = 'fire_map_holder',style={'width': '100%', 'height': '90vh'})],
         type="graph"),
         html.Br(),
-        daq.ToggleSwitch(id = 'map_toggle', value = True,
+        daq.ToggleSwitch(id = 'fire_map_toggle', value = True,
             label='Switch to map view',labelPosition='bottom'),
         html.Hr(),
         # html.Button('Map View',id = 'map_view'),
